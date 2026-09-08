@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vayana Vantage — GFF 2026 film</title>
+<style>
+  :root{ --navy:#29397A; --ink:#141A3A; --crimson:#B4303E; --muted:#6B7290; --line:#E3E6F2; --panel:#F5F6FB; --green:#1E8A5B; --greenBg:#E6F4EC; --red:#C8362E; --amber:#B7791F;
+    --grad:linear-gradient(135deg,#2E3F8C 0%,#B4303E 100%); --gradText:linear-gradient(90deg,#3446A0 0%,#C23A49 100%); }
+  html,body{margin:0;background:#000;}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:#fff;font-family:'Poppins',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;perspective:2400px;}
+  #stage *{box-sizing:border-box;}
+  h1,h2,h3,p{margin:0;font-weight:700;}
+  .grad{background:var(--gradText);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .scene{position:absolute;inset:0;visibility:hidden;opacity:0;}
+  #brand{position:absolute;left:80px;top:48px;display:flex;align-items:center;gap:16px;opacity:0;}
+  #brand img{width:170px;display:block;} #brand .sep{width:1px;height:34px;background:var(--line);} #brand .p{font-size:26px;font-weight:700;color:var(--navy);letter-spacing:.06em;}
+  #brand .tag{margin-left:10px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;border:1px solid var(--line);border-radius:999px;padding:6px 12px;}
+  .hdr{position:absolute;left:100px;top:150px;width:1720px;}
+  .hdr .k{font-size:18px;letter-spacing:.32em;text-transform:uppercase;color:var(--crimson);font-weight:600;}
+  .hdr h2{font-size:52px;line-height:1.1;color:var(--navy);letter-spacing:-.015em;margin-top:10px;} .hdr h2 b{color:var(--crimson);}
+  .card{background:#fff;border-radius:22px;box-shadow:0 24px 60px rgba(20,26,58,.10),0 0 0 1px rgba(20,26,58,.06);}
+  .ico{display:block;overflow:visible;} .ico path,.ico circle,.ico rect{fill:none;stroke:var(--crimson);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* S0 title */
+  #s0 .logo{position:absolute;left:100px;top:170px;width:330px;} #s0 .logo img{width:100%;display:block;}
+  #s0 .tag{position:absolute;left:100px;top:530px;width:1500px;font-size:60px;line-height:1.15;font-weight:700;color:var(--navy);letter-spacing:-.02em;} #s0 .tag b{color:var(--crimson);}
+  #s0 .sub{position:absolute;left:100px;top:700px;width:1300px;font-size:28px;font-weight:500;color:var(--muted);line-height:1.4;}
+  #s0 .chips{position:absolute;left:100px;top:800px;display:flex;gap:16px;} #s0 .chips span{padding:14px 26px;border-radius:999px;background:var(--grad);color:#fff;font-weight:600;font-size:22px;opacity:0;}
+
+  /* S1 pains */
+  .pain{position:absolute;left:100px;width:1720px;height:118px;display:grid;grid-template-columns:300px 1fr 60px 1fr;align-items:center;gap:20px;padding:0 26px 0 0;border-radius:20px;background:#fff;box-shadow:0 18px 44px rgba(20,26,58,.08),0 0 0 1px rgba(20,26,58,.06);opacity:0;}
+  .pain .lb{height:100%;border-radius:20px 0 0 20px;background:var(--navy);color:#fff;display:flex;align-items:center;gap:16px;padding:0 26px;font-size:24px;font-weight:700;} .pain .lb svg{width:40px;height:40px;flex:none;} .pain .lb svg path,.pain .lb svg circle,.pain .lb svg rect{stroke:#fff;}
+  .pain .ch{font-size:20px;font-weight:500;color:var(--ink);line-height:1.4;} .pain .ar{font-size:30px;color:var(--crimson);font-weight:700;text-align:center;opacity:0;} .pain .im{font-size:20px;font-weight:600;color:var(--crimson);line-height:1.4;opacity:0;}
+  #s1 .cols{position:absolute;left:426px;top:296px;width:1394px;display:grid;grid-template-columns:1fr 60px 1fr;gap:20px;font-size:13px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:var(--muted);opacity:0;}
+
+  /* S2 flow */
+  #flow{position:absolute;left:0;top:0;width:1920px;height:1080px;}
+  #flow .ln{fill:none;stroke:#C9CEE3;stroke-width:3;stroke-linecap:round;} #flow .mv{fill:var(--crimson);opacity:0;}
+  .node{position:absolute;padding:20px 26px;border-radius:18px;background:#fff;box-shadow:0 18px 44px rgba(20,26,58,.10),0 0 0 1px rgba(20,26,58,.06);text-align:center;opacity:0;} .node b{display:block;font-size:22px;color:var(--navy);} .node span{display:block;font-size:14px;color:var(--muted);font-weight:500;margin-top:4px;}
+  .node svg{width:54px;height:54px;margin:0 auto 8px;}
+  #hub{position:absolute;left:760px;top:470px;width:400px;padding:26px 30px;border-radius:24px;background:var(--grad);color:#fff;text-align:center;box-shadow:0 30px 70px rgba(41,57,122,.35);opacity:0;} #hub img{width:150px;filter:brightness(0) invert(1);display:block;margin:0 auto 10px;} #hub b{display:block;font-size:24px;} #hub span{display:block;font-size:15px;opacity:.85;margin-top:4px;font-weight:500;}
+  .stepc{position:absolute;display:flex;align-items:center;gap:10px;opacity:0;} .stepc i{width:36px;height:36px;border-radius:50%;background:var(--crimson);color:#fff;font-style:normal;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 8px 20px rgba(180,48,62,.35);} .stepc span{background:#fff;padding:9px 14px;border-radius:10px;font-size:16px;font-weight:600;color:var(--navy);box-shadow:0 10px 26px rgba(20,26,58,.12),0 0 0 1px rgba(20,26,58,.08);white-space:nowrap;}
+
+  /* S3 what changes */
+  .grp{position:absolute;top:290px;width:840px;} .grp small{display:block;font-size:13px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:var(--crimson);margin-bottom:16px;opacity:0;}
+  .ft{position:absolute;width:840px;height:120px;display:flex;align-items:center;gap:22px;padding:0 28px;border-radius:20px;background:#fff;box-shadow:0 18px 44px rgba(20,26,58,.08),0 0 0 1px rgba(20,26,58,.06);opacity:0;} .ft svg{width:52px;height:52px;flex:none;} .ft b{font-size:22px;color:var(--navy);line-height:1.3;} .ft b em{font-style:normal;color:var(--crimson);}
+
+  /* S4 screens */
+  .scr{transform-origin:center center;position:absolute;left:230px;top:306px;width:1460px;height:728px;border-radius:20px;background:#F7F8FB;box-shadow:0 30px 80px rgba(20,26,58,.14),0 0 0 1px rgba(20,26,58,.08);overflow:hidden;opacity:0;visibility:hidden;}
+  .tb{height:56px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:0 24px;} .tb img{height:26px;} .tb .r{margin-left:auto;font-size:12px;color:var(--muted);font-weight:500;} .tb .lo{font-size:12px;font-weight:600;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);}
+  .bd{padding:18px 24px;}
+  .kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;} .kpi{background:#fff;border-radius:10px;border:1px solid var(--line);border-top:3px solid var(--crimson);padding:14px 16px;opacity:0;} .kpi small{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;height:30px;line-height:1.3;} .kpi .ic{width:34px;height:34px;border-radius:8px;background:#F2F3F8;display:flex;align-items:center;justify-content:center;margin:8px 0 10px;font-size:15px;color:var(--navy);font-weight:700;} .kpi .ic.r{color:var(--crimson);background:#FBEDEE;} .kpi .ic.g{color:var(--green);background:var(--greenBg);} .kpi b{display:block;font-size:22px;color:var(--navy);font-variant-numeric:tabular-nums;} .kpi b.o{color:#D9532B;} .kpi i{display:block;font-style:normal;font-size:11px;color:var(--muted);margin-top:4px;}
+  .sec{margin-top:16px;background:#fff;border-radius:12px;border:1px solid var(--line);padding:14px 20px;} .sec h4{margin:0;font-size:18px;} .sec .s{font-size:12px;color:var(--muted);font-weight:500;margin-top:2px;}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;}
+  .chart{border:1px solid var(--line);border-top:3px solid var(--crimson);border-radius:10px;padding:14px 18px;background:#fff;} .chart h5{margin:0;font-size:15px;} .chart .s{font-size:11px;color:var(--muted);font-weight:500;} .chart .tog{float:right;display:flex;gap:6px;font-size:11px;font-weight:600;} .chart .tog span{padding:5px 10px;border-radius:6px;border:1px solid var(--line);color:var(--muted);} .chart .tog span.on{background:#fff;color:var(--ink);border-color:var(--ink);} .chart .tog span.b{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .bars{display:flex;align-items:flex-end;gap:14px;height:150px;margin-top:14px;padding:0 6px;border-bottom:1px solid var(--line);} .bars .g{flex:1;display:flex;align-items:flex-end;gap:4px;height:100%;position:relative;} .bars .g i{flex:1;height:0;border-radius:3px 3px 0 0;position:relative;} .bars .g i.t{background:#B4303E;} .bars .g i.a{background:#29397A;} .bars .g i.o{background:#B4303E;}
+  .bars .g i small{position:absolute;top:-16px;left:0;right:0;text-align:center;font-size:10px;font-weight:600;color:var(--ink);white-space:nowrap;opacity:0;}
+  .xl{display:flex;gap:14px;padding:6px 6px 0;font-size:11px;font-weight:600;color:var(--ink);} .xl span{flex:1;text-align:center;}
+  .lg{display:flex;gap:16px;font-size:11px;font-weight:600;margin-top:8px;} .lg span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle;background:var(--crimson);} .lg span.a:before{background:var(--navy);}
+  .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:4px;}
+  .line{height:300px;position:relative;margin-top:10px;} .line svg{width:100%;height:100%;overflow:visible;} .line .ax{font-size:10px;fill:var(--muted);font-family:'Poppins';font-weight:500;} .line .gr{stroke:#EEF0F5;stroke-width:1;stroke-dasharray:3 3;} .line .p{fill:none;stroke:#2F6FE4;stroke-width:2.5;} .line .ar{fill:url(#gA);opacity:0;} .line .dt{fill:#2F6FE4;opacity:0;}
+  .rk{position:absolute;right:24px;top:96px;width:300px;background:#fff;border-radius:12px;border:1px solid #F0C4C8;padding:14px 16px;box-shadow:0 18px 44px rgba(180,48,62,.16);opacity:0;} .rk b{display:block;font-size:14px;color:var(--crimson);} .rk span{display:block;font-size:12px;color:var(--ink);font-weight:500;margin-top:4px;line-height:1.45;}
+  #flipLabel{position:absolute;left:230px;top:254px;display:flex;align-items:center;gap:10px;background:#fff;color:var(--navy);font-size:17px;font-weight:600;padding:8px 16px 8px 12px;border-radius:10px;box-shadow:0 8px 22px rgba(20,26,58,.12),0 0 0 1px rgba(20,26,58,.08);opacity:0;z-index:6;white-space:nowrap;} #flipLabel i{width:14px;height:14px;border-radius:50%;background:var(--grad);flex:none;}
+
+  /* S5 savings */
+  .sv{position:absolute;top:320px;width:540px;height:400px;border-radius:24px;background:#fff;box-shadow:0 24px 60px rgba(20,26,58,.10),0 0 0 1px rgba(20,26,58,.06);padding:40px 38px;opacity:0;} .sv svg{width:70px;height:70px;margin-bottom:22px;} .sv b{display:block;font-size:30px;line-height:1.2;color:var(--navy);} .sv span{display:block;font-size:18px;color:var(--muted);font-weight:500;margin-top:14px;line-height:1.5;}
+  .sv .no{position:absolute;right:30px;top:30px;font-size:15px;letter-spacing:.2em;color:var(--crimson);font-weight:700;}
+  #s5 .foot{position:absolute;left:100px;top:780px;font-size:28px;font-weight:600;color:var(--ink);background:#fff;padding:8px 12px 8px 0;opacity:0;} #s5 .foot b{color:var(--crimson);}
+
+  /* S6 close */
+  #s6 .logo{position:absolute;left:100px;top:170px;width:220px;} #s6 .logo img{width:100%;display:block;}
+  #s6 .copy{position:absolute;left:100px;top:430px;width:1300px;}
+  #s6 h1{font-size:68px;line-height:1.12;letter-spacing:-.02em;color:var(--navy);} #s6 h1 b{color:var(--crimson);} #s6 p{font-size:26px;font-weight:500;color:var(--muted);margin-top:18px;line-height:1.45;width:1100px;}
+  #s6 .contacts{position:absolute;left:100px;top:660px;display:flex;gap:16px;} #s6 .contacts div{padding:16px 22px;border-radius:14px;background:var(--panel);border:1px solid var(--line);font-size:18px;color:var(--muted);font-weight:500;opacity:0;} #s6 .contacts b{display:block;color:var(--ink);font-size:20px;}
+  #band{position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(100deg,#B4303E 0%,#5A3472 55%,#2E3F8C 100%);color:#fff;padding:50px 100px;display:flex;align-items:center;transform:translateY(100%);}
+  #band .l{flex:1;} #band h2{font-size:40px;} #band p{font-size:26px;font-weight:400;margin-top:14px;} #band .booth{display:inline-block;padding:7px 16px;border-radius:999px;background:#fff;color:var(--crimson);font-weight:700;font-size:24px;margin-right:12px;}
+  #band .qr{width:200px;height:222px;border-radius:16px;background:#fff;color:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:15px;font-weight:600;padding:10px;} #band .qr img{width:160px;height:160px;}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="brand"><img class="vy" src="" alt=""><div class="sep"></div><div class="p">VANTAGE</div><div class="tag">Supply chain finance</div></div>
+
+  <!-- S0 title -->
+  <section id="s0" class="scene">
+    <div class="logo"><img class="vt" src="" alt=""></div>
+    <div class="tag"><span class="rl"><span>One platform for all your</span></span><span class="rl"><span><b>supply chain finance.</b></span></span></div>
+    <div class="sub">Unified, scalable SCF infrastructure that enables transactions and delivers intelligence.</div>
+    <div class="chips"><span>Multi-bank</span><span>Fully digital</span><span>300+ corporates</span></div>
+  </section>
+
+  <!-- S1 pains -->
+  <section id="s1" class="scene">
+    <div class="hdr"><div class="k">Operational complexity meets financial blind spots</div><h2>As SCF scales, inefficiency grows — <b>and insights fade.</b></h2></div>
+    <div class="cols"><span>Challenge</span><span></span><span>Financial impact</span></div>
+    <div class="pain" style="top:330px"><div class="lb"><svg class="ico" viewBox="0 0 48 48"><path d="M14,8 h20 v32 h-20 z"/><path d="M19,6 h10 v5 h-10 z"/><path d="M19,20 h10"/><path d="M19,28 h10"/></svg>Complex</div><div class="ch">Juggling multiple bank integrations and data formats.</div><div class="ar">→</div><div class="im">Invest in expensive IT teams.</div></div>
+    <div class="pain" style="top:466px"><div class="lb"><svg class="ico" viewBox="0 0 48 48"><path d="M8,30 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0"/><path d="M28,30 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0"/><path d="M14,24 l4,-12 h12 l4,12"/><path d="M20,30 h8"/></svg>Inefficient</div><div class="ch">Large number of man-hours lost to SCF operations.</div><div class="ar">→</div><div class="im">Large operations teams eroding SCF yield.</div></div>
+    <div class="pain" style="top:602px"><div class="lb"><svg class="ico" viewBox="0 0 48 48"><path d="M8,10 h32 v24 h-32 z"/><path d="M16,28 v-8"/><path d="M24,28 v-14"/><path d="M32,28 v-5"/><path d="M24,34 v6"/><path d="M16,40 h16"/></svg>Lacks visibility</div><div class="ch">No unified view of SCF limits across banks and partners.</div><div class="ar">→</div><div class="im">Missed sales and slower cash conversion.</div></div>
+    <div class="pain" style="top:738px"><div class="lb"><svg class="ico" viewBox="0 0 48 48"><path d="M14,10 h20 l8,10 l-18,20 l-18,-20 z"/><path d="M6,20 h36"/><path d="M18,20 l6,20 l6,-20"/></svg>Scaling challenges</div><div class="ch">Difficult to scale SCF beyond a few banks.</div><div class="ar">→</div><div class="im">Missed growth opportunities due to lack of bank limits.</div></div>
+  </section>
+
+  <!-- S2 flow -->
+  <section id="s2" class="scene">
+    <div class="hdr"><div class="k">All-in-one control centre</div><h2>Your corporate, your banks and your dealers — <b>on one platform.</b></h2></div>
+    <svg id="flow" viewBox="0 0 1920 1080">
+      <path class="ln" id="l1" d="M370,600 L760,600"/>
+      <path class="ln" id="l4" d="M1160,560 C1300,560 1380,420 1550,420"/>
+      <path class="ln" id="l5" d="M1160,640 C1300,640 1380,780 1550,780"/>
+      <g id="movers"></g>
+    </svg>
+    <div class="node" id="n1" style="left:120px;top:540px;width:250px"><svg class="ico" viewBox="0 0 48 48"><path d="M10,42 v-30 h16 v30"/><path d="M26,42 v-18 h12 v18"/><path d="M15,17 h6"/><path d="M15,24 h6"/><path d="M15,31 h6"/><path d="M31,29 h3"/><path d="M6,42 h36"/></svg><b>Corporate</b><span>Anchor programme</span></div>
+    <div class="node" id="n2" style="left:1550px;top:360px;width:250px"><svg class="ico" viewBox="0 0 48 48"><path d="M8,20 l16,-10 l16,10"/><path d="M12,20 v16"/><path d="M20,20 v16"/><path d="M28,20 v16"/><path d="M36,20 v16"/><path d="M8,38 h32"/></svg><b>Banks</b><span>Bank 1 · Bank 2 · Bank 3</span></div>
+    <div class="node" id="n3" style="left:1550px;top:720px;width:250px"><svg class="ico" viewBox="0 0 48 48"><path d="M18,16 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0"/><path d="M8,40 c0,-10 8,-14 16,-14 s16,4 16,14"/></svg><b>Dealers / Vendors</b><span>Receivables &amp; payables</span></div>
+    <div id="hub"><img src="" alt=""><b>Vantage control centre</b><span>Every limit, invoice and repayment — one dashboard, real time</span></div>
+    <div class="stepc" style="left:390px;top:520px"><i>1</i><span>Invoice upload / acceptance</span></div>
+    <div class="stepc" style="left:390px;top:630px"><i>2</i><span>Funding request</span></div>
+    <div class="stepc" style="left:1180px;top:330px"><i>3</i><span>Update from the bank on every invoice</span></div>
+    <div class="stepc" style="left:1180px;top:800px"><i>4</i><span>Real-time credit · repayments to the bank</span></div>
+  </section>
+
+  <!-- S3 what changes -->
+  <section id="s3" class="scene">
+    <div class="hdr"><div class="k">What Vantage changes</div><h2>Grow the programme. <b>Cut the cost of running it.</b></h2></div>
+    <div class="grp" style="left:100px"><small>SCF transaction platform</small></div>
+    <div class="grp" style="left:980px"><small>A powerful dashboard</small></div>
+    <div class="ft" style="left:100px;top:330px"><svg class="ico" viewBox="0 0 48 48"><path d="M24,8 v32"/><path d="M8,24 h32"/><path d="M14,14 a14,14 0 1,0 20,0"/></svg><b>A <em>single touchpoint</em> across multiple financiers</b></div>
+    <div class="ft" style="left:100px;top:470px"><svg class="ico" viewBox="0 0 48 48"><path d="M8,12 h32 v24 h-32 z"/><path d="M8,20 h32"/><path d="M14,28 l4,4 l8,-8"/></svg><b><em>Fully digital</em> transactions — no manual intervention</b></div>
+    <div class="ft" style="left:100px;top:610px"><svg class="ico" viewBox="0 0 48 48"><path d="M24,6 l5,10 l11,2 l-8,8 l2,11 l-10,-5 l-10,5 l2,-11 l-8,-8 l11,-2 z"/></svg><b>Trusted by <em>300+ corporates</em> for managing SCF</b></div>
+    <div class="ft" style="left:980px;top:330px"><svg class="ico" viewBox="0 0 48 48"><path d="M6,40 h36"/><path d="M10,34 l8,-10 l7,6 l13,-16"/><path d="M32,14 h6 v6"/></svg><b><em>Unified view</em> of limits and transactions to drive sales</b></div>
+    <div class="ft" style="left:980px;top:470px"><svg class="ico" viewBox="0 0 48 48"><path d="M24,8 l18,32 h-36 z"/><path d="M24,20 v10"/><path d="M24,34 v1"/></svg><b>Spot <em>emerging risk</em> to revenues from dealer defaults</b></div>
+    <div class="ft" style="left:980px;top:610px"><svg class="ico" viewBox="0 0 48 48"><path d="M8,12 h32 v28 h-32 z"/><path d="M8,20 h32"/><path d="M16,8 v8"/><path d="M32,8 v8"/><path d="M15,30 h6"/><path d="M27,30 h6"/></svg><b><em>Funding visibility</em> for enhanced cash-flow planning</b></div>
+  </section>
+
+  <!-- S4 platform screens -->
+  <section id="s4" class="scene">
+    <div class="hdr"><div class="k">The platform</div><h2>Every limit, every invoice, every bank — <b>one dashboard.</b></h2></div>
+    <div id="flipLabel"><i></i><span id="flipText">Real-time KPIs — limits, financing, repayments, overdues</span></div>
+    <div class="scr" id="d1">
+      <div class="tb"><img src="" alt=""><span class="r">Last updated: Dec 17, 2025, 11:14 AM</span><span class="lo">⇥ Logout</span></div>
+      <div class="bd">
+        <div class="kpis">
+          <div class="kpi"><small>Available limits</small><div class="ic g">↗</div><b>₹<span data-to="323.23" data-d="2">0</span> Cr</b><i>For dealers / vendors</i></div>
+          <div class="kpi"><small>Financing today</small><div class="ic r">▦</div><b>₹<span data-to="25" data-d="2">0</span> Cr</b><i>For dealers / vendors</i></div>
+          <div class="kpi"><small>Upcoming repayments (7D)</small><div class="ic r">₹</div><b>₹<span data-to="27.34" data-d="2">0</span> Cr</b><i>For dealers / vendors</i></div>
+          <div class="kpi"><small>Overall financing</small><div class="ic r">₹</div><b>₹<span data-to="1445.5" data-d="2">0</span> Cr</b><i>For dealers / vendors</i></div>
+          <div class="kpi"><small>Dealer overdues</small><div class="ic r">!</div><b class="o">₹<span data-to="127.66" data-d="2">0</span> Cr</b><i>Overdues from dealers</i></div>
+          <div class="kpi"><small>Active parties</small><div class="ic g">⚇</div><b><span data-to="63" data-d="0">0</span></b><i>Dealers / vendors</i></div>
+        </div>
+        <div class="sec"><h4>Financing Performance</h4><div class="s">Comprehensive bank financing metrics and analytics</div>
+          <div class="two">
+            <div class="chart"><div class="tog"><span class="on">Receivable</span><span>Payable</span><span class="b">Request</span></div><h5>Bank Limits</h5><div class="s">Total and available limits (Crs)</div><div class="lg"><span>Total</span><span class="a">Available</span></div>
+              <div class="bars" id="bl">
+                <div class="g"><i class="t" data-h="21"><small>28.2</small></i><i class="a" data-h="7"><small>8.9</small></i></div>
+                <div class="g"><i class="t" data-h="73"><small>96.1</small></i><i class="a" data-h="24"><small>31.4</small></i></div>
+                <div class="g"><i class="t" data-h="100"><small>132.3</small></i><i class="a" data-h="33"><small>43.7</small></i></div>
+                <div class="g"><i class="t" data-h="97"><small>127.9</small></i><i class="a" data-h="32"><small>42.8</small></i></div>
+                <div class="g"><i class="t" data-h="92"><small>121.3</small></i><i class="a" data-h="30"><small>39.6</small></i></div>
+              </div><div class="xl"><span>Bank A</span><span>Bank B</span><span>Bank C</span><span>Bank D</span><span>Bank E</span></div></div>
+            <div class="chart"><h5>Bank Overdues</h5><div class="s">Outstanding overdue amounts</div><div class="lg" style="visibility:hidden"><span>—</span></div>
+              <div class="bars" id="bo">
+                <div class="g"><i class="o" data-h="100"><small>36.4</small></i></div>
+                <div class="g"><i class="o" data-h="90"><small>32.7</small></i></div>
+                <div class="g"><i class="o" data-h="58"><small>21.1</small></i></div>
+                <div class="g"><i class="o" data-h="55"><small>20.2</small></i></div>
+                <div class="g"><i class="o" data-h="48"><small>17.3</small></i></div>
+              </div><div class="xl"><span>Bank A</span><span>Bank B</span><span>Bank C</span><span>Bank D</span><span>Bank E</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="rk" id="rk"><b>⚠ Emerging risk</b><span>Dealer overdues at ₹127.66 Cr — 12 accounts crossed 30 days. Review limits before the next funding cycle.</span></div>
+    </div>
+    <div class="scr" id="d2">
+      <div class="tb"><img src="" alt=""><span class="r">Last updated: Dec 17, 2025, 11:16 AM</span><span class="lo">⇥ Logout</span></div>
+      <div class="bd">
+        <div class="sec" style="margin-top:0"><h4>Financing Trends</h4><div class="s">Past 6 months · receivable programme</div>
+          <div class="three">
+            <div class="chart"><div class="tog"><span class="on">Receivable</span><span>Payable</span></div><h5>Financing Volume by Month</h5><div class="s">Past 6 months trend</div>
+              <div class="line"><svg viewBox="0 0 400 300"><defs><linearGradient id="gA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2F6FE4" stop-opacity=".35"/><stop offset="1" stop-color="#2F6FE4" stop-opacity="0"/></linearGradient></defs>
+                <g class="ax"><text x="0" y="24">₹120Cr</text><text x="0" y="90">₹90Cr</text><text x="0" y="156">₹60Cr</text><text x="0" y="222">₹30Cr</text><text x="0" y="288">₹0Cr</text></g>
+                <path class="gr" d="M55,20 H395 M55,86 H395 M55,152 H395 M55,218 H395 M55,284 H395"/>
+                <path class="ar" d="M60,120 C90,130 110,150 128,140 S160,110 196,150 S240,240 262,190 S300,120 330,80 S370,60 390,40 L390,284 L60,284 Z"/>
+                <path class="p" d="M60,120 C90,130 110,150 128,140 S160,110 196,150 S240,240 262,190 S300,120 330,80 S370,60 390,40"/>
+                <g class="ax"><text x="52" y="300">Jun</text><text x="118" y="300">Jul</text><text x="184" y="300">Aug</text><text x="250" y="300">Sep</text><text x="318" y="300">Oct</text><text x="380" y="300">Nov</text></g>
+                <circle class="dt" cx="390" cy="40" r="4"/></svg></div></div>
+            <div class="chart"><h5>Total Overdues by Month</h5><div class="s">Past 6 months trend</div>
+              <div class="line"><svg viewBox="0 0 400 300">
+                <g class="ax"><text x="0" y="24">₹140Cr</text><text x="0" y="90">₹105Cr</text><text x="0" y="156">₹70Cr</text><text x="0" y="222">₹35Cr</text><text x="0" y="288">₹0Cr</text></g>
+                <path class="gr" d="M55,20 H395 M55,86 H395 M55,152 H395 M55,218 H395 M55,284 H395"/>
+                <path class="ar" d="M60,100 C110,95 150,88 196,80 S260,66 300,60 S360,48 390,38 L390,284 L60,284 Z"/>
+                <path class="p" d="M60,100 C110,95 150,88 196,80 S260,66 300,60 S360,48 390,38"/>
+                <g class="ax"><text x="52" y="300">Jun</text><text x="118" y="300">Jul</text><text x="184" y="300">Aug</text><text x="250" y="300">Sep</text><text x="318" y="300">Oct</text><text x="380" y="300">Nov</text></g>
+                <circle class="dt" cx="390" cy="38" r="4"/></svg></div></div>
+            <div class="chart"><div class="tog"><span class="on">Receivable</span><span>Payable</span></div><h5>Limit Utilization Trend (%)</h5><div class="s">Past 6 months trend</div>
+              <div class="line"><svg viewBox="0 0 400 300">
+                <g class="ax"><text x="0" y="24">80%</text><text x="0" y="90">60%</text><text x="0" y="156">40%</text><text x="0" y="222">20%</text><text x="0" y="288">0%</text></g>
+                <path class="gr" d="M55,20 H395 M55,86 H395 M55,152 H395 M55,218 H395 M55,284 H395"/>
+                <path class="ar" d="M60,120 C90,90 110,80 128,86 S170,130 196,120 S240,60 262,66 S300,120 330,110 S370,60 390,30 L390,284 L60,284 Z"/>
+                <path class="p" d="M60,120 C90,90 110,80 128,86 S170,130 196,120 S240,60 262,66 S300,120 330,110 S370,60 390,30"/>
+                <g class="ax"><text x="52" y="300">Jun</text><text x="118" y="300">Jul</text><text x="184" y="300">Aug</text><text x="250" y="300">Sep</text><text x="318" y="300">Oct</text><text x="380" y="300">Nov</text></g>
+                <circle class="dt" cx="390" cy="30" r="4"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S5 savings -->
+  <section id="s5" class="scene">
+    <div class="hdr"><div class="k">Savings from Vantage</div><h2>More cash in hand. <b>Newer revenue on the table.</b></h2></div>
+    <div class="sv" style="left:100px"><div class="no">01</div><svg class="ico" viewBox="0 0 70 70"><path d="M35,10 a25,25 0 1,1 -0.1,0"/><path d="M35,20 v16 l11,7"/></svg><b>Fewer man-hours lost to SCF operations</b><span>Fully digital transactions replace manual coordination across banks, dealers and vendors.</span></div>
+    <div class="sv" style="left:690px"><div class="no">02</div><svg class="ico" viewBox="0 0 70 70"><path d="M12,50 h46"/><path d="M18,50 v-18 h10 v18"/><path d="M32,50 v-30 h10 v30"/><path d="M46,50 v-10 h10 v10"/><path d="M14,22 l14,-8 l14,6 l14,-12"/></svg><b>No expensive IT teams for bank integrations</b><span>One integration to Vantage, not one per bank and data format — with updates on every invoice.</span></div>
+    <div class="sv" style="left:1280px"><div class="no">03</div><svg class="ico" viewBox="0 0 70 70"><path d="M35,60 c-14,0 -22,-9 -22,-20 c0,-12 12,-20 22,-32 c10,12 22,20 22,32 c0,11 -8,20 -22,20 z"/><path d="M35,28 v24"/><path d="M28,36 h14"/></svg><b>Scale SCF beyond a few banks</b><span>Unified limits across financiers unlock bank lines you couldn't see before — and the sales that come with them.</span></div>
+    <div class="foot">Eliminate expensive overheads <b>while unlocking newer revenue opportunities.</b></div>
+  </section>
+
+  <!-- S6 close -->
+  <section id="s6" class="scene">
+    <div class="logo"><img class="vt" src="" alt=""></div>
+    <div class="copy"><h1><span class="rl"><span>Grow your SCF programme.</span></span><span class="rl"><span><b>Cut the cost of running it.</b></span></span></h1><p>See Vantage on your own programme — limits, banks and dealers in one view.</p></div>
+    <div class="contacts"><div><b>Web</b>vayana.com</div><div><b>Enquiries</b>vayana.com/contact-us</div></div>
+    <div id="band"><div class="l"><h2>Meet us at Global Fintech Fest 2026</h2><p><span class="booth">Booth K16–17</span>Jio World Centre, Mumbai &nbsp;·&nbsp; 9–11 September</p></div><div class="qr"><img src="" alt=""><span>Scan to connect</span></div></div>
+  </section>
+</div>
+<script src="gsap.min.js"></script>
+<script src="../kit.js"></script>
+<script src="data.js"></script>
+<script>
+mountKit();
+$$('#brand img, .tb img, #hub img').forEach(i=>i.src=VAYANA_SRC); $$('img.vt').forEach(i=>i.src=VANTAGE_SRC); $('#band .qr img').src=QR_SRC;
+// flow movers
+(function(){ const g=$('#movers'); for(let i=0;i<18;i++){ const c=document.createElementNS(SVGNS,'circle'); c.setAttribute('r',6); c.setAttribute('class','mv'); g.appendChild(c); } })();
+prepDraw('.ico path, .ico circle, .ico rect'); prepDraw('#flow .ln'); prepDraw('.line .p');
+
+gsap.defaults({overwrite:'auto'});
+const tl=gsap.timeline({paused:true});
+const show=(s,at)=>tl.set(s,{autoAlpha:1},at), hide=(s,at)=>tl.set(s,{autoAlpha:0},at);
+function enter(sel, at){ show(sel,at); tl.fromTo(sel+' .hdr',{opacity:0,y:24},{opacity:1,y:0,duration:0.7,ease:'power3.out'},at+0.1); }
+function leave(sel, at){ tl.to(sel,{opacity:0,y:-30,duration:0.45,ease:'power2.in'},at); hide(sel,at+0.5); }
+tl.fromTo('#wave',{x:0},{x:-600,duration:60,ease:'none'},0); tl.fromTo('#wave',{opacity:0},{opacity:1,duration:0.8},0);
+
+// ===== S0 0–5.5 title =====
+show('#s0',0);
+tl.fromTo('#s0 .logo',{opacity:0,scale:0.7,y:30},{opacity:1,scale:1,y:0,duration:1.0,ease:'back.out(1.6)'},0.2);
+reveal(tl,'#s0 .tag .rl>span',0.9,0.16);
+tl.fromTo('#s0 .sub',{opacity:0,y:16},{opacity:1,y:0,duration:0.6,ease:'power2.out'},1.7);
+pop(tl,'#s0 .chips span',2.2,{y:20,scale:0.8,rot:0,s:0.14,ease:'back.out(2)'});
+float(tl,'#s0 .logo',2.4,2.6,6);
+out(tl,'#s0',5.0); hide('#s0',5.5);
+
+// ===== S1 5.4–13 pains =====
+enter('#s1',5.4); tl.to('#brand',{opacity:1,duration:0.6},5.6);
+tl.to('#s1 .cols',{opacity:1,duration:0.4},6.2);
+tl.fromTo('.pain',{opacity:0,x:-80},{opacity:1,x:0,duration:0.6,ease:'power3.out',stagger:0.22},6.3);
+draw(tl,'.pain .lb .ico path',6.6,0.7,0.04);
+tl.fromTo('.pain .ar',{opacity:0,x:-14},{opacity:1,x:0,duration:0.35,stagger:0.22},8.4);
+tl.fromTo('.pain .im',{opacity:0,x:20},{opacity:1,x:0,duration:0.45,ease:'power2.out',stagger:0.22},8.6);
+tl.to('.pain .im',{color:'#7A1F28',duration:0.3,stagger:0.22,yoyo:true,repeat:1},9.6);
+leave('#s1',12.6);
+
+// ===== S2 13–20 flow =====
+enter('#s2',13.0);
+pop(tl,'#n1',13.4,{y:40,rot:0}); pop(tl,'#hub',13.7,{y:40,rot:0,scale:0.85}); pop(tl,'#n2, #n3',14.0,{y:40,rot:0,s:0.15});
+draw(tl,'.node .ico path',13.8,0.8,0.03);
+draw(tl,'#flow .ln',14.3,0.8,0.1);
+tl.fromTo('.stepc',{opacity:0,scale:0.7,y:10},{opacity:1,scale:1,y:0,duration:0.45,ease:'back.out(2)',stagger:0.5},15.0);
+{ const lanes=[['#l1',15.2,6],['#l4',15.9,5],['#l5',16.5,5]]; const mv=$$('#flow .mv'); let k=0;
+  lanes.forEach(([sel,t0,n])=>{ const P=$(sel); const L=P.getTotalLength(); for(let i=0;i<n;i++){ const d=mv[k++]; const o={p:0}; const t=t0+i*0.35;
+    tl.set(d,{opacity:1},t); tl.to(o,{p:1,duration:1.2,ease:'power1.inOut',onUpdate:()=>{ const q=P.getPointAtLength(o.p*L); d.setAttribute('cx',q.x); d.setAttribute('cy',q.y); }},t); tl.to(d,{opacity:0,duration:0.2},t+1.05); } }); }
+float(tl,'#hub',16.0,3.2,6);
+leave('#s2',19.6);
+
+// ===== S3 20–27 what changes =====
+enter('#s3',20.0);
+tl.to('.grp small',{opacity:1,duration:0.4,stagger:0.1},20.5);
+pop(tl,'.ft',20.6,{y:50,rot:0,s:0.14});
+draw(tl,'.ft .ico path',20.9,0.7,0.05);
+tl.fromTo('.ft b em',{color:'#29397A'},{color:'#B4303E',duration:0.4,stagger:0.14},22.2);
+float(tl,'.ft',23.0,3.2,5);
+leave('#s3',26.6);
+
+// ===== S4 27–47 screens =====
+enter('#s4',27.0);
+let cur=null;
+function screen(at,id,label){ if(cur){ tl.to(cur,{autoAlpha:0,x:-140,rotationY:-12,duration:0.45,ease:'power2.in'},at); tl.to('#flipLabel',{opacity:0,y:-10,duration:0.25},at); }
+  tl.fromTo(id,{autoAlpha:0,x:160,rotationY:14},{autoAlpha:1,x:0,rotationY:0,duration:0.7,ease:'power3.out'},at+0.3);
+  tl.call(()=>{ $('#flipText').textContent=label; },null,at+0.3); tl.fromTo('#flipLabel',{opacity:0,y:14,scale:0.9},{opacity:1,y:0,scale:1,duration:0.5,ease:'back.out(2)'},at+0.6); cur=id; }
+screen(27.2,'#d1','Real-time KPIs — limits, financing, repayments, overdues');
+pop(tl,'#d1 .kpi',28.0,{y:20,scale:0.94,rot:0,s:0.1,d:0.5});
+$$('#d1 .kpi span[data-to]').forEach((el,i)=>{ const to=+el.dataset.to, dd=+el.dataset.d; count(tl,el,to,28.3+i*0.1,1.4,v=>dd?v.toFixed(dd):Math.round(v).toString()); });
+tl.to('#bl .g i, #bo .g i',{height:(i,el)=>el.dataset.h+'%',duration:0.7,ease:'power3.out',stagger:0.06},29.6);
+tl.to('#bl .g i small, #bo .g i small',{opacity:1,duration:0.3,stagger:0.05},30.4);
+tl.call(()=>{ $('#flipText').textContent='Bank limits and overdues, bank by bank — receivable and payable'; },null,31.6);
+tl.fromTo('#flipLabel',{opacity:0,y:10},{opacity:1,y:0,duration:0.4,immediateRender:false},31.6);
+tl.fromTo('#rk',{opacity:0,y:-16,scale:0.92},{opacity:1,y:0,scale:1,duration:0.5,ease:'back.out(1.8)'},33.6);
+tl.fromTo('#d1 .kpi:nth-child(5)',{boxShadow:'0 0 0 0 rgba(180,48,62,0)'},{boxShadow:'0 0 0 4px rgba(180,48,62,.35)',duration:0.5,yoyo:true,repeat:3},33.6);
+tl.call(()=>{ $('#flipText').textContent='Dealer defaults flagged early — spot risk to revenues before it lands'; },null,33.9);
+tl.fromTo('#flipLabel',{opacity:0,y:10},{opacity:1,y:0,duration:0.4,immediateRender:false},33.9);
+screen(37.6,'#d2','Financing volume, overdues and limit utilisation — six-month trends');
+draw(tl,'#d2 .line .p',38.6,1.4,0.35);
+tl.to('#d2 .line .ar',{opacity:1,duration:0.6,stagger:0.35},39.6);
+tl.fromTo('#d2 .line .dt',{scale:0,transformOrigin:'center'},{scale:1,opacity:1,duration:0.4,ease:'back.out(3)',stagger:0.35},40.0);
+tl.call(()=>{ $('#flipText').textContent='Funding visibility for cash-flow planning — receivable and payable programmes'; },null,42.6);
+tl.fromTo('#flipLabel',{opacity:0,y:10},{opacity:1,y:0,duration:0.4,immediateRender:false},42.6);
+tl.to('#d2',{autoAlpha:0,x:-140,rotationY:-12,duration:0.45,ease:'power2.in'},46.2); tl.to('#flipLabel',{opacity:0,duration:0.25},46.2);
+leave('#s4',46.5);
+
+// ===== S5 47–53.5 savings =====
+enter('#s5',47.0);
+pop(tl,'.sv',47.4,{y:80,scale:0.9,rot:-2,s:0.16});
+draw(tl,'.sv .ico path',47.9,0.8,0.05);
+float(tl,'.sv',49.2,3,5);
+tl.to('#s5 .foot',{opacity:1,duration:0.5},50.2);
+leave('#s5',53.2);
+
+// ===== S6 53.6–60 close =====
+show('#s6',53.6);
+tl.fromTo('#s6 .logo',{opacity:0,scale:0.7,y:20},{opacity:1,scale:1,y:0,duration:0.8,ease:'back.out(1.6)'},53.7);
+reveal(tl,'#s6 .copy .rl>span',54.0,0.12);
+tl.fromTo('#s6 p',{opacity:0,y:14},{opacity:1,y:0,duration:0.5},54.5);
+pop(tl,'#s6 .contacts div',54.7,{y:24,scale:0.9,rot:0,s:0.1,d:0.5});
+tl.to('#band',{y:'0%',duration:0.8,ease:'power3.out'},54.6);
+tl.to('#s6, #brand',{opacity:0,duration:0.6,ease:'power2.in'},59.15);
+tl.to('#wave',{opacity:0,duration:0.5},59.4);
+tl.set({},{},60);
+
+window.DURATION=60; window.seek=t=>{ tl.time(Math.min(t,60)); }; window.ready=true;
+// In-browser playback: open the file with ?play appended to the URL (e.g. video.html?play) to loop the film live.
+if(location.search.indexOf('play')>-1){ tl.repeat(-1); tl.play(0); }
+
+</script>
+</body>
+</html>

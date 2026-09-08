@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vayana TradeXchange — Financier film</title>
+<style>
+  :root{ --navy:#29397A; --ink:#141A3A; --crimson:#B4303E; --muted:#6B7290; --line:#E3E6F2; --panel:#F5F6FB; --green:#1E8A5B; --greenBg:#E6F4EC; --red:#C8362E;
+    --grad:linear-gradient(135deg,#2E3F8C 0%,#B4303E 100%); --gradText:linear-gradient(90deg,#3446A0 0%,#C23A49 100%); }
+  html,body{margin:0;background:#000;}
+  #stage{perspective:2400px;position:relative;width:1920px;height:1080px;overflow:hidden;background:#fff;font-family:'Poppins',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+  #stage *{box-sizing:border-box;}
+  h1,h2,h3,p{margin:0;font-weight:700;}
+  .rl{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em;} .rl>span{display:block;}
+  .grad{background:var(--gradText);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .scene{position:absolute;inset:0;visibility:hidden;opacity:0;}
+  #brand{position:absolute;left:80px;top:44px;opacity:0;} #brand img{height:88px;display:block;}
+  .hdr{position:absolute;left:100px;top:162px;width:1720px;}
+  .hdr .k{font-size:18px;letter-spacing:.32em;text-transform:uppercase;color:var(--crimson);font-weight:600;}
+  .hdr h2{font-size:50px;line-height:1.1;color:var(--navy);letter-spacing:-.015em;margin-top:10px;} .hdr h2 b{color:var(--crimson);}
+  .pin{position:absolute;display:flex;align-items:center;gap:10px;opacity:0;z-index:5;}
+  .pin .d{width:38px;height:38px;border-radius:50%;background:var(--grad);color:#fff;font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 10px 26px rgba(180,48,62,.35);}
+  .pin .tx{background:#fff;color:var(--navy);font-size:16px;font-weight:600;padding:10px 16px;border-radius:10px;white-space:nowrap;box-shadow:0 12px 30px rgba(20,26,58,.14),0 0 0 1px rgba(20,26,58,.08);}
+  .card{background:#fff;border-radius:22px;box-shadow:0 24px 60px rgba(20,26,58,.10),0 0 0 1px rgba(20,26,58,.06);}
+  .pill{display:inline-block;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:.04em;} .pill.g{background:var(--greenBg);color:var(--green);} .pill.b{background:#EEF0FA;color:var(--navy);} .pill.o{background:#FFF1F2;color:var(--crimson);}
+  .kv{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;font-size:14px;} .kv small{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;} .kv b{font-weight:600;}
+
+  /* S1 map intro */
+  #map{position:absolute;left:0;top:0;width:1920px;height:1080px;z-index:0;}
+  #map .land{fill:#F3F5FB;stroke:#D9DDEA;stroke-width:1;} #map .india{fill:rgba(46,63,140,.28);stroke:#29397A;stroke-width:1.5;}
+  #map .arc{fill:none;stroke:url(#gArc);stroke-width:3;stroke-linecap:round;} #map .city{fill:#B4303E;} #map .halo{fill:none;stroke:#B4303E;stroke-width:1.5;opacity:0;} #map .gift{fill:#B4303E;}
+  #map .lbl{font-family:'Poppins';font-size:16px;fill:#141A3A;font-weight:600;opacity:0;}
+  #s1 .copy{position:absolute;left:100px;top:620px;width:960px;color:var(--navy);}
+  #s1 .k{font-size:18px;letter-spacing:.32em;text-transform:uppercase;color:var(--crimson);font-weight:600;}
+  #s1 h1{font-size:60px;line-height:1.1;letter-spacing:-.02em;margin-top:14px;}
+  #s1 .badge{position:absolute;left:100px;top:880px;display:flex;gap:14px;} #s1 .badge span{padding:12px 20px;border-radius:999px;border:1.5px solid rgba(41,57,122,.35);background:rgba(255,255,255,.9);color:var(--navy);font-size:20px;font-weight:500;opacity:0;} #s1 .badge span b{color:var(--crimson);}
+
+  /* S2 problem → bridge */
+  .prob{position:absolute;top:330px;width:520px;height:360px;border-radius:24px;background:#F2F4F8;padding:38px 36px;opacity:0;} .prob svg{width:64px;height:64px;display:block;margin-bottom:22px;overflow:visible;} .prob svg path{fill:none;stroke:var(--crimson);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;} .prob b{display:block;font-size:30px;color:#3E4760;line-height:1.2;} .prob span{display:block;font-size:18px;color:#6B7290;font-weight:500;margin-top:14px;line-height:1.55;}
+  #bridge{position:absolute;left:100px;top:430px;width:1720px;height:300px;opacity:0;}
+  #bridge .end{position:absolute;top:60px;width:460px;padding:26px 30px;} #bridge .end small{display:block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;} #bridge .end b{display:block;font-size:26px;color:var(--navy);margin-top:6px;line-height:1.2;}
+  #bridge .span{position:absolute;left:480px;right:480px;top:114px;height:14px;border-radius:7px;background:var(--grad);transform-origin:left;transform:scaleX(0);}
+  #bridge .vtx{position:absolute;left:50%;top:40px;transform:translateX(-50%);padding:18px 30px;border-radius:16px;background:#fff;box-shadow:0 20px 50px rgba(20,26,58,.14),0 0 0 1px rgba(20,26,58,.06);display:flex;align-items:center;gap:16px;opacity:0;} #bridge .vtx img{height:64px;} #bridge .vtx b{font-size:20px;color:var(--navy);}
+  #bridge .cap{position:absolute;left:0;right:0;top:230px;text-align:center;font-size:28px;font-weight:600;color:var(--ink);opacity:0;}
+
+  /* S3 origination */
+  #eco{position:absolute;left:100px;top:280px;width:700px;height:720px;opacity:0;} #eco svg{width:100%;height:100%;overflow:visible;} #eco .ind{fill:rgba(46,63,140,.06);stroke:#29397A;stroke-width:1.6;} #eco .d{fill:#B4303E;opacity:0;}
+  #funnel{position:absolute;left:960px;top:300px;width:860px;} .fstage{display:flex;align-items:center;gap:18px;margin-bottom:16px;opacity:0;} .fstage .bar{height:58px;border-radius:12px;background:var(--grad);flex:none;display:flex;align-items:center;padding:0 20px;color:#fff;font-weight:700;font-size:18px;white-space:nowrap;} .fstage span{font-size:16px;color:var(--muted);font-weight:500;line-height:1.4;}
+  #s3 .foot{position:absolute;left:960px;top:640px;width:860px;font-size:26px;font-weight:600;color:var(--navy);line-height:1.4;}
+
+  /* S4 KYC / S6 verification */
+  #inv{position:absolute;left:1040px;top:330px;width:560px;padding:28px 32px;} #inv small{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;} #inv .amt{font-size:40px;font-weight:700;color:var(--navy);margin:4px 0 14px;}
+  #inv .row{display:flex;justify-content:space-between;font-size:15px;padding:9px 0;border-top:1px solid var(--line);} #inv .row span{color:var(--muted);} #inv .row b{font-weight:600;}
+  #inv .docs{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;} #inv .docs i{font-style:normal;font-size:12px;font-weight:600;padding:6px 10px;border-radius:6px;background:var(--panel);color:var(--navy);border:1px solid var(--line);}
+  .stamp{position:absolute;right:-24px;top:-26px;padding:10px 22px;border:4px solid var(--green);border-radius:12px;color:var(--green);font-size:24px;font-weight:700;letter-spacing:.1em;transform:rotate(-10deg);background:rgba(255,255,255,.92);opacity:0;white-space:nowrap;}
+  .chk{position:absolute;display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:12px;background:#fff;box-shadow:0 14px 34px rgba(20,26,58,.10),0 0 0 1px rgba(20,26,58,.06);font-size:18px;font-weight:600;color:var(--ink);opacity:0;white-space:nowrap;}
+  .chk i{width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;font-size:15px;display:flex;align-items:center;justify-content:center;flex:none;font-style:normal;}
+  .colhead{position:absolute;font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--navy);font-weight:700;opacity:0;}
+  #pool{position:absolute;left:1290px;top:330px;width:530px;padding:30px 32px;} #pool small{display:block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;} #pool b{display:block;font-size:26px;color:var(--navy);margin-top:6px;line-height:1.25;} #pool span{display:block;font-size:16px;color:var(--muted);font-weight:500;margin-top:12px;line-height:1.5;}
+
+  /* S5 curated opportunities */
+  #filters{position:absolute;left:100px;top:300px;width:560px;padding:30px 32px;} #filters h4{margin:0 0 16px;font-size:18px;color:var(--ink);} .flt{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(--line);font-size:16px;} .flt span{color:var(--muted);font-weight:500;} .flt b{font-weight:600;color:var(--navy);opacity:0;text-align:right;}
+  #opps{position:absolute;left:720px;top:300px;width:1100px;display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .opp{padding:22px 24px;border-radius:18px;background:#fff;box-shadow:0 20px 50px rgba(20,26,58,.10),0 0 0 1px rgba(20,26,58,.06);opacity:0;} .opp .amt{font-size:26px;font-weight:700;color:var(--navy);} .opp .kv{font-size:13px;margin-top:10px;gap:8px 16px;} .opp .match{float:right;}
+  #s5 .foot{position:absolute;left:100px;top:790px;width:1720px;background:#fff;padding:8px 0;font-size:26px;font-weight:600;color:var(--navy);line-height:1.4;opacity:0;}
+
+  /* S7 execution: decision + journey (no auction) */
+  #decide{position:absolute;left:100px;top:280px;width:760px;padding:30px 34px;opacity:0;} #decide>small{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;} #decide .amt{font-size:48px;font-weight:700;color:var(--navy);margin:8px 0 16px;}
+  #decide .fund{margin-top:22px;display:inline-block;padding:14px 26px;border-radius:12px;background:var(--grad);color:#fff;font-weight:700;font-size:18px;opacity:0;}
+  #journey{position:absolute;left:940px;top:280px;width:880px;} #journey>small{display:block;font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--navy);font-weight:700;margin-bottom:14px;opacity:0;}
+  .jl{display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:14px;background:#fff;box-shadow:0 14px 34px rgba(20,26,58,.10),0 0 0 1px rgba(20,26,58,.06);font-size:20px;font-weight:600;color:var(--ink);margin-bottom:12px;opacity:0;} .jl i{width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;font-style:normal;display:flex;align-items:center;justify-content:center;font-size:15px;flex:none;}
+  #auc{position:absolute;left:100px;top:280px;width:1720px;display:grid;grid-template-columns:1fr 1.1fr;gap:40px;align-items:start;}
+  .lst,.lad{padding:30px 34px;position:relative;opacity:0;} .lst>small{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;} .lst .amt{font-size:48px;font-weight:700;color:var(--navy);margin:8px 0 16px;}
+  .lad .lh{font-size:18px;font-weight:700;margin-bottom:14px;} .lad .lh span{float:right;font-size:12px;color:var(--muted);font-weight:500;padding-top:6px;}
+  .bid{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:16px;opacity:0;margin-bottom:8px;} .bid .who{font-weight:600;flex:1;} .bid .rate{font-weight:700;font-size:24px;color:var(--navy);width:110px;text-align:right;} .bid .tag{width:96px;text-align:center;} .bid.lead{border-color:var(--navy);background:#EEF0FA;} .bid.you{border-color:var(--crimson);background:#FFF1F2;}
+  #won{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-8deg);padding:14px 32px;border:6px solid var(--crimson);border-radius:16px;color:var(--crimson);font-size:48px;font-weight:700;letter-spacing:.12em;background:rgba(255,255,255,.94);opacity:0;white-space:nowrap;}
+  #railWrap{position:absolute;left:0;top:0;width:1920px;height:1080px;opacity:0;visibility:hidden;}
+  #rail{position:absolute;left:120px;top:560px;width:1680px;height:6px;background:var(--line);border-radius:3px;} #railFill{position:absolute;left:120px;top:560px;width:0;height:6px;background:var(--grad);border-radius:3px;}
+  #token{position:absolute;left:104px;top:544px;width:38px;height:38px;border-radius:50%;background:var(--crimson);box-shadow:0 0 0 8px rgba(180,48,62,.16),0 10px 24px rgba(180,48,62,.4);opacity:0;}
+  .step{position:absolute;width:230px;text-align:center;transform:translateX(-50%);} .step.dn{top:552px;} .step.up{bottom:506px;}
+  .step i{display:block;width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid #C9D2E3;margin:0 auto;font-style:normal;} .step.dn i{margin-bottom:22px;} .step.up i{margin-top:22px;}
+  .step b{display:block;font-size:19px;font-weight:700;color:#9AA3B8;line-height:1.2;} .step span{display:block;font-size:14px;color:#9AA3B8;margin-top:6px;font-weight:500;line-height:1.35;}
+  .step.on i{border-color:var(--crimson);background:var(--crimson);} .step.on b{color:var(--ink);} .step.on span{color:var(--muted);}
+  #railWrap .foot{position:absolute;left:120px;top:900px;background:#fff;padding:8px 12px 8px 0;font-size:26px;font-weight:600;color:var(--navy);opacity:0;} #railWrap .foot b{color:var(--crimson);}
+
+  /* S8 what it means */
+  .ben{position:absolute;width:540px;height:150px;padding:26px 32px;display:flex;align-items:center;gap:20px;opacity:0;} .ben i{width:54px;height:54px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:700;font-size:18px;flex:none;} .ben b{font-size:25px;color:var(--navy);line-height:1.25;}
+  #s8 .foot{position:absolute;left:100px;top:730px;width:1720px;background:#fff;padding:8px 0;font-size:28px;font-weight:600;color:var(--ink);line-height:1.4;opacity:0;} #s8 .foot b{color:var(--crimson);}
+
+  /* S9 close */
+  #s9 .copy{position:absolute;left:100px;top:230px;width:1400px;} #s9 h1{font-size:60px;line-height:1.15;letter-spacing:-.02em;color:var(--navy);} #s9 h1 b{color:var(--crimson);}
+  #s9 .three{position:absolute;left:100px;top:470px;display:flex;gap:14px;} #s9 .three span{padding:12px 22px;border-radius:999px;background:var(--panel);border:1px solid var(--line);font-size:22px;font-weight:600;color:var(--ink);opacity:0;}
+  #band{position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(100deg,#B4303E 0%,#5A3472 55%,#2E3F8C 100%);color:#fff;padding:50px 100px;display:flex;align-items:center;transform:translateY(100%);}
+  #band .l{flex:1;} #band h2{font-size:40px;} #band p{font-size:26px;font-weight:400;margin-top:14px;} #band .booth{display:inline-block;padding:7px 16px;border-radius:999px;background:#fff;color:var(--crimson);font-weight:700;font-size:24px;margin-right:12px;}
+  #band .contact{font-size:19px;line-height:1.6;margin-right:40px;text-align:right;} #band .contact b{display:block;font-size:22px;}
+  #band .qr{width:200px;height:222px;border-radius:16px;background:#fff;color:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:15px;font-weight:600;padding:10px;} #band .qr img{width:160px;height:160px;}
+</style>
+</head>
+<body>
+<div id="stage">
+  <svg id="map" viewBox="0 0 1920 1080"><defs><linearGradient id="gArc" gradientUnits="userSpaceOnUse" x1="500" y1="0" x2="1600" y2="0"><stop offset="0" stop-color="#2E3F8C"/><stop offset="1" stop-color="#B4303E"/></linearGradient></defs><g id="land"></g><g id="arcs"></g><g id="cities"></g></svg>
+  <div id="brand"><img src="" alt=""></div>
+
+  <section id="s1" class="scene">
+    <div class="copy"><div class="k rl"><span>Vayana TradeXchange</span></div><h1><span class="rl"><span>An IFSCA-regulated ITFS platform</span></span><span class="rl"><span>in GIFT City.</span></span></h1></div>
+    <div class="badge"><span><b>Exporters</b>, importers and financiers on one digital platform</span><span>Seamless <b>cross-border</b> trade finance</span></div>
+  </section>
+
+  <section id="s2" class="scene">
+    <div class="hdr"><div class="k">For financiers</div><h2>Imagine you are deploying capital into global trade.</h2></div>
+    <div class="prob" style="left:100px"><svg viewBox="0 0 70 70"><path d="M43,28 a15,15 0 1,1 -30,0 a15,15 0 1,1 30,0"/><path d="M39,39 L58,58"/><path d="M22,28 h12"/></svg><b>Sourcing the right customers</b><span>The opportunity is large — but finding genuine, fundable businesses across markets takes time and people.</span></div>
+    <div class="prob" style="left:700px"><svg viewBox="0 0 70 70"><path d="M18,8 h22 l12,12 v42 h-34 z"/><path d="M40,8 v12 h12"/><path d="M26,42 l8,8 l14,-16"/></svg><b>Validating transactions</b><span>Every invoice, document and counterparty has to be checked before capital moves.</span></div>
+    <div class="prob" style="left:1300px"><svg viewBox="0 0 70 70"><path d="M8,48 h56 l-9,14 h-38 z"/><path d="M18,36 h12 v12 h-12 z"/><path d="M32,36 h12 v12 h-12 z"/><path d="M25,24 h12 v12 h-12 z"/><path d="M52,20 v28"/><path d="M52,20 h8"/></svg><b>Assessing the underlying trade</b><span>Operationally intensive, and hard to do consistently at scale.</span></div>
+    <div id="bridge"><div class="end card" style="left:0"><small>Quality</small><b>Trade receivables</b></div><div class="span"></div><div class="vtx"><img src="" alt=""><b>The bridge</b></div><div class="end card" style="right:0;text-align:right"><small>Global</small><b>Financial institutions</b></div><div class="cap">VTX acts as a bridge between quality trade receivables and global financial institutions.</div></div>
+  </section>
+
+  <section id="s3" class="scene">
+    <div class="hdr"><div class="k">It starts with origination</div><h2>We build the pipeline and bring the opportunities to you.</h2></div>
+    <div id="eco"><svg viewBox="0 0 894 1000"></svg></div>
+    <div id="funnel">
+      <div class="fstage"><div class="bar" style="width:500px">Ecosystem of exporters</div><span>A broad ecosystem of exporters and businesses engaged in cross-border trade.</span></div>
+      <div class="fstage"><div class="bar" style="width:410px">Genuine working-capital need</div><span>VTX identifies and originates businesses with real requirements.</span></div>
+      <div class="fstage"><div class="bar" style="width:320px">The right customers</div><span>Pipeline built, customers identified.</span></div>
+      <div class="fstage"><div class="bar" style="width:250px">Financing opportunities</div><span>Brought to the financial institution.</span></div>
+    </div>
+    <div class="foot rl"><span>You don’t start the sourcing from scratch.</span></div>
+  </section>
+
+  <section id="s4" class="scene">
+    <div class="hdr"><div class="k">Customer KYC and due diligence</div><h2>A curated pool of customers — before an opportunity reaches you.</h2></div>
+    <div class="colhead" style="left:100px;top:300px">KYC / KYB and due diligence — facilitated by VTX</div>
+    <div class="chk" style="left:100px;top:340px"><i>✓</i>Tax ID &amp; statutory registration</div>
+    <div class="chk" style="left:100px;top:410px"><i>✓</i>LEI / CKYC</div>
+    <div class="chk" style="left:100px;top:480px"><i>✓</i>Beneficial owners &amp; shareholding</div>
+    <div class="chk" style="left:100px;top:550px"><i>✓</i>Credit rating report</div>
+    <div class="chk" style="left:100px;top:620px"><i>✓</i>Full KYC / CDD of authorised official &amp; BO</div>
+    <div class="colhead" style="left:680px;top:300px">Screening — all parties</div>
+    <div class="chk" style="left:680px;top:340px"><i>✓</i>FATF · OFAC · EU · UK · UN sanctions</div>
+    <div class="chk" style="left:680px;top:410px"><i>✓</i>RBI &amp; negative-list search</div>
+    <div class="chk" style="left:680px;top:480px"><i>✓</i>PEP check on all parties</div>
+    <div id="pool" class="card"><small>What the financier gets</small><b>Access to a curated pool of customers</b><span>Rather than starting the sourcing and onboarding process from scratch — KYC/KYB and due diligence are facilitated before the opportunity reaches you.</span></div>
+  </section>
+
+  <section id="s5" class="scene">
+    <div class="hdr"><div class="k">Curated financing opportunities</div><h2>Not just the right customers — <b>the right opportunities.</b></h2></div>
+    <div id="filters" class="card"><h4>Your requirements</h4>
+      <div class="flt"><span>Credit appetite</span><b>Non-recourse · rated buyers</b></div><div class="flt"><span>Geography</span><b>India → USA · Europe</b></div><div class="flt"><span>Ticket size</span><b>USD 50k – 500k</b></div><div class="flt"><span>Tenor</span><b>60 – 120 days</b></div><div class="flt"><span>Buyer profile</span><b>Large corporates</b></div></div>
+    <div id="opps">
+      <div class="opp"><span class="pill g match">MATCH</span><div class="amt">USD 120,000</div><div class="kv"><div><small>Exporter</small><b>FIBC bags · Ahmedabad</b></div><div><small>Buyer</small><b>Large importer · USA</b></div><div><small>Tenor</small><b>87 days</b></div><div><small>Currency</small><b>USD</b></div></div></div>
+      <div class="opp"><span class="pill g match">MATCH</span><div class="amt">EUR 86,000</div><div class="kv"><div><small>Exporter</small><b>Auto components · Pune</b></div><div><small>Buyer</small><b>OEM · Germany</b></div><div><small>Tenor</small><b>90 days</b></div><div><small>Currency</small><b>EUR</b></div></div></div>
+      <div class="opp"><span class="pill g match">MATCH</span><div class="amt">USD 240,000</div><div class="kv"><div><small>Exporter</small><b>Textiles · Tiruppur</b></div><div><small>Buyer</small><b>Retail chain · USA</b></div><div><small>Tenor</small><b>75 days</b></div><div><small>Currency</small><b>USD</b></div></div></div>
+      <div class="opp"><span class="pill g match">MATCH</span><div class="amt">GBP 62,000</div><div class="kv"><div><small>Exporter</small><b>Pharma · Hyderabad</b></div><div><small>Buyer</small><b>Distributor · UK</b></div><div><small>Tenor</small><b>60 days</b></div><div><small>Currency</small><b>GBP</b></div></div></div>
+    </div>
+    <div class="foot">Curated to your credit appetite, geography, ticket size, tenor and buyer profile — so your attention goes only to what’s relevant.</div>
+  </section>
+
+  <section id="s6" class="scene">
+    <div class="hdr"><div class="k">Transaction verification</div><h2>Customer quality is one part. <b>The trade itself is the other.</b></h2></div>
+    <div id="inv" class="card"><small>Trade receivable · Export factoring</small><div class="amt">USD 120,000</div>
+      <div class="row"><span>Exporter</span><b>FIBC bags manufacturer · Ahmedabad</b></div><div class="row"><span>Buyer</span><b>Large importer · United States</b></div><div class="row"><span>Tenor</span><b>87 days</b></div><div class="row"><span>Currency</span><b>USD</b></div>
+      <div class="docs"><i>Commercial invoice</i><i>Packing list</i><i>Bill of lading</i><i>Shipping bill</i></div><div class="stamp" id="stampV">VERIFIED</div></div>
+    <div class="colhead" style="left:100px;top:380px">Digital verification &amp; validation</div>
+    <div class="chk" style="left:100px;top:420px"><i>✓</i>Data consistency across trade documents</div>
+    <div class="chk" style="left:100px;top:490px"><i>✓</i>Bill of lading verification</div>
+    <div class="chk" style="left:100px;top:560px"><i>✓</i>Vessel &amp; container tracking</div>
+    <div class="chk" style="left:100px;top:630px"><i>✓</i>Shipping bill validated on ICEGATE</div>
+    <div class="chk" style="left:100px;top:700px"><i>✓</i>AML / TBML checks on the transaction</div>
+    <div class="pin" style="left:100px;top:800px"><div class="d">✓</div><div class="tx">Greater visibility into the transaction, the exporter and the underlying buyer</div></div>
+  </section>
+
+  <section id="s7" class="scene">
+    <div class="hdr"><div class="k">Transaction execution</div><h2>Once you decide to fund, <b>VTX supports the execution journey.</b></h2></div>
+    <div id="decide" class="card"><small>A verified, curated opportunity</small><div class="amt">USD 120,000</div>
+      <div class="kv"><div><small>Exporter</small><b>FIBC bags manufacturer, Ahmedabad</b></div><div><small>Buyer</small><b>Large importer, United States</b></div><div><small>Tenor</small><b>87 days</b></div><div><small>Currency</small><b>USD</b></div><div><small>KYC / due diligence</small><b style="color:var(--green)">Complete ✓</b></div><div><small>Transaction verification</small><b style="color:var(--green)">Complete ✓</b></div></div>
+      <div class="fund" id="fund">You decide to fund →</div></div>
+    <div id="journey"><small>VTX supports the execution journey</small>
+      <div class="jl" id="j1"><i>✓</i>Bidding</div><div class="jl" id="j2"><i>✓</i>Assignment Agreement (AoA) execution</div><div class="jl" id="j3"><i>✓</i>Notice of Assignment (NoA) execution</div><div class="jl" id="j5"><i>✓</i>Associated operational activities to complete the transaction</div></div>
+    <div id="railWrap">
+      <div id="rail"></div><div id="railFill"></div><div id="token"></div><div id="steps"></div>
+      <div class="foot">From upload to close — <b>VTX manages the journey.</b></div>
+    </div>
+  </section>
+
+  <section id="s8" class="scene">
+    <div class="hdr"><div class="k">What this means for financial institutions</div><h2>Capital, connected to verified trade.</h2></div>
+    <div class="ben card" style="left:100px;top:330px"><i>1</i><b>Access to curated customers</b></div>
+    <div class="ben card" style="left:690px;top:330px"><i>2</i><b>Quality origination with KYC and due diligence</b></div>
+    <div class="ben card" style="left:1280px;top:330px"><i>3</i><b>Verified trade transactions</b></div>
+    <div class="ben card" style="left:100px;top:510px"><i>4</i><b>Less operational complexity</b></div>
+    <div class="ben card" style="left:690px;top:510px"><i>5</i><b>Greater transaction visibility</b></div>
+    <div class="ben card" style="left:1280px;top:510px"><i>6</i><b>End-to-end digital, streamlined execution</b></div>
+    <div class="foot">Participate in cross-border trade finance <b>without building the origination and transaction operations infrastructure yourself.</b></div>
+  </section>
+
+  <section id="s9" class="scene">
+    <div class="copy"><h1><span class="rl"><span>We don’t just connect capital with customers.</span></span><span class="rl"><span>We connect capital with <b>verified trade.</b></span></span></h1></div>
+    <div class="three"><span>Exporters get liquidity</span><span>Financiers get curated opportunities</span><span>Global trade gets the working capital it needs to keep moving</span></div>
+    <div id="band"><div class="l"><h2>Meet us at Global Fintech Fest 2026</h2><p><span class="booth">Booth K16–17</span>Jio World Centre, Mumbai · 9–11 September</p></div><div class="contact"><b>Vayana TradeXchange</b>vayanatradexchange.com</div><div class="qr"><img src="" alt=""><span>Scan to connect</span></div></div>
+  </section>
+</div>
+
+<script src="gsap.min.js"></script>
+<script src="../kit.js"></script>
+<script src="data.js"></script>
+<script>
+mountKit();
+$$('#brand img, #bridge .vtx img').forEach(i=>i.src=LOGO_SRC); $('#band .qr img').src=QR_SRC;
+let seed=5; const rnd=()=>{ seed=(seed*9301+49297)%233280; return seed/233280; };
+(function(){ const g=$('#land'); WORLD.forEach(d=>{ const p=document.createElementNS(SVGNS,'path'); p.setAttribute('d',d); p.setAttribute('class','land'); g.appendChild(p); });
+  INDIA_W.forEach(d=>{ const p=document.createElementNS(SVGNS,'path'); p.setAttribute('d',d); p.setAttribute('class','india'); g.appendChild(p); });
+  const G=CITY['GIFT City']; const A=$('#arcs'), C=$('#cities');
+  ['New York','London','Frankfurt','Dubai','Singapore','Hong Kong'].forEach(n=>{ const c=CITY[n]; const mx=(G[0]+c[0])/2, my=Math.min(G[1],c[1])-Math.abs(G[0]-c[0])*0.28-40;
+    const p=document.createElementNS(SVGNS,'path'); p.setAttribute('d',`M${G[0]},${G[1]} Q${mx},${my} ${c[0]},${c[1]}`); p.setAttribute('class','arc'); A.appendChild(p);
+    const h=document.createElementNS(SVGNS,'circle'); h.setAttribute('cx',c[0]); h.setAttribute('cy',c[1]); h.setAttribute('r',6); h.setAttribute('class','halo'); C.appendChild(h);
+    const d=document.createElementNS(SVGNS,'circle'); d.setAttribute('cx',c[0]); d.setAttribute('cy',c[1]); d.setAttribute('r',0); d.setAttribute('class','city'); C.appendChild(d);
+    const t=document.createElementNS(SVGNS,'text'); t.setAttribute('x',c[0]+12); t.setAttribute('y',c[1]-10); t.setAttribute('class','lbl'); t.textContent=n; C.appendChild(t); });
+  const gd=document.createElementNS(SVGNS,'circle'); gd.setAttribute('cx',G[0]); gd.setAttribute('cy',G[1]); gd.setAttribute('r',0); gd.setAttribute('class','gift'); C.appendChild(gd);
+  const gt=document.createElementNS(SVGNS,'text'); gt.setAttribute('x',G[0]+14); gt.setAttribute('y',G[1]+30); gt.setAttribute('class','lbl'); gt.style.fontWeight='700'; gt.textContent='GIFT City'; C.appendChild(gt);
+  $$('#map .arc').forEach(p=>{ const L=p.getTotalLength(); p.style.strokeDasharray=L; p.style.strokeDashoffset=L; });
+})();
+(function(){ const svg=$('#eco svg'); INDIA_PATHS.forEach(d=>{ const p=document.createElementNS(SVGNS,'path'); p.setAttribute('d',d); p.setAttribute('class','ind'); svg.appendChild(p); });
+  for(let i=0;i<70;i++){ const c=document.createElementNS(SVGNS,'circle'); c.setAttribute('cx',120+rnd()*600); c.setAttribute('cy',120+rnd()*700); c.setAttribute('r',4); c.setAttribute('class','d'); svg.appendChild(c); } })();
+(function(){ const S=[['Transaction uploaded','Exporter uploads the invoice on VTX'],['Verified by VTX','KYC, documents and screening cleared'],['Bid placed','Your bid on the verified invoice'],['Bid accepted','Seller accepts; AoA executed'],['Notice of Assignment','Buyer notified; NoA executed'],['Disbursement','Financier funds the seller'],['Repayment','Buyer repays the financier on due date'],['Residue & close','Balance remitted; transaction closed']];
+  const xs=[180,403,626,849,1071,1294,1517,1740]; const w=$('#steps');
+  S.forEach((s,i)=>{ const d=document.createElement('div'); d.className='step '+(i%2?'up':'dn'); d.style.left=xs[i]+'px'; d.innerHTML=i%2?`<b>${s[0]}</b><span>${s[1]}</span><i></i>`:`<i></i><b>${s[0]}</b><span>${s[1]}</span>`; w.appendChild(d); }); })();
+
+gsap.defaults({overwrite:'auto'});
+const tl=gsap.timeline({paused:true});
+const show=(s,at)=>tl.set(s,{autoAlpha:1},at), hide=(s,at)=>tl.set(s,{autoAlpha:0},at);
+function enter(sel, at){ show(sel,at); tl.fromTo(sel+' .hdr',{opacity:0,y:24},{opacity:1,y:0,duration:0.7,ease:'power3.out'},at+0.1); }
+function leave(sel, at){ tl.to(sel,{opacity:0,y:-30,duration:0.45,ease:'power2.in'},at); hide(sel,at+0.5); }
+
+// ===== S1 0–7 intro =====
+show('#s1',0); tl.to('#brand',{opacity:1,duration:0.6},0.5);
+tl.fromTo('#wave',{x:0},{x:-600,duration:60,ease:'none'},0); tl.fromTo('#wave',{opacity:0},{opacity:1,duration:0.8},0);
+tl.fromTo('#map .land',{opacity:0},{opacity:1,duration:1.2,stagger:{each:0.0015,from:'random'}},0.2);
+tl.fromTo('#map .india',{opacity:0},{opacity:1,duration:0.7},1.0);
+tl.to('#map .gift',{attr:{r:9},duration:0.5,ease:'back.out(3)'},1.4);
+tl.to('#map .arc',{strokeDashoffset:0,duration:1.3,ease:'power2.inOut',stagger:0.14},1.7);
+tl.to('#map .city',{attr:{r:6},duration:0.4,ease:'back.out(3)',stagger:0.14},2.6);
+tl.fromTo('#map .halo',{attr:{r:6},opacity:.9},{attr:{r:30},opacity:0,duration:1.0,stagger:0.14,immediateRender:false},2.7);
+tl.to('#map .lbl',{opacity:1,duration:0.4,stagger:0.1},2.8);
+reveal(tl,'#s1 .copy .rl>span',0.8,0.14);
+pop(tl,'#s1 .badge span',3.4,{y:20,scale:0.85,rot:0,s:0.16,d:0.5,ease:'back.out(2)'});
+tl.to('#s1',{opacity:0,duration:0.5,ease:'power2.in'},6.5); hide('#s1',7.0);
+tl.to('#map',{opacity:0,duration:0.6},6.5);
+
+// ===== S2 7–14 problem → bridge =====
+enter('#s2',7.0);
+prepDraw('.prob svg path'); pop(tl,'.prob',7.4,{y:80,scale:0.9,rot:-2,s:0.16}); draw(tl,'.prob svg path',7.9,0.8,0.05); float(tl,'.prob',8.8,1.2,5);
+tl.to('.prob',{y:-60,opacity:0,duration:0.5,ease:'power2.in'},10.2);
+tl.to('#bridge',{opacity:1,duration:0.3},10.5);
+tl.to('#bridge .span',{scaleX:1,duration:0.9,ease:'power3.inOut'},10.8);
+pop(tl,'#bridge .vtx',11.5,{y:30,scale:0.8,rot:0,ease:'back.out(2)'}); pop(tl,'#bridge .end',10.5,{y:40,scale:0.9,rot:0,s:0.1}); float(tl,'#bridge .vtx',12.2,1.2,5);
+tl.to('#bridge .cap',{opacity:1,duration:0.5},12.0);
+leave('#s2',13.6);
+
+// ===== S3 14–20 origination =====
+enter('#s3',14.0);
+pop(tl,'#eco',14.2,{y:40,scale:0.95,rot:0});
+tl.fromTo('#eco .d',{opacity:0,scale:0,transformOrigin:'center'},{opacity:1,scale:1,duration:0.35,ease:'back.out(3)',stagger:{each:0.012,from:'random'}},14.6); tl.to('#eco .d',{opacity:0.45,duration:0.5,yoyo:true,repeat:5,ease:'sine.inOut',stagger:{each:0.006,from:'random'}},16.0);
+tl.fromTo('.fstage',{opacity:0,x:80,scale:0.92},{opacity:1,x:0,scale:1,duration:0.6,ease:'back.out(1.6)',stagger:0.45},15.0);
+reveal(tl,'#s3 .foot>span',17.4);
+leave('#s3',19.6);
+
+// ===== S4 20–26 KYC & DD =====
+enter('#s4',20.0);
+tl.to('#s4 .colhead',{opacity:1,duration:0.4},20.5);
+tl.fromTo('#s4 .chk',{opacity:0,x:-60,scale:0.9},{opacity:1,x:0,scale:1,duration:0.5,ease:'back.out(1.8)',stagger:0.2},20.7);
+pop(tl,'#pool',22.4,{y:70,scale:0.9,rot:-2}); float(tl,'#pool',23.4,2,5);
+leave('#s4',25.6);
+
+// ===== S5 26–33 curated opportunities =====
+enter('#s5',26.0);
+pop(tl,'#filters',26.3,{y:60,scale:0.92,rot:-1.5});
+tl.to('#filters .flt b',{opacity:1,duration:0.3,stagger:0.25},26.9);
+pop(tl,'.opp',28.4,{y:50,scale:0.88,rot:-1.5,s:0.3,ease:'back.out(1.8)'}); float(tl,'.opp',30.0,2.4,4);
+tl.to('#s5 .foot',{opacity:1,duration:0.5},30.4);
+leave('#s5',32.6);
+
+// ===== S6 33–40 verification =====
+enter('#s6',33.0);
+pop(tl,'#inv',33.3,{y:70,scale:0.88,rot:-2}); float(tl,'#inv',34.4,2.2,5);
+tl.to('#s6 .colhead',{opacity:1,duration:0.4,stagger:0.1},33.8);
+tl.fromTo('#s6 .chk',{opacity:0,x:-60,scale:0.9},{opacity:1,x:0,scale:1,duration:0.5,ease:'back.out(1.8)',stagger:0.2},34.0);
+tl.fromTo('#stampV',{opacity:0,scale:2.2},{opacity:1,scale:1,duration:0.4,ease:'power4.in'},36.6);
+tl.to('#inv',{x:5,duration:0.06,yoyo:true,repeat:5,ease:'none'},37.0);
+tl.fromTo('#s6 .pin',{opacity:0,scale:0.6,y:10},{opacity:1,scale:1,y:0,duration:0.45,ease:'back.out(2)'},37.4);
+leave('#s6',39.6);
+
+// ===== S7 40–50 execution =====
+enter('#s7',40.0);
+pop(tl,'#decide',40.3,{y:70,scale:0.9,rot:-2}); float(tl,'#decide',41.4,3.6,5);
+tl.to('#fund',{opacity:1,duration:0.4},41.0);
+tl.to('#fund',{scale:0.94,duration:0.12,yoyo:true,repeat:1},41.8);
+tl.to('#journey>small',{opacity:1,duration:0.4},42.1);
+tl.fromTo('.jl',{opacity:0,x:80,scale:0.92},{opacity:1,x:0,scale:1,duration:0.5,ease:'back.out(1.8)',stagger:0.35},42.3);
+tl.to('#decide, #journey',{opacity:0,y:-40,duration:0.45,ease:'power2.in'},45.2);
+show('#railWrap',45.5);
+tl.fromTo('#railWrap',{opacity:0},{opacity:1,duration:0.4},45.5);
+tl.fromTo('#steps .step',{opacity:0,y:20},{opacity:1,y:0,duration:0.4,ease:'power2.out',stagger:0.05},45.6);
+tl.to('#token',{opacity:1,duration:0.3},46.0);
+{ const xs=[180,403,626,849,1071,1294,1517,1740]; xs.forEach((x,i)=>{ const t=46.0+i*0.38; tl.to('#token',{left:x-19,duration:0.4,ease:'power2.inOut'},t); tl.to('#railFill',{width:x-120,duration:0.4,ease:'power2.inOut'},t); tl.call(()=>{ $$('#steps .step')[i].classList.add('on'); },null,t+0.26); }); }
+tl.to('#railWrap .foot',{opacity:1,duration:0.5},48.6);
+leave('#s7',49.6);
+
+// ===== S8 50–55.5 what it means =====
+enter('#s8',50.0);
+pop(tl,'.ben',50.3,{y:60,scale:0.9,rot:-1.5,s:0.14}); float(tl,'.ben',51.4,3,4);
+tl.to('#s8 .foot',{opacity:1,duration:0.5},52.0);
+leave('#s8',55.0);
+
+// ===== S9 55.5–60 close =====
+show('#s9',55.4);
+reveal(tl,'#s9 .copy .rl>span',55.6,0.14);
+pop(tl,'#s9 .three span',56.5,{y:20,scale:0.85,rot:0,s:0.14,d:0.5,ease:'back.out(2)'});
+tl.to('#band',{y:'0%',duration:0.8,ease:'power3.out'},56.8);
+tl.to('#s9, #brand',{opacity:0,duration:0.6,ease:'power2.in'},59.15); tl.to('#wave',{opacity:0,duration:0.5},59.4);
+tl.set({},{},60);
+
+window.DURATION=60; window.seek=t=>{ tl.time(Math.min(t,60)); }; window.ready=true;
+// In-browser playback: open the file with ?play appended to the URL (e.g. video.html?play) to loop the film live.
+if(location.search.indexOf('play')>-1){ tl.repeat(-1); tl.play(0); }
+
+</script>
+</body>
+</html>

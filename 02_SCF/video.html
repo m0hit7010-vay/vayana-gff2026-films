@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vayana SCF Lending Platform — GFF 2026</title>
+<style>
+  :root{
+    --navy:#29397A; --ink:#1F2A44; --crimson:#B4303E; --muted:#6B7280; --line:#E5E7EB; --panel:#F6F7F9;
+    --green:#1E8A5B; --greenBg:#E6F4EC; --red:#C8362E; --redBg:#FBE9E7; --amber:#B7791F; --amberBg:#FFF4DD;
+    --grad:linear-gradient(135deg,#2E3F8C 0%,#B4303E 100%);
+    --gradText:linear-gradient(90deg,#3446A0 0%,#C23A49 100%);
+  }
+  html,body{margin:0;background:#000;}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:#fff;font-family:'Poppins',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+  #stage *{box-sizing:border-box;}
+  .layer{position:absolute;inset:0;}
+  .grad{background:var(--gradText);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  h1,h2,h3,p{margin:0;font-weight:700;}
+  .rl{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em;}
+  .rl>span{display:block;}
+
+  /* header */
+  #hdr{position:absolute;left:80px;top:48px;display:flex;align-items:center;gap:18px;opacity:0;}
+  #hdr img{width:170px;display:block;}
+  #hdr .sep{width:1px;height:34px;background:var(--line);}
+  #hdr .prod{font-size:18px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+  #topline{position:absolute;left:0;top:0;width:1920px;height:6px;background:var(--grad);transform-origin:left;transform:scaleX(0);}
+
+  /* isometric stack */
+  #stackWrap{position:absolute;left:0;top:0;width:1920px;height:1080px;perspective:2200px;}
+  #stack{position:absolute;left:1020px;top:400px;width:400px;height:400px;transform-style:preserve-3d;transform:rotateX(58deg) rotateZ(-42deg);}
+  .plate{position:absolute;left:0;top:0;width:400px;height:400px;border-radius:26px;background:linear-gradient(135deg,#FFFFFF,#F1F3FA);border:2px solid #C9CEE3;box-shadow:0 30px 60px rgba(31,42,68,.10);transform-style:preserve-3d;opacity:0;}
+  .plate i{position:absolute;inset:-2px;border-radius:26px;background:var(--grad);opacity:0;}
+  .plate b{position:absolute;left:28px;top:22px;font-size:34px;font-weight:700;color:var(--navy);transform:rotateZ(42deg) rotateX(-58deg);transform-origin:left top;opacity:.0;}
+  .plate:nth-child(1){transform:translateZ(0px);}
+  .plate:nth-child(2){transform:translateZ(90px);}
+  .plate:nth-child(3){transform:translateZ(180px);}
+  .plate:nth-child(4){transform:translateZ(270px);}
+  .plate:nth-child(5){transform:translateZ(360px);}
+  #labels{position:absolute;left:1500px;top:0;width:420px;}
+  .lab{position:absolute;left:0;display:flex;align-items:center;gap:16px;opacity:0;}
+  .lab .n{font-size:22px;font-weight:700;color:var(--crimson);width:44px;}
+  .lab .t{font-size:34px;font-weight:600;color:var(--ink);}
+  .lab .l{width:56px;height:2px;background:var(--line);margin-right:8px;}
+  #openTitle{position:absolute;left:100px;top:300px;width:820px;text-align:left;}
+  #openTitle .k{font-size:22px;letter-spacing:.32em;text-transform:uppercase;color:var(--crimson);font-weight:600;}
+  #openTitle h1{font-size:74px;line-height:1.1;letter-spacing:-.02em;color:var(--navy);margin-top:14px;}
+  #openSub{position:absolute;left:100px;top:560px;width:820px;text-align:left;font-size:28px;font-weight:500;color:var(--muted);}
+
+  /* section header */
+  #sec{position:absolute;left:400px;top:118px;width:1440px;display:flex;align-items:flex-end;gap:26px;opacity:0;}
+  #sec .num{font-size:96px;line-height:.9;font-weight:700;letter-spacing:-.04em;}
+  #sec .name{font-size:54px;line-height:1;font-weight:700;color:var(--navy);padding-bottom:6px;}
+  #sec .sub{font-size:24px;font-weight:500;color:var(--muted);padding-bottom:12px;margin-left:10px;}
+
+  /* screen frame */
+  .scr{position:absolute;left:400px;top:250px;width:1440px;height:760px;border-radius:18px;background:#fff;box-shadow:0 30px 80px rgba(31,42,68,.14),0 0 0 1px rgba(31,42,68,.08);overflow:hidden;display:flex;opacity:0;visibility:hidden;font-size:15px;}
+  .sb{width:230px;flex:none;background:#FAFBFC;border-right:1px solid var(--line);padding:14px 0;overflow:hidden;}
+  .sb .brand{display:flex;align-items:center;gap:8px;padding:0 18px 16px;border-bottom:1px solid var(--line);}
+  .sb .brand img{width:92px;}
+  .sb .brand span{font-size:9px;letter-spacing:.06em;color:var(--navy);font-weight:600;line-height:1.1;}
+  .sb .g{font-size:10px;letter-spacing:.12em;color:var(--muted);font-weight:600;padding:12px 18px 4px;}
+  .sb .it{padding:7px 18px;font-size:13px;font-weight:500;color:#3B4256;display:flex;align-items:center;gap:10px;white-space:nowrap;}
+  .sb .it:before{content:"";width:14px;height:14px;flex:none;border-radius:4px;border:1.5px solid #9AA1B4;}
+  .sb .it.on{background:var(--greenBg);color:var(--green);font-weight:600;border-left:3px solid var(--green);padding-left:15px;}
+  .sb .it.on:before{border-color:var(--green);}
+  .sb .it .bd{margin-left:auto;font-size:11px;background:#EEF0F4;border-radius:999px;padding:1px 7px;color:var(--muted);}
+  .mn{flex:1;min-width:0;display:flex;flex-direction:column;background:var(--panel);}
+  .tb{height:56px;flex:none;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 24px;gap:14px;font-size:15px;}
+  .tb .crumb{font-weight:600;color:var(--ink);}
+  .tb .chip{font-size:12px;font-weight:600;padding:5px 10px;border-radius:6px;background:#F1F2F6;color:var(--navy);}
+  .tb .r{margin-left:auto;display:flex;gap:12px;align-items:center;font-size:12px;color:var(--muted);}
+  .tb .r span{padding:5px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);}
+  .bd2{padding:22px 24px;flex:1;position:relative;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 20px;}
+  .card h4{margin:0 0 12px;font-size:16px;font-weight:600;color:var(--ink);}
+  .kv{display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;font-size:13px;}
+  .kv small{display:block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .kv b{font-weight:600;color:var(--ink);}
+  .pill{display:inline-block;padding:3px 9px;border-radius:5px;font-size:11px;font-weight:700;letter-spacing:.03em;}
+  .pill.g{background:var(--greenBg);color:var(--green);} .pill.r{background:var(--redBg);color:var(--red);} .pill.a{background:var(--amberBg);color:var(--amber);}
+  table.t{width:100%;border-collapse:collapse;font-size:13px;}
+  table.t th{text-align:left;font-size:11px;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;}
+  table.t td{padding:9px 10px;border-bottom:1px solid #EEF0F4;white-space:nowrap;color:var(--ink);}
+  table.t td.b{font-weight:600;}
+  table.t td.n{text-align:right;}
+  /* callout pins */
+  .pin{position:absolute;display:flex;align-items:center;gap:10px;opacity:0;z-index:5;}
+  .pin .d{width:38px;height:38px;border-radius:50%;background:var(--grad);color:#fff;font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(180,48,62,.35);flex:none;}
+  .pin .tx{background:#fff;color:var(--navy);font-size:16px;font-weight:600;padding:10px 16px;border-radius:10px;white-space:nowrap;box-shadow:0 12px 30px rgba(20,26,58,.14),0 0 0 1px rgba(20,26,58,.08);}
+
+  /* LOS */
+  #los .grid{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;}
+  #los .score{font-size:52px;font-weight:700;line-height:1;color:var(--ink);}
+  #los .score small{font-size:16px;color:var(--muted);font-weight:500;margin-left:4px;}
+  #los .lim{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid #EEF0F4;}
+  #los .lim span{color:var(--muted);} #los .lim b{font-weight:600;color:var(--green);}
+  #los .btn{margin-top:12px;border:1px solid var(--line);border-radius:8px;padding:9px;text-align:center;font-size:13px;font-weight:600;color:var(--navy);background:#F8F9FC;}
+  #cascade{position:absolute;left:24px;right:24px;bottom:22px;top:auto;height:330px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 20px;transform:translateY(120%);}
+  .bars{display:flex;gap:12px;margin-bottom:14px;}
+  .bar{flex:1;background:#F8F9FC;border:1px solid var(--line);border-radius:8px;padding:10px 12px;}
+  .bar small{font-size:10px;letter-spacing:.06em;color:var(--muted);font-weight:600;}
+  .bar b{display:block;font-size:20px;color:var(--ink);font-weight:700;}
+  .bar b em{font-style:normal;font-size:12px;color:var(--muted);font-weight:500;}
+  .bar .tr{height:5px;border-radius:3px;background:#E9EBF1;margin-top:8px;overflow:hidden;}
+  .bar .tr i{display:block;height:100%;width:0;background:var(--green);border-radius:3px;}
+  .bar.w .tr i{background:var(--amber);} .bar.x .tr i{background:var(--red);}
+  #rules tr{opacity:0;}
+  #rules code{font-family:'DejaVu Sans Mono',monospace;font-size:11px;color:#4B5563;}
+
+  /* TXN */
+  #txn table.t td .pill{min-width:150px;text-align:center;}
+  #txn tr.row{opacity:0;}
+  #modalBg{position:absolute;inset:0;background:rgba(31,42,68,.38);opacity:0;}
+  #t360{position:absolute;left:50%;top:50%;width:820px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px 26px;box-shadow:0 40px 100px rgba(31,42,68,.35);transform:translate(-50%,-50%) scale(.92);opacity:0;}
+  #t360 .kv{grid-template-columns:1fr 1fr 1fr;}
+  #t360 h4{font-size:16px;margin-bottom:10px;}
+  #t360 .sec{font-size:10px;letter-spacing:.1em;color:var(--muted);font-weight:600;margin:12px 0 6px;}
+  #t360 .kv b{opacity:0;}
+
+  /* CO-LENDING diagram */
+  #col .bd2{padding:28px 40px;}
+  #flow{position:relative;height:100%;}
+  .node{position:absolute;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 20px;box-shadow:0 12px 30px rgba(31,42,68,.08);}
+  .node small{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .node b{display:block;font-size:20px;font-weight:700;color:var(--ink);margin-top:4px;}
+  .node .amt{font-size:26px;color:var(--navy);}
+  .node.book{width:330px;}
+  .node.book .led{margin-top:10px;border-top:1px solid var(--line);padding-top:8px;font-size:13px;display:flex;justify-content:space-between;}
+  .node.book .led span{color:var(--muted);}
+  .node.book .led b{font-size:14px;margin:0;opacity:0;}
+  #draw{position:absolute;left:40px;top:130px;width:330px;}
+  #fsvg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
+  #fsvg path{fill:none;stroke-width:10;stroke-linecap:round;}
+  #fsvg .out{stroke:url(#gPipe);} #fsvg .ret{stroke:#1E8A5B;}
+  #split{position:absolute;left:470px;top:150px;width:110px;height:110px;border-radius:50%;background:var(--grad);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 16px 40px rgba(180,48,62,.3);opacity:0;}
+  #split b{font-size:22px;font-weight:700;} #split small{font-size:10px;letter-spacing:.08em;text-transform:uppercase;opacity:.9;margin-top:2px;}
+  #draw .amt{font-size:30px;}
+  .pipe{position:absolute;height:14px;border-radius:7px;background:#E9EBF1;overflow:hidden;}
+  .pipe i{display:block;height:100%;width:0;background:var(--grad);border-radius:7px;}
+  .pipe.back i{background:var(--green);}
+  .tag{position:absolute;font-size:13px;font-weight:600;color:var(--navy);background:#F1F2F6;padding:5px 10px;border-radius:6px;opacity:0;}
+  #cfg{position:absolute;left:40px;bottom:30px;display:flex;gap:10px;}
+  #cfg span{padding:8px 14px;border-radius:8px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--ink);opacity:0;}
+  #cfg span b{color:var(--crimson);font-weight:700;}
+
+  /* EWS */
+  .strip{display:flex;gap:14px;margin-bottom:16px;}
+  .stat{flex:1;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 18px;position:relative;}
+  .stat small{font-size:10px;letter-spacing:.08em;color:var(--muted);font-weight:600;text-transform:uppercase;}
+  .stat b{display:block;font-size:30px;font-weight:700;color:var(--ink);margin-top:2px;}
+  .stat b.red{color:var(--red);}
+  .stat .cap{font-size:11px;color:var(--muted);}
+  #ews tr.row{opacity:0;}
+  #ews .hold{display:inline-block;padding:5px 12px;border-radius:6px;border:1px solid var(--red);color:var(--red);font-size:12px;font-weight:600;background:#fff;}
+  #ews .trend b{color:var(--green);} #ews .trend b.dn{color:var(--red);}
+  #ews tr.hot td{background:#FFF7F6;}
+  #alertBadge{position:absolute;right:24px;top:118px;background:var(--red);color:#fff;font-size:13px;font-weight:600;padding:9px 14px;border-radius:8px;opacity:0;}
+
+  /* PORTFOLIO */
+  #port .legend{display:flex;gap:18px;font-size:12px;font-weight:600;color:var(--ink);margin-bottom:12px;}
+  #port .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px;}
+  #port tr.row{opacity:0;}
+  #port .ut{display:inline-block;width:90px;height:6px;border-radius:3px;background:#E9EBF1;vertical-align:middle;margin-right:8px;overflow:hidden;}
+  #port .ut i{display:block;height:100%;width:0;background:var(--green);}
+  #chart{position:absolute;left:24px;right:24px;bottom:22px;height:300px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 20px;transform:translateY(120%);}
+  #chart h4{font-size:15px;margin-bottom:2px;}
+  #chart p{font-size:11px;color:var(--muted);font-weight:500;}
+  #chart svg{position:absolute;left:20px;right:20px;bottom:14px;height:220px;width:calc(100% - 40px);overflow:visible;}
+  #chart rect{fill:var(--green);}
+  #chart .ln{fill:none;stroke:#1F2A44;stroke-width:2.5;}
+  #chart .dot{fill:#fff;stroke:#1F2A44;stroke-width:2;}
+  #chart text{font-family:'Poppins';font-size:10px;fill:#6B7280;}
+
+  /* flips */
+  #flipLabel{position:absolute;left:430px;top:206px;font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:12px;background:#fff;color:var(--navy);font-size:19px;font-weight:600;padding:12px 20px 12px 14px;border-radius:12px;box-shadow:0 12px 30px rgba(20,26,58,.14),0 0 0 1px rgba(20,26,58,.08);opacity:0;z-index:6;white-space:nowrap;}
+  #flipLabel i{width:14px;height:14px;border-radius:50%;background:var(--grad);flex:none;}
+  .h3{font-size:18px;font-weight:700;color:var(--ink);margin-bottom:4px;} .sub2{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:14px;}
+  .row2{display:flex;gap:14px;}
+  .mini{flex:1;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px;}
+  .mini small{display:block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .mini b{display:block;font-size:24px;font-weight:700;color:var(--ink);margin-top:2px;} .mini b em{font-style:normal;font-size:12px;color:var(--muted);font-weight:500;}
+  .mini span{font-size:11px;color:var(--muted);}
+  .mini .bar2{height:5px;border-radius:3px;background:#E9EBF1;margin:8px 0 6px;overflow:hidden;} .mini .bar2 i{display:block;height:100%;border-radius:3px;}
+  .tl{border-left:2px solid var(--line);padding-left:14px;} .tl div{position:relative;padding:4px 0 8px;font-size:12px;line-height:1.35;} .tl div b{display:block;font-weight:600;color:var(--ink);} .tl div span{color:var(--muted);}
+  .tl div:before{content:"";position:absolute;left:-19px;top:11px;width:8px;height:8px;border-radius:50%;background:var(--green);}
+  .actions{background:#1F2A44;border-radius:10px;padding:12px 14px;color:#fff;margin-top:14px;} .actions small{display:block;font-size:11px;font-weight:600;margin-bottom:8px;opacity:.8;}
+  .actions .bt{display:grid;grid-template-columns:1fr 1fr;gap:8px;} .actions .bt span{padding:8px;border-radius:6px;text-align:center;font-size:12px;font-weight:600;background:#3B4256;} .actions .bt .g{background:var(--green);} .actions .bt .r{background:#7A2E2A;}
+  .pol{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;background:#fff;} .pol.on{border-color:var(--green);background:#F3FAF6;}
+  .pol b{font-size:13px;font-weight:600;color:var(--ink);} .pol .pill{float:right;} .pol small{display:block;font-size:11px;color:var(--muted);margin-top:4px;}
+  .sel{display:inline-block;border:1px solid #C9CDD8;border-radius:5px;padding:3px 8px;font-size:11px;background:#fff;color:var(--ink);font-family:'DejaVu Sans Mono',monospace;}
+  .btnrow{display:flex;gap:8px;} .btnrow span{padding:7px 12px;border:1px solid var(--line);border-radius:7px;font-size:12px;font-weight:600;background:#fff;color:var(--ink);} .btnrow span.p{background:var(--green);color:#fff;border-color:var(--green);}
+  .aq{border-bottom:1px solid var(--line);padding:10px 12px;font-size:12px;} .aq.on{background:var(--greenBg);border-left:3px solid var(--green);} .aq b{display:block;font-weight:600;color:var(--ink);margin-top:4px;} .aq span{color:var(--muted);} .aq .ex{float:right;font-weight:600;color:var(--ink);}
+  .warnbox{border:1px solid #F0C9A8;background:#FFF7F1;border-radius:8px;padding:12px 14px;font-size:12px;color:#8A3B12;margin-top:12px;} .warnbox b{display:block;font-size:13px;margin-bottom:4px;}
+  .enf{display:flex;gap:8px;margin-top:12px;} .enf span{padding:8px 12px;border:1px solid var(--line);border-radius:7px;font-size:12px;font-weight:600;background:#fff;color:var(--ink);} .enf span.r{background:var(--red);color:#fff;border-color:var(--red);}
+  .anc{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;} .anc .hd2{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;color:var(--ink);} .anc .hd2 .sc{margin-left:auto;font-size:22px;font-weight:700;} .anc .hd2 .sc small{display:block;font-size:9px;letter-spacing:.06em;color:var(--muted);text-align:right;font-weight:600;}
+  .anc .ind{font-size:11px;color:var(--muted);margin:2px 0 10px;}
+  .anc .trio{display:flex;background:#F6F7F9;border-radius:6px;padding:8px 10px;gap:20px;font-size:11px;} .anc .trio div small{display:block;font-size:9px;letter-spacing:.06em;color:var(--muted);font-weight:600;} .anc .trio div b{font-weight:700;color:var(--ink);font-size:13px;}
+  .anc .ub{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--muted);margin-top:10px;} .anc .ub i{flex:1;height:6px;border-radius:3px;background:#E9EBF1;overflow:hidden;display:block;} .anc .ub i b{display:block;height:100%;background:var(--green);}
+  .bk{flex:1;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;} .bk small{font-size:11px;color:var(--muted);font-weight:600;} .bk b{display:block;font-size:26px;font-weight:700;color:var(--ink);margin:2px 0;} .bk span{font-size:11px;color:var(--green);} .bk i{display:block;height:4px;border-radius:2px;margin:10px 0 6px;width:40%;} .bk em{font-style:normal;font-size:11px;color:var(--muted);}
+  .age{margin-top:8px;} .age div{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--ink);margin:10px 0;} .age div span{width:80px;text-align:right;color:var(--muted);} .age div i{display:block;flex:none;height:18px;border-radius:3px;background:var(--green);width:0;} .age div b{font-weight:600;font-size:12px;}
+
+  /* close */
+  #close{position:absolute;inset:0;opacity:0;visibility:hidden;}
+  #close .copy{position:absolute;left:120px;top:250px;width:1000px;text-align:left;}
+  #close h1{font-size:76px;letter-spacing:-.02em;color:var(--navy);line-height:1.1;}
+  #close .band{position:absolute;left:120px;right:120px;bottom:90px;display:flex;align-items:center;gap:40px;padding:34px 44px;border-radius:22px;background:var(--grad);color:#fff;transform:translateY(40px);opacity:0;}
+  #close .band .l{flex:1;}
+  #close .band h2{font-size:40px;}
+  #close .band p{font-size:26px;font-weight:400;margin-top:10px;opacity:.95;}
+  #close .band p b{font-weight:700;}
+  #close .band .booth{display:inline-block;padding:6px 16px;border-radius:999px;background:#fff;color:var(--crimson);font-weight:700;font-size:24px;margin-right:12px;}
+  #close .qr{width:190px;height:212px;border-radius:16px;background:#fff;color:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:14px;font-weight:600;padding:10px;}
+  #close .qr img{width:156px;height:156px;}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="topline"></div>
+  <div id="hdr"><img src="" alt=""><div class="sep"></div><div class="prod">SCF Lending Platform</div></div>
+
+  <div id="openTitle"><div class="k rl"><span>For banks and NBFCs</span></div><h1><span class="rl"><span>One lending platform,</span></span><span class="rl"><span><span class="grad">end to end.</span></span></span></h1></div>
+  <div id="openSub" class="rl"><span>Onboard · Service · Co-lend · Monitor · Portfolio</span></div>
+
+  <div id="stackWrap"><div id="stack">
+    <div class="plate"><i></i><b>01</b></div><div class="plate"><i></i><b>02</b></div><div class="plate"><i></i><b>03</b></div><div class="plate"><i></i><b>04</b></div><div class="plate"><i></i><b>05</b></div>
+  </div></div>
+  <div id="labels">
+    <div class="lab" style="top:583px"><div class="l"></div><div class="n">01</div><div class="t">Onboard</div></div>
+    <div class="lab" style="top:503px"><div class="l"></div><div class="n">02</div><div class="t">Service</div></div>
+    <div class="lab" style="top:422px"><div class="l"></div><div class="n">03</div><div class="t">Co-lending</div></div>
+    <div class="lab" style="top:340px"><div class="l"></div><div class="n">04</div><div class="t">Monitoring</div></div>
+    <div class="lab" style="top:255px"><div class="l"></div><div class="n">05</div><div class="t">Portfolio</div></div>
+  </div>
+
+  <div id="sec"><div class="num grad" id="secNum">01</div><div class="name" id="secName">Onboard</div><div class="sub" id="secSub">LOS and BRE — application, verification, decisioning</div></div>
+
+  <!-- ===== LOS ===== -->
+  <div class="scr" id="los">
+    <div class="sb" data-active="Applications (LOS)"></div>
+    <div class="mn">
+      <div class="tb"><span class="chip">VAYANA SCF</span><span class="crumb">LOS — Application Detail &amp; Verification</span><div class="r">Scope <span>All Programmes (9)</span> Role <span>Credit analyst</span></div></div>
+      <div class="bd2">
+        <div style="font-size:12px;color:var(--muted);font-weight:500;margin-bottom:4px">← Back to Queue &nbsp;/&nbsp; APP-2026-0814</div>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px"><div style="font-size:22px;font-weight:700">Apex Axles &amp; Transmissions LLP</div><span class="pill a">CHECKS</span><span style="font-size:12px;color:var(--muted)">Programme: <b style="color:var(--ink)">Meridian Tier-1 Vendor Early Payment</b> · Anchor: <b style="color:var(--ink)">Meridian Auto Components Ltd</b></span></div>
+        <div class="grid">
+          <div class="card"><h4>Counterparty Profile</h4><div class="kv">
+            <div><small>Legal name</small><b>Apex Axles &amp; Transmissions LLP</b></div><div><small>Constitution</small><b>LLP</b></div>
+            <div><small>Masked GSTIN</small><b>27AAKFA4329C1Z4</b></div><div><small>Masked PAN</small><b>AAKFA4329C</b></div>
+            <div><small>Registered address</small><b>Plot 18, Shendra Industrial Area, Aurangabad</b></div><div><small>Operating address</small><b>Plot 18, Shendra Industrial Area, Aurangabad</b></div>
+            <div><small>Operating vintage</small><b>9 years</b></div><div><small>Anchor relationship</small><b>4 years</b></div></div></div>
+          <div class="card"><h4>BRE Decision Engine</h4>
+            <div style="display:flex;align-items:center;justify-content:space-between"><div class="score"><span id="breScore">0</span><small>/ 100</small><div style="font-size:10px;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-top:4px">COMPOSITE RISK SCORE</div></div><span class="pill a" id="breBand" style="opacity:0">REFER</span></div>
+            <div style="margin-top:14px"><div class="lim"><span>Recommended limit</span><b>₹4.00 Cr</b></div><div class="lim"><span>Requested limit</span><b style="color:var(--ink)">₹5.50 Cr</b></div><div class="lim"><span>Decided at</span><b style="color:var(--ink)">18-Aug-2026 09:30</b></div></div>
+            <div class="btn">View Full Decision &amp; Rule Cascade →</div></div>
+        </div>
+        <div id="cascade">
+          <div class="bars">
+            <div class="bar"><small>POLICY</small><b>15<em>/15</em></b><div class="tr"><i data-w="100"></i></div></div>
+            <div class="bar w"><small>BUREAU</small><b>18<em>/30</em></b><div class="tr"><i data-w="60"></i></div></div>
+            <div class="bar"><small>GST</small><b>23<em>/25</em></b><div class="tr"><i data-w="92"></i></div></div>
+            <div class="bar x"><small>BANKING</small><b>7<em>/18</em></b><div class="tr"><i data-w="39"></i></div></div>
+            <div class="bar"><small>PROGRAMME</small><b>11<em>/12</em></b><div class="tr"><i data-w="92"></i></div></div>
+          </div>
+          <table class="t" id="rules"><thead><tr><th>Rule</th><th>Category</th><th>Description</th><th>Condition</th><th>Observed</th><th>Result</th><th>Weight</th></tr></thead><tbody>
+            <tr><td class="b">POL-01</td><td>Policy</td><td>Entity vintage threshold</td><td><code>vintage &gt;= 5 years</code></td><td>9 years</td><td><span class="pill g">PASS</span></td><td>8 pts</td></tr>
+            <tr><td class="b">POL-02</td><td>Policy</td><td>Commercial registration status</td><td><code>active RoC, no strike-off</code></td><td>Active</td><td><span class="pill g">PASS</span></td><td>7 pts</td></tr>
+            <tr><td class="b">BUR-01</td><td>Bureau</td><td>Commercial CIBIL rank (CMR)</td><td><code>CMR &lt;= 4</code></td><td>CMR-4</td><td><span class="pill g">PASS</span></td><td>12 pts</td></tr>
+            <tr><td class="b">BUR-02</td><td>Bureau</td><td>Promoter bureau score</td><td><code>score &gt;= 700</code></td><td>692</td><td><span class="pill r">FAIL</span></td><td>10 pts</td></tr>
+            <tr><td class="b">BNK-01</td><td>Banking</td><td>Average bank balance</td><td><code>ABB &gt;= ₹50,00,000</code></td><td>₹30,25,000</td><td><span class="pill r">FAIL</span></td><td>11 pts</td></tr>
+          </tbody></table>
+        </div>
+        <div class="pin" style="left:690px;top:92px"><div class="d">1</div><div class="tx">BRE decision sits inline with the application</div></div>
+        <div class="pin" style="left:60px;top:352px"><div class="d">2</div><div class="tx">Score contribution by category</div></div>
+        <div class="pin" style="left:640px;top:585px"><div class="d">3</div><div class="tx">Every rule auditable — pass and fail both visible</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TXN ===== -->
+  <div class="scr" id="txn">
+    <div class="sb" data-active="Transactions"></div>
+    <div class="mn">
+      <div class="tb"><span class="chip">VAYANA SCF</span><span class="crumb">Transactions — Staging Batch</span><div class="r">Scope <span>All Programmes (9)</span> Role <span>Operations maker</span></div></div>
+      <div class="bd2">
+        <div style="font-size:20px;font-weight:700">Staging Batch</div><div style="font-size:12px;color:var(--muted);font-weight:500;margin-bottom:14px">Incoming invoice batches pending validation, rule checks and the disbursement queue</div>
+        <table class="t"><thead><tr><th>Picked by</th><th>Picked at</th><th>Processing status</th><th>External ID</th><th>Financing programme</th><th>Counterparty</th><th style="text-align:right">Funding (₹)</th><th style="text-align:right">Instr.</th></tr></thead><tbody id="txrows"></tbody></table>
+        <div id="modalBg"></div>
+        <div id="t360"><h4>Transaction 360 · D262450002S0000P0000</h4>
+          <div class="sec">PROGRAMME &amp; FACILITY</div><div class="kv"><div><small>Programme</small><b>Meridian Tier-1 Vendor Early Payment</b></div><div><small>Product · limit type</small><b>Payable finance · Borrower limit</b></div></div>
+          <div class="sec">COMMERCIAL &amp; PRICING</div><div class="kv"><div><small>Normal ROI</small><b>9.25% p.a.</b></div><div><small>Grace ROI</small><b>11.25% p.a.</b></div><div><small>Interest type</small><b>Advance, actual/365</b></div><div><small>Processing fee</small><b>0.25%</b></div></div>
+          <div class="sec">DISBURSEMENT &amp; TENOR</div><div class="kv"><div><small>Beneficiary</small><b>Apex Axles &amp; Transmissions LLP</b></div><div><small>IFSC</small><b>HDFC0001234</b></div><div><small>Tenor</small><b>90 days</b></div><div><small>Due date</small><b>01-Dec-2026</b></div></div>
+        </div>
+        <div class="pin" style="left:250px;top:4px"><div class="d">1</div><div class="tx">Validation at intake — every batch carries a status</div></div>
+        <div class="pin" style="left:20px;top:404px"><div class="d">2</div><div class="tx">Exceptions land in a queue, with maker-checker on the row</div></div>
+        <div class="pin" style="left:560px;top:590px"><div class="d">3</div><div class="tx">One record answers every audit query</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CO-LENDING ===== -->
+  <div class="scr" id="col">
+    <div class="sb" data-active="Split ledger"></div>
+    <div class="mn">
+      <div class="tb"><span class="chip">VAYANA SCF</span><span class="crumb">Funding — Co-lending Arrangements</span><div class="r">Partner <span>State Union Commercial Bank · CLM-2 · 20:80</span></div></div>
+      <div class="bd2"><div id="flow">
+        <svg id="fsvg" viewBox="0 0 1130 648" preserveAspectRatio="none"><defs><linearGradient id="gPipe" gradientUnits="userSpaceOnUse" x1="370" y1="0" x2="660" y2="0"><stop offset="0" stop-color="#2E3F8C"/><stop offset="1" stop-color="#B4303E"/></linearGradient></defs>
+          <path class="out" d="M370,195 L470,195"/><path class="out" d="M580,190 C625,190 615,115 660,115"/><path class="out" d="M580,215 C625,215 615,375 660,375"/>
+          <path class="ret" d="M660,140 C615,140 625,236 580,236"/><path class="ret" d="M660,400 C615,400 625,236 580,236"/><path class="ret" d="M470,236 C430,236 440,395 370,395"/>
+        </svg>
+        <div class="node" id="draw"><small>Drawdown · one counterparty experience</small><b class="amt">₹1,00,00,000</b><div style="font-size:12px;color:var(--muted);font-weight:500;margin-top:4px">Apex Axles &amp; Transmissions LLP · Meridian Tier-1 programme</div></div>
+        <div id="split"><b>20 : 80</b><small>Split engine</small></div>
+        <div class="node book" id="b1" style="left:660px;top:40px"><small>Book 1 · Originator NBFC · 20%</small><b>₹20,00,000</b><div class="led"><span>Posted</span><b>✓ Ledger entry</b></div><div class="led"><span>Collection T+1</span><b>₹20,00,000</b></div></div>
+        <div class="node book" id="b2" style="left:660px;top:300px"><small>Book 2 · State Union Commercial Bank · 80%</small><b>₹80,00,000</b><div class="led"><span>Posted</span><b>✓ Ledger entry</b></div><div class="led"><span>Collection T+1</span><b>₹80,00,000</b></div></div>
+        <div class="node" id="coll" style="left:40px;top:330px;width:330px;opacity:0"><small>Collection on due date</small><b class="amt" style="color:var(--green)">₹1,00,00,000</b><div style="font-size:12px;color:var(--muted);font-weight:500;margin-top:4px">Escrow · auto-sweep · split back T+1</div></div>
+        <div id="cfg"><span>Model <b>CLM-2</b></span><span>Split <b>20 : 80</b></span><span>Hurdle <b>7.25%</b></span><span>Spread <b>1.5%</b></span><span>Blended <b>8.75%</b></span><span>Sweep <b>T+1</b></span></div>
+        <div class="pin" style="left:40px;top:36px"><div class="d">1</div><div class="tx">One drawdown, two books</div></div>
+        <div class="pin" style="left:400px;top:466px"><div class="d">2</div><div class="tx">Split and reconciled per transaction</div></div>
+        <div class="pin" style="left:660px;top:518px"><div class="d">3</div><div class="tx">Ratio, pricing, sweep — configured, not coded</div></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ===== EWS ===== -->
+  <div class="scr" id="ews">
+    <div class="sb" data-active="EWS watchlist"></div>
+    <div class="mn">
+      <div class="tb"><span class="chip">VAYANA SCF</span><span class="crumb">EWS — Watchlist &amp; Rubix Scoring</span><div class="r">Scope <span>All Programmes (9)</span> Role <span>Credit monitoring</span></div></div>
+      <div class="bd2">
+        <div class="strip">
+          <div class="stat"><small>Counterparties on watchlist</small><b class="red"><span id="ew1">0</span></b><span class="cap">Rubix score &lt; 60 or critical / high risk</span></div>
+          <div class="stat"><small>Total exposure on watchlist</small><b>₹<span id="ew2">0.00</span> Cr</b><span class="cap">Aggregate utilised portfolio at risk</span></div>
+          <div class="stat"><small>Downgrades this month</small><b><span id="ew3">0</span> signals</b><span class="cap">Behavioural deterioration triggers</span></div>
+        </div>
+        <table class="t"><thead><tr><th>Counterparty</th><th>Anchor</th><th style="text-align:right">Sub-limit</th><th style="text-align:right">Utilised</th><th>DPD</th><th>Dilution</th><th>Rubix</th><th>Trend (3M)</th><th>Band</th><th>Enforcement</th></tr></thead><tbody id="ewrows"></tbody></table>
+        <div id="alertBadge">⚠ Alert raised · APP-2026-0814</div>
+        <div class="pin" style="left:30px;top:136px"><div class="d">1</div><div class="tx">The watch book, at a glance</div></div>
+        <div class="pin" style="left:600px;top:486px"><div class="d">2</div><div class="tx">Rubix score with three-month trend</div></div>
+        <div class="pin" style="left:600px;top:540px"><div class="d">3</div><div class="tx">Enforced from the list — not raised elsewhere</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PORTFOLIO ===== -->
+  <div class="scr" id="port">
+    <div class="sb" data-active="Portfolio dashboard"></div>
+    <div class="mn">
+      <div class="tb"><span class="chip">VAYANA SCF</span><span class="crumb">Portfolio Dashboard</span><div class="r">Scope <span>All Programmes (9)</span> Role <span>Head of business</span></div></div>
+      <div class="bd2">
+        <div class="legend"><span><i style="background:#1E8A5B"></i>Payable Finance 1,420.50 Cr</span><span><i style="background:#2F6FE0"></i>Dealer Finance 860.20 Cr</span><span><i style="background:#7A3FD1"></i>Factoring with Recourse 182.40 Cr</span><span><i style="background:#D98B1E"></i>PO Financing 78.50 Cr</span><span><i style="background:#3B4256"></i>Sales Invoice Discount 38.80 Cr</span></div>
+        <table class="t"><thead><tr><th>Product</th><th style="text-align:right">Programmes</th><th style="text-align:right">Ctpty</th><th style="text-align:right">Sanctioned</th><th style="text-align:right">Utilised</th><th>Util %</th><th style="text-align:right">Overdue</th><th style="text-align:right">NPA %</th><th style="text-align:right">Disb YTD</th><th>Health</th></tr></thead><tbody id="prows"></tbody></table>
+        <div id="chart"><h4>Drawdown and Collection Trend</h4><p>Gross disbursements versus collections, last 12 months</p><svg id="csvg" viewBox="0 0 1100 220" preserveAspectRatio="none"></svg></div>
+        <div class="pin" style="left:30px;top:318px"><div class="d">1</div><div class="tx">Every SCF product, one view</div></div>
+        <div class="pin" style="left:430px;top:318px"><div class="d">2</div><div class="tx">Foots to the total row — no adjustment</div></div>
+        <div class="pin" style="left:620px;top:402px"><div class="d">3</div><div class="tx">How the book is growing, and how it's behaving</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="flipLabel"><i></i><span id="flipText"></span></div>
+
+  <!-- ===== CLOSE ===== -->
+  <div id="close">
+    <div class="copy"><h1><span class="rl"><span>One platform, end to end.</span></span></h1><p class="rl" style="font-size:30px;font-weight:500;color:var(--muted);margin-top:14px"><span>Onboard · Service · Co-lend · Monitor · Portfolio — on one book.</span></p></div>
+    <div class="band"><div class="l"><h2>See it live at Global Fintech Fest 2026</h2><p><span class="booth">Booth K16–17</span>Jio World Centre, Mumbai &nbsp;·&nbsp; 9–11 September</p></div><div class="qr"><img src="" alt=""><span>Scan to connect</span></div></div>
+  </div>
+</div>
+
+<script src="gsap.min.js"></script>
+<script src="data.js"></script>
+<script>
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+function reveal(tl, sel, at, s=0.12){ tl.fromTo(sel,{yPercent:115,opacity:0},{yPercent:0,opacity:1,duration:0.9,ease:'power3.out',stagger:s},at); }
+
+// ---- build sidebars ----
+const NAV=[['OVERVIEW',['Portfolio dashboard']],['ORIGINATE',['Onboarding queue|18','Applications (LOS)','Decisions (BRE)','Rule configuration']],['SERVICE',['Operations console','Programmes & limits|9','Transactions']],['FUNDING',['Co-lending arrangements|4','Co-lending processing','Split ledger']],['MONITOR',['EWS watchlist|5','Alerts|8','Anchor exposure']]];
+$$('.sb').forEach(sb=>{ const act=sb.dataset.active; let h=`<div class="brand"><img src="${VAYANA_SRC}"><span>SCF LENDING<br>PLATFORM</span></div>`;
+  NAV.forEach(([g,items])=>{ h+=`<div class="g">${g}</div>`; items.forEach(it=>{ const [n,b]=it.split('|'); h+=`<div class="it ${n===act?'on':''}">${n}${b?`<span class="bd">${b}</span>`:''}</div>`; }); });
+  sb.innerHTML=h; });
+$('#hdr img').src=VAYANA_SRC; $('#close .qr img').src=QR_SRC;
+
+// ---- flip screens ----
+function mkScreen(id, active, crumb, right, body){ const d=document.createElement('div'); d.className='scr flip'; d.id=id;
+  d.innerHTML=`<div class="sb" data-active="${active}"></div><div class="mn"><div class="tb"><span class="chip">VAYANA SCF</span><span class="crumb">${crumb}</span><div class="r">${right}</div></div><div class="bd2">${body}</div></div>`;
+  $('#close').before(d); }
+const scope='Scope <span>All Programmes (9)</span>';
+mkScreen('f1','Applications (LOS)','LOS — Documents &amp; Application Lifecycle',scope+' Role <span>Operations maker</span>',`
+  <div style="display:grid;grid-template-columns:1.45fr 1fr;gap:16px">
+    <div class="card"><h4>Documents Repository &amp; AI Classification</h4>
+      <table class="t"><thead><tr><th>Document</th><th>File</th><th>Classified as</th><th>Confidence</th><th>Status</th><th></th></tr></thead><tbody>
+      ${[['Financials FY24-25','AFS_FY25.pdf','Audited Financial Statement','99%','g|VERIFIED'],['Bank Statement (12 months)','BankStmt_ICICI.pdf','Bank Statement','96%','g|VERIFIED'],['GST Returns','GST_Filings.pdf','GST Return Filing','95%','g|VERIFIED'],['Vendor Agreement','Meridian_Axle_Co.pdf','Commercial Contract','92%','g|VERIFIED'],['Partner KYC Documents','Partner_KYC_Pack.pdf','KYC Document','97%','g|VERIFIED'],['Factory Inspector License','Doc_Scan_003.pdf','Pollution Control NOC','61%','r|MISMATCH'],['Sanction Letter of Working Capital','Existing_Bank_Sanction.pdf','Banking Sanction','91%','g|VERIFIED'],['Utility Proof','MSEDCL_Bill_July.pdf','Utility Bill','94%','g|VERIFIED']].map(r=>{const [c,t]=r[4].split('|');return `<tr><td class="b">${r[0]}</td><td><code style="font-size:11px;color:#6B7280">${r[1]}</code></td><td>${r[2]}</td><td><span class="pill ${c==='r'?'r':'g'}" style="background:${c==='r'?'#FBE9E7':'#EEF0F4'};color:${c==='r'?'#C8362E':'#3B4256'}">${r[3]}</span></td><td><span class="pill ${c}">${t}</span></td><td style="color:var(--green);font-weight:600">Verify · <span style="color:var(--red)">Query</span></td></tr>`;}).join('')}</tbody></table></div>
+    <div><div class="card"><h4>Application Lifecycle Timeline</h4><div class="tl"><div><b>Onboarding initiated</b><span>Portal self-serve · 14-Aug-2026 10:15</span></div><div><b>Documents uploaded</b><span>Apex finance team · 17-Aug-2026 15:40</span></div><div><b>Auto-checks completed with 2 referrals</b><span>BRE verification engine · 18-Aug-2026 09:30</span></div><div><b>Assigned to Senior Analyst</b><span>Auto workflow engine · 18-Aug-2026 09:35</span></div></div></div>
+      <div class="actions"><small>Stage Action Bar · Operations maker</small><div class="bt"><span class="g">Send to BRE</span><span>Sanction</span><span class="r">Decline</span><span>Return for Info</span></div></div></div>
+  </div>`);
+mkScreen('f2','Rule configuration','BRE — Policy &amp; Rule Configuration',scope+' Role <span>Credit policy</span>',`
+  <div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="h3">BRE Policy &amp; Rule Configuration</div><div class="sub2">Dynamic rule evaluation engine — policy configured as state parameters, not code</div></div><div class="btnrow"><span>Clone as Draft</span><span>Compare Versions</span><span class="p">Publish Policy</span></div></div>
+  <div style="display:grid;grid-template-columns:1fr 1.9fr;gap:16px">
+    <div class="card"><h4>Policy sets (4)</h4>
+      <div class="pol on"><b>v3.4.2 — Tier-1 Vendor Core Policy</b><span class="pill g">ACTIVE</span><small>Effective 01-Jan-2026 · 6 rules · Meridian Tier-1 Vendor Early Payment, Sagar Polymers Raw Material Reverse…</small></div>
+      <div class="pol"><b>v2.8.0 — Dealer &amp; Channel Liquidity Policy</b><span class="pill g">ACTIVE</span><small>Effective 15-Mar-2026 · 5 rules · Meridian OEM Dealer Channel Liquidity</small></div>
+      <div class="pol"><b>v4.0.0-rc1 — Aggressive Vendor Early Pay</b><span class="pill a">DRAFT</span><small>Effective 01-Oct-2026 · 5 rules</small></div>
+      <div class="pol"><b>v2.1.0 — Legacy Reverse Factoring 2025</b><span class="pill" style="background:#EEF0F4;color:#6B7280">ARCHIVED</span><small>Effective 01-Jan-2025 · 4 rules</small></div></div>
+    <div class="card"><h4>v3.4.2 — Tier-1 Vendor Core Policy <span class="pill g" style="float:right">ACTIVE</span></h4>
+      <table class="t"><thead><tr><th>Active</th><th>Rule name</th><th>Category</th><th>Condition builder</th><th>Weight</th><th>On fail</th></tr></thead><tbody>
+      ${[['Entity Operating Vintage','Policy','vintage','>=','5','10','Refer'],['Commercial Bureau CMR Rank','Bureau','bureauScore','>=','700','25','Decline'],['GST Returns Regularity (12M)','GST','gstStatus','==','Regular','20','Refer'],['Average Bank Balance (ABB)','Banking','bankBalanceLakhs','>=','25','20','Flag deviation'],['Annual Gross Turnover','Policy','turnoverCr','>=','15','15','Refer'],['Negative Screening Dedupe','Policy','negativeCheck','==','Clean','10','Decline']].map(r=>`<tr><td><span class="pill g" style="padding:1px 5px">✓</span></td><td class="b">${r[0]}</td><td>${r[1]}</td><td><span class="sel">${r[2]}</span> <span class="sel">${r[3]}</span> <span class="sel">${r[4]}</span></td><td>${r[5]} %</td><td><span class="sel" style="font-family:Poppins">${r[6]} ▾</span></td></tr>`).join('')}</tbody></table></div>
+  </div>`);
+mkScreen('f3','Programmes & limits','LMS — Programmes &amp; Limits',scope+' Role <span>Operations maker</span>',`
+  <div class="row2" style="margin-bottom:14px"><div class="mini"><small>Total sanctioned</small><b>₹35.00 Cr</b><span>Approved limit</span></div><div class="mini"><small>Total utilised</small><b>₹28.50 Cr</b><span>81.4% of sanction</span></div><div class="mini"><small>Available headroom</small><b style="color:var(--green)">₹6.50 Cr</b><span>Unutilised buffer</span></div><div class="mini"><small>Total overdue</small><b>₹0</b><span>Zero arrears</span></div></div>
+  <div style="display:grid;grid-template-columns:1fr 2.4fr;gap:16px">
+    <div class="card" style="padding:10px 0"><div style="padding:6px 16px 10px;font-size:13px;font-weight:700">Programme setup</div><div class="sb" style="width:auto;border:0;padding:0;background:none"><div class="it on">Summary &amp; business details<span class="bd">Master</span></div></div><div style="padding:12px 16px 6px;font-size:13px;font-weight:700">Related details</div>
+      ${[['Aggregate &amp; non-aggregate limits','3'],['Normal ROI slabs','4'],['Adhoc ROI slabs','2'],['Overdue ROI slabs','4'],['Sub-limit hierarchy &amp; charts','6'],['EWS &amp; Rubix credit health','2 Alert']].map(r=>`<div style="display:flex;justify-content:space-between;padding:8px 16px;font-size:13px;color:#3B4256">${r[0]}<span class="bd" style="font-size:11px;background:${r[1].includes('Alert')?'#FBE9E7':'#EEF0F4'};color:${r[1].includes('Alert')?'#C8362E':'#6B7280'};border-radius:999px;padding:1px 8px">${r[1]}</span></div>`).join('')}</div>
+    <div class="card"><h4>Business details</h4><div class="kv" style="row-gap:14px">
+      <div><small>Anchor customer name</small><b>Meridian Auto Components Ltd</b></div><div><small>Financing programme name</small><b style="color:var(--green)">Meridian Tier-1 Vendor Early Payment</b></div>
+      <div><small>Product type</small><b style="color:var(--navy)">Vendor Finance</b></div><div><small>Payment method</small><b>RTGS / Direct NACH auto-debit</b></div>
+      <div><small>Relationship manager</small><b>Rajesh Iyer (Large Corporate Desk)</b></div><div><small>Sanction date</small><b>2026-01-01</b></div>
+      <div><small>Credit period days</small><b>90 days</b></div><div><small>Invoice concentration amount</small><b>₹10,00,00,000</b></div>
+      <div><small>Partial disbursement allowed</small><b>Yes</b></div><div><small>Limit reporting</small><b>Borrower limit</b></div></div></div>
+  </div>`);
+mkScreen('f4','Programmes & limits','LMS — Programmes &amp; Limits',scope+' Role <span>Operations maker</span>',`
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+    <div class="card"><h4>Interest details</h4><div class="kv" style="row-gap:14px"><div><small>Interest type</small><b>Interest in arrears</b></div><div><small>Tenor days</small><b>90</b></div><div><small>Grace days</small><b>10</b></div><div><small>Stale days</small><b>10</b></div><div><small>Auto finance</small><b>No</b></div><div><small>Auto debit</small><b>No</b></div></div></div>
+    <div class="card"><h4>Exposure details</h4><div class="kv" style="row-gap:14px"><div><small>Exposure on</small><b>Anchor</b></div><div><small>Interest debit party</small><b>Anchor</b></div><div><small>Penal debit party</small><b>Anchor</b></div><div><small>Principal repayment by</small><b>Anchor</b></div><div><small>Recourse</small><b>With recourse</b></div><div><small>Settlement cycle</small><b>T+1</b></div></div></div>
+  </div>
+  <div class="card"><div style="display:flex;align-items:center;justify-content:space-between"><h4 style="margin:0">EWS &amp; Rubix credit health <span style="font-size:11px;color:var(--muted);font-weight:500;margin-left:8px">Live credit scores, behavioural deterioration warnings and automated processing gate</span></h4><span class="btnrow"><span style="color:var(--navy)">Open EWS &amp; Rubix processing module →</span></span></div>
+    <div class="row2" style="margin-top:14px"><div class="mini"><small>Anchor Rubix score</small><b style="color:var(--green)">78 <em>/ 100</em></b><span>Rating: CRISIL AA (low risk)</span></div><div class="mini"><small>Avg counterparty score</small><b style="color:var(--green)">75 <em>/ 100</em></b><span>Across 6 onboarded vendors</span></div><div class="mini"><small>Watchlist flagged</small><b>2 <em>vendors</em></b><span>Requires underwriting review</span></div><div class="mini"><small>Processing clearance gate</small><b><span class="pill r">⚠ Exceptions active</span></b><span>4 active EWS signal(s)</span></div></div></div>`);
+mkScreen('f5','Co-lending arrangements','Funding — Co-lending Arrangements','Partner <span>State Union Commercial Bank · CLM-2 (Non-discretionary) · 20:80</span>',`
+  <div class="card" style="margin-bottom:14px"><h4>1. Commercial model &amp; capital split parameters <span style="float:right;font-size:11px;color:var(--muted);font-weight:500">RBI CLM Master Direction 2020</span></h4>
+    <div class="kv" style="grid-template-columns:1fr 1fr 1fr;row-gap:14px"><div><small>Co-lending model</small><b class="sel" style="display:block;font-family:Poppins;padding:7px 10px">CLM-2 (Non-discretionary)</b></div><div><small>Originator split ratio (%)</small><b class="sel" style="display:block;font-family:Poppins;padding:7px 10px">20</b></div><div><small>Partner bank split ratio (%)</small><b class="sel" style="display:block;font-family:Poppins;padding:7px 10px">80%</b></div>
+    <div><small>Master facility sanction limit (₹)</small><b class="sel" style="display:block;font-family:Poppins;padding:7px 10px">₹1,00,00,00,000</b></div><div><small>Single counterparty sub-limit cap (₹)</small><b class="sel" style="display:block;font-family:Poppins;padding:7px 10px">1,00,00,000</b></div><div><small>Settlement &amp; sweep cycle</small><b class="sel" style="display:block;font-family:Poppins;padding:7px 10px">T+1</b></div></div></div>
+  <div class="card"><h4>2. Interest, hurdle rate &amp; spread pricing engine <span style="float:right;font-size:11px;color:var(--navy);font-weight:600">Blended pricing formula</span></h4>
+    <div class="kv" style="grid-template-columns:1fr 1fr 1fr;row-gap:14px"><div><small>Benchmark reference index</small><b class="sel" style="display:block;font-family:Poppins;padding:7px 10px">1-Year MCLR (8.25%)</b></div><div><small>Partner bank hurdle rate (% p.a.)</small><b class="sel" style="display:block;font-family:Poppins;padding:7px 10px">7.25</b></div><div><small>Originator spread margin (% p.a.)</small><b class="sel" style="display:block;font-family:Poppins;padding:7px 10px">1.5</b></div>
+    <div><small>Final borrower all-in rate (% p.a.)</small><b class="sel" style="display:block;font-family:Poppins;padding:7px 10px;color:var(--navy);border-color:var(--navy)">8.75%</b></div><div><small>Penal interest sharing split</small><b class="sel" style="display:block;font-family:Poppins;padding:7px 10px">50% Originator : 50% Partner bank</b></div><div><small>Processing fee split</small><b class="sel" style="display:block;font-family:Poppins;padding:7px 10px">0.25% Originator : 0.25% Partner bank</b></div></div></div>`);
+mkScreen('f6','Alerts','EWS — Alerts Queue &amp; Action Console',scope+' Role <span>Credit monitoring</span>',`
+  <div style="display:grid;grid-template-columns:1fr 2.6fr;gap:16px">
+    <div class="card" style="padding:0;overflow:hidden"><div style="padding:12px 12px 8px;font-size:13px;font-weight:700;display:flex;justify-content:space-between">Alerts queue (14)<span style="font-size:11px;color:var(--muted);font-weight:500">14 open</span></div>
+      ${[['MEDIUM','Universal Stabilizers & Catalysts','Rising credit notes','₹3.80 Cr',''],['MEDIUM','Konkan Monomers & Resins Pvt Ltd','Utilisation spike','₹4.00 Cr',''],['MEDIUM','Southern Boiler & Pressure Vessels','GST filing delay','₹4.80 Cr','on'],['HIGH','Coimbatore Gantry & Cranes Pvt Ltd','Repayment stretch','₹4.30 Cr',''],['MEDIUM','Vidarbha Alloys & Castings','Dilution above threshold','₹2.90 Cr','']].map(r=>`<div class="aq ${r[4]}"><span class="pill ${r[0]==='HIGH'?'r':'a'}">${r[0]}</span><b>${r[1]}</b><span>${r[2]}</span><div><span>Exposure:</span><span class="ex">${r[3]}</span></div></div>`).join('')}</div>
+    <div>
+      <div class="card" style="margin-bottom:12px"><div style="display:flex;align-items:flex-start;gap:10px"><div style="flex:1"><span class="pill a">MEDIUM</span> <span class="pill" style="background:#EEF0F4;color:#6B7280">OPEN</span> <span style="font-size:11px;color:var(--muted)">ID: alt-14</span><div style="font-size:18px;font-weight:700;margin-top:6px">Southern Boiler &amp; Pressure Vessels</div><div style="font-size:12px;color:var(--muted)">Signal: <b style="color:var(--ink)">GST filing delay</b> · Triggered 05-Sep-2026</div></div><div style="text-align:right"><small style="font-size:10px;letter-spacing:.06em;color:var(--muted);font-weight:600">EXPOSURE AT RISK</small><div style="font-size:24px;font-weight:700;color:var(--red)">₹4.80 Cr</div></div></div></div>
+      <div class="card" style="margin-bottom:12px"><h4>Rubix score impact &amp; migration</h4><div class="row2"><div class="mini"><small>Score before</small><b>63</b></div><div class="mini"><small>Score after</small><b style="color:var(--red)">56</b></div><div class="mini"><small>Score delta</small><b style="color:var(--red)">−7 pts</b></div><div class="mini" style="flex:1.6"><small>Risk migration</small><b style="font-size:14px;color:var(--red);margin-top:8px">Downgraded to Critical risk band</b></div></div>
+        <div class="warnbox"><b>⚠ Recommended credit risk action</b>Send automated GST compliance reminder · review sub-limit before next drawdown</div></div>
+      <div class="card"><h4>Action enforcement console</h4><div class="enf"><span class="r">🔒 Hold further drawdowns</span><span>⚑ Flag sub-limit for review</span><span>Request info from RM</span><span>Close alert with justification</span></div></div>
+    </div>
+  </div>`);
+mkScreen('f7','Anchor exposure','Monitor — Anchor Exposure &amp; Systemic Risk',scope+' Role <span>Credit monitoring</span>',`
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+  ${[['Meridian Auto Components Ltd','g|LOW','Automotive & Ancillaries','78','↑','60.00','48.50','11.50',81,'10 counterparties'],['Sagar Polymers Pvt Ltd','a|WATCH','Chemicals & Polymers','61','↓','40.00','34.20','5.80',86,'8 counterparties'],['Trident Steel Traders Ltd','g|LOW','Metals & Mining','82','↑','60.00','52.00','8.00',87,'6 counterparties'],['Kaveri Engineering Works Ltd','a|WATCH','Heavy Machinery & EPC','54','↓','35.00','29.50','5.50',84,'7 counterparties']].map(r=>{const [c,t]=r[1].split('|');return `<div class="anc"><div class="hd2">${r[0]} <span class="pill ${c}">${t}</span><div class="sc" style="color:${c==='a'?'var(--red)':'var(--green)'}"><small>RUBIX SCORE</small>${r[3]} ${r[4]}</div></div><div class="ind">Industry: <b style="color:var(--ink)">${r[2]}</b> · Rating · Group limit</div><div class="trio"><div><small>SANCTIONED</small><b>₹${r[5]} Cr</b></div><div><small>UTILISED</small><b>₹${r[6]} Cr</b></div><div><small>AVAILABLE</small><b style="color:var(--green)">₹${r[7]} Cr</b></div></div><div class="ub">Utilisation (${r[9]})<i><b style="width:${r[8]}%"></b></i>${r[8]}.${r[8]%3}%</div></div>`;}).join('')}
+  </div>`);
+mkScreen('f8','Portfolio dashboard','Portfolio Dashboard — DPD &amp; overdue analysis',scope+' Role <span>Head of business</span>',`
+  <div class="row2" style="margin-bottom:16px"><div class="bk"><small>0 – 30 DPD</small><b>22.80 Cr</b><span>9 customers · 124 invoices</span><i style="background:#D9A02B"></i><em>52.8% of overdue</em></div><div class="bk"><small>31 – 60 DPD</small><b>11.20 Cr</b><span>4 customers · 36 invoices</span><i style="background:#E0851E;width:26%"></i><em>25.9% of overdue</em></div><div class="bk"><small>61 – 90 DPD</small><b>5.60 Cr</b><span>3 customers · 12 invoices</span><i style="background:#7A3FD1;width:13%"></i><em>13.0% of overdue</em></div><div class="bk"><small>90+ DPD (NPA)</small><b>3.60 Cr</b><span>2 customers · 5 invoices</span><i style="background:#C8362E;width:8%"></i><em>8.3% of overdue</em></div></div>
+  <div class="card"><table class="t"><thead><tr><th>Bucket</th><th style="text-align:right">Customers</th><th style="text-align:right">Invoices</th><th style="text-align:right">Amount (Cr)</th><th style="text-align:right">% of book</th><th style="text-align:right">% of overdue</th></tr></thead><tbody>
+  ${[['0 – 30 DPD','9','124','22.80','0.88%','52.8%'],['31 – 60 DPD','4','36','11.20','0.43%','25.9%'],['61 – 90 DPD','3','12','5.60','0.22%','13.0%'],['90+ DPD (NPA)','2','5','3.60','0.14%','8.3%'],['TOTAL','18','177','43.20','1.67%','100.0%']].map((r,i)=>`<tr style="${i===4?'font-weight:700':''}"><td class="b">${r[0]}</td><td class="n">${r[1]}</td><td class="n">${r[2]}</td><td class="n">${r[3]}</td><td class="n">${r[4]}</td><td class="n">${r[5]}</td></tr>`).join('')}</tbody></table></div>`);
+mkScreen('f9','Portfolio dashboard','Portfolio Dashboard — trend &amp; ageing',scope+' Role <span>Head of business</span>',`
+  <div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><div><h4 style="margin:0">Ageing of live transactions</h4><div class="sub2" style="margin:2px 0 0">Exposure spread across ageing buckets — live book ₹2,580.40 Cr</div></div><div class="btnrow"><span class="p">1M</span><span>1Q</span><span>1Y</span></div></div>
+    <div class="age" id="ageBars">${[['Current','2,537.20 Cr',98],['1–30 DPD','22.80 Cr',9],['31–60 DPD','11.20 Cr',5],['61–90 DPD','5.60 Cr',3],['90+ DPD','3.60 Cr',2]].map(r=>`<div><span>${r[0]}</span><i data-w="${r[2]}"></i><b>₹${r[1]}</b></div>`).join('')}</div>
+    <div style="display:flex;gap:14px;margin-top:20px"><div class="mini"><small>Live book outside current</small><b>₹43.20 Cr <em>1.67%</em></b></div><div class="mini"><small>Collections this month</small><b>₹180.00 Cr</b></div><div class="mini"><small>Disbursed this month</small><b>₹188.00 Cr</b></div><div class="mini"><small>Portfolio utilisation</small><b>74.8%</b></div></div></div>`);
+$$('.flip .sb').forEach(sb=>{ const act=sb.dataset.active; if(!act) return; let h=`<div class="brand"><img src="${VAYANA_SRC}"><span>SCF LENDING<br>PLATFORM</span></div>`;
+  NAV.forEach(([g,items])=>{ h+=`<div class="g">${g}</div>`; items.forEach(it=>{ const [n,b]=it.split('|'); h+=`<div class="it ${n===act?'on':''}">${n}${b?`<span class="bd">${b}</span>`:''}</div>`; }); }); sb.innerHTML=h; });
+
+// ---- txn rows ----
+const TX=[['Divyanshu VFPL Approver','02-Sep-2026 17:16','g|Validated','D262450002S0000P0000','Meridian Tier-1 Vendor EP','Apex Axles & Transmissions','52,50,000','1'],
+['—','—','r|PostValidationFailed','D262370019…','Programme for DF','Sterling Springs & Fasteners','18,000','1'],
+['—','—','r|PostValidationFailed','D262380007…','Jindal bulk payable','Bharat Die Casting Works','20,000','1'],
+['—','—','r|PostValidationFailed','D262380008…','NACH PF PG 9211 0001','NACH PF Dealer 9211 0…','2,00,00,000','1'],
+['—','—','g|Validated','D262380013…','NACH PG 001','Precision Forgings India','2,00,00,000','1'],
+['—','—','r|PostValidationFailed','D262390000…','NACH DF PG 9211 0001','NACH DF Dealer 9211 0…','2,00,00,000','1'],
+['—','—','a|PendingInManualQueue','D262390006…','NACH PG 001','Deccan Radiators & Coolers','38,50,000','11'],
+['—','—','g|Validated','D262390011…','Meridian Tier-1 Vendor EP','Sahyadri Gaskets & Rubber','1,12,40,000','3']];
+$('#txrows').innerHTML=TX.map((r,i)=>{ const [c,t]=r[2].split('|'); return `<tr class="row"><td class="pk">${r[0]}</td><td class="pa">${r[1]}</td><td><span class="pill ${c}">${t}</span></td><td class="b">${r[3]}</td><td class="b">${r[4]}</td><td>${r[5]}</td><td class="n b">${r[6]}</td><td class="n">${r[7]}</td></tr>`; }).join('');
+
+// ---- ews rows ----
+const EW=[['Precision Forgings India Pvt Ltd','6,00,00,000','5,20,00,000','0d','1.2%','78','74 → 76 → <b>78</b>','g|LOW'],
+['Apex Axles & Transmissions LLP','5,50,00,000','4,80,00,000','14d','3.5%','68','76 → 70 → <b class="dn">68</b>','g|LOW'],
+['Sterling Springs & Fasteners','5,00,00,000','4,50,00,000','0d','0.8%','84','80 → 82 → <b>84</b>','g|LOW'],
+['Bharat Die Casting Works Pvt Ltd','6,50,00,000','5,50,00,000','4d','1.5%','72','72 → 72 → <b>72</b>','g|LOW'],
+['Deccan Radiators & Coolers Pvt Ltd','4,50,00,000','4,20,00,000','22d','4.1%','64','71 → 66 → <b class="dn">64</b>','a|WATCH'],
+['Sahyadri Gaskets & Rubber Products','5,00,00,000','4,30,00,000','0d','0.5%','81','80 → 81 → <b>81</b>','g|LOW']];
+$('#ewrows').innerHTML=EW.map((r,i)=>{ const [c,t]=r[7].split('|'); return `<tr class="row" id="ew${i}"><td class="b">${r[0]}</td><td style="color:var(--muted)">Meridian Auto Components…</td><td class="n b">₹${r[1]}</td><td class="n b">₹${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td class="b">${r[5]}</td><td class="trend">${r[6]}</td><td><span class="pill ${c}" id="band${i}">${t}</span></td><td><span class="hold" id="hold${i}">Hold Drawdown</span></td></tr>`; }).join('');
+
+// ---- portfolio rows ----
+const PR=[['#1E8A5B','Payable Finance','27','1,840','1,850.00 Cr','1,420.50 Cr',77,'21.60 Cr','0.18%','780.20 Cr'],['#2F6FE0','Dealer Finance','14','540','1,150.00 Cr','860.20 Cr',75,'15.40 Cr','0.22%','465.00 Cr'],['#7A3FD1','Factoring with Recourse','4','85','250.00 Cr','182.40 Cr',73,'4.80 Cr','0.35%','112.40 Cr'],['#D98B1E','PO Financing','2','32','120.00 Cr','78.50 Cr',65,'1.40 Cr','0.00%','48.20 Cr'],['#3B4256','Sales Invoice Discount','2','16','80.00 Cr','38.80 Cr',49,'0.00 Cr','0.00%','20.00 Cr'],['#1E8A5B','TOTAL','49','2,513','3,450.00 Cr','2,580.40 Cr',75,'43.20 Cr','0.14%','1,425.80 Cr']];
+$('#prows').innerHTML=PR.map((r,i)=>`<tr class="row ${i===5?'tot':''}"><td class="b"><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${r[0]};margin-right:8px;vertical-align:-1px"></i>${r[1]}</td><td class="n">${r[2]}</td><td class="n">${r[3]}</td><td class="n b">${r[4]}</td><td class="n b">${r[5]}</td><td><span class="ut"><i data-w="${r[6]}"></i></span>${r[6]}.${i%2?'8':'6'}%</td><td class="n" style="color:var(--amber)">${r[7]}</td><td class="n">${r[8]}</td><td class="n">${r[9]}</td><td><span class="pill g">HEALTHY</span></td></tr>`).join('');
+$$('#prows tr.tot td').forEach(td=>{ td.style.fontWeight='700'; td.style.borderTop='2px solid var(--line)'; });
+
+// ---- chart ----
+(function(){ const svg=$('#csvg'); const M=['Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug']; const D=[148,155,160,168,166,172,196,178,182,186,190,188]; const C=[135,144,150,156,157,165,180,170,176,178,181,180];
+  let h=''; const bw=42, gap=(1100-60)/12; D.forEach((v,i)=>{ const x=30+i*gap+gap/2-bw/2; const H=v/210*200; h+=`<rect class="cb" x="${x}" y="${200-H}" width="${bw}" height="${H}" rx="3" style="transform-origin:${x+bw/2}px 200px"/>`; h+=`<text x="${x+bw/2}" y="216" text-anchor="middle">${M[i]}-${i<4?'25':'26'}</text>`; });
+  const pts=C.map((v,i)=>[30+i*gap+gap/2, 200-v/210*200]); h+=`<path class="ln" id="cline" d="${pts.map((p,i)=>(i?'L':'M')+p[0]+','+p[1]).join(' ')}"/>`; pts.forEach(p=>h+=`<circle class="dot" cx="${p[0]}" cy="${p[1]}" r="3.5"/>`); svg.innerHTML=h; })();
+
+// ---- timeline ----
+gsap.defaults({overwrite:'auto'});
+const tl=gsap.timeline({paused:true});
+const show=(s,at)=>tl.set(s,{autoAlpha:1},at), hide=(s,at)=>tl.set(s,{autoAlpha:0},at);
+const HOME={left:1020,top:400,scale:1}, SIDE={left:10,top:470,scale:0.42};
+function stackTo(at, side){ tl.to('#stack',{left:side?SIDE.left:HOME.left,top:side?SIDE.top:HOME.top,scale:side?SIDE.scale:HOME.scale,duration:0.9,ease:'power3.inOut'},at); }
+function lightPlate(at,i){ tl.to('.plate i',{opacity:0,duration:0.4},at); tl.to(`.plate:nth-child(${i}) i`,{opacity:1,duration:0.4},at); }
+function pins(scr, at){ tl.fromTo(scr+' .pin',{opacity:0,scale:0.6,y:10},{opacity:1,scale:1,y:0,duration:0.5,ease:'back.out(2)',stagger:1.9},at); }
+function section(at, num, name, sub, scr, i){
+  if(i>1){ tl.to('.scr, #sec',{opacity:0,y:-30,duration:0.4,ease:'power2.in'},at-0.45); }
+  tl.call(()=>{ $('#secNum').textContent=num; $('#secName').textContent=name; $('#secSub').textContent=sub; },null,at);
+  tl.fromTo('#sec',{opacity:0,y:30},{opacity:1,y:0,duration:0.7,ease:'power3.out'},at);
+  tl.fromTo(scr,{autoAlpha:0,y:60},{autoAlpha:1,y:0,duration:0.8,ease:'power3.out'},at+0.15);
+  lightPlate(at,i);
+}
+
+// ===== OPEN 0–6.5 =====
+tl.to('#topline',{scaleX:1,duration:1.2,ease:'power2.inOut'},0.1);
+tl.to('#hdr',{opacity:1,duration:0.6},0.5);
+reveal(tl,'#openTitle .rl>span',0.4);
+tl.fromTo('.plate',{opacity:0,z:'+=300'},{opacity:1,z:'-=300',duration:0.8,ease:'power3.out',stagger:0.22},1.0);
+tl.fromTo('.lab',{opacity:0,x:-30},{opacity:1,x:0,duration:0.5,ease:'power2.out',stagger:0.22},1.3);
+reveal(tl,'#openSub>span',2.6);
+tl.to('#openTitle, #openSub, .lab',{opacity:0,y:-30,duration:0.5,ease:'power2.in'},5.6);
+stackTo(5.8,true);
+
+let cur=null;
+function lead(at, num, name, sub, scr, i){
+  if(cur){ tl.to(cur+', #sec',{opacity:0,y:-30,duration:0.4,ease:'power2.in'},at-0.45); tl.to('#flipLabel',{opacity:0,duration:0.25},at-0.45); }
+  tl.call(()=>{ $('#secNum').textContent=num; $('#secName').textContent=name; $('#secSub').textContent=sub; },null,at);
+  tl.fromTo('#sec',{opacity:0,y:30},{opacity:1,y:0,duration:0.7,ease:'power3.out'},at);
+  tl.fromTo(scr,{autoAlpha:0,y:60},{autoAlpha:1,y:0,duration:0.8,ease:'power3.out'},at+0.15);
+  lightPlate(at,i); cur=scr;
+}
+function flip(at, scr, label){
+  tl.to(cur,{autoAlpha:0,x:-60,duration:0.4,ease:'power2.in'},at);
+  tl.to('#flipLabel',{opacity:0,duration:0.25},at);
+  tl.fromTo(scr,{autoAlpha:0,x:80},{autoAlpha:1,x:0,duration:0.55,ease:'power3.out'},at+0.2);
+  tl.call(()=>{ $('#flipText').textContent=label; },null,at+0.3);
+  tl.fromTo('#flipLabel',{opacity:0,y:12},{opacity:1,y:0,duration:0.45,ease:'power3.out'},at+0.45);
+  cur=scr;
+}
+function pins(scr, at){ tl.fromTo(scr+' .pin',{opacity:0,scale:0.6,y:10},{opacity:1,scale:1,y:0,duration:0.45,ease:'back.out(2)',stagger:1.2},at); }
+
+// ===== 01 ONBOARD 6.5–16.5 =====
+lead(6.5,'01','Onboard','LOS and BRE — application, verification, decisioning','#los',1);
+{ const c={v:0}; tl.to(c,{v:68,duration:1.2,ease:'power2.out',onUpdate:()=>{$('#breScore').textContent=Math.round(c.v);}},7.2); }
+tl.to('#breBand',{opacity:1,duration:0.3},8.4);
+tl.to('#cascade',{y:'0%',duration:0.7,ease:'power3.out'},8.9);
+tl.to('#cascade .tr i',{width:(i,el)=>el.dataset.w+'%',duration:0.8,ease:'power2.out',stagger:0.07},9.3);
+tl.to('#rules tr',{opacity:1,duration:0.3,stagger:0.2},9.5);
+pins('#los',7.8);
+flip(12.2,'#f1','Documents classified on upload — exceptions flagged, actions gated by role');
+flip(14.35,'#f2','Credit policy as configuration — versioned, compared, published. Not code.');
+
+// ===== 02 SERVICE 16.5–26.5 =====
+lead(16.5,'02','Service','Programme configuration, transaction processing, Transaction 360','#txn',2);
+tl.fromTo('#txrows .row',{opacity:0,x:-24},{opacity:1,x:0,duration:0.4,ease:'power3.out',stagger:0.14},17.2);
+tl.call(()=>{ $('#txrows .row:nth-child(7) .pk').textContent='Priya Nair · Checker'; $('#txrows .row:nth-child(7) .pa').textContent='03-Sep-2026 10:04'; },null,18.9);
+tl.fromTo('#txrows .row:nth-child(7) td',{backgroundColor:'#FFF7E6'},{backgroundColor:'#ffffff',duration:1.2},18.9);
+tl.to('#txn .pin:nth-of-type(1), #txn .pin:nth-of-type(2)',{opacity:0,duration:0.3},19.4);
+tl.to('#modalBg',{opacity:1,duration:0.4},19.6);
+tl.to('#t360',{opacity:1,scale:1,duration:0.5,ease:'power3.out'},19.7);
+tl.to('#t360 .kv b',{opacity:1,duration:0.3,stagger:0.09},20.0);
+pins('#txn',17.7);
+flip(22.2,'#f3','Set once at programme level — inherited by every sub-limit under it');
+flip(24.35,'#f4','Tenor, pricing, recourse and exposure rules — parameter-driven, not one at a time');
+
+// ===== 03 CO-LENDING 26.5–36.5 =====
+lead(26.5,'03','Co-lending','Split engine, co-lender configuration, per-transaction processing','#col',3);
+tl.fromTo('#draw',{opacity:0,x:-30},{opacity:1,x:0,duration:0.6,ease:'power3.out'},27.1);
+tl.fromTo('#split',{opacity:0,scale:0.6},{opacity:1,scale:1,duration:0.5,ease:'back.out(2)'},27.8);
+tl.to('#fsvg .out:nth-of-type(1)',{strokeDashoffset:0,duration:0.5,ease:'power2.inOut'},27.5);
+tl.to('#fsvg .out:nth-of-type(2), #fsvg .out:nth-of-type(3)',{strokeDashoffset:0,duration:0.7,ease:'power2.inOut'},28.2);
+tl.fromTo('#b1, #b2',{opacity:0,x:30},{opacity:1,x:0,duration:0.6,ease:'power3.out',stagger:0.15},28.7);
+tl.to('#b1 .led:nth-of-type(1) b, #b2 .led:nth-of-type(1) b',{opacity:1,duration:0.3,stagger:0.15},29.4);
+tl.to('#fsvg .ret:nth-of-type(4), #fsvg .ret:nth-of-type(5)',{strokeDashoffset:0,duration:0.7,ease:'power2.inOut'},30.6);
+tl.to('#fsvg .ret:nth-of-type(6)',{strokeDashoffset:0,duration:0.6,ease:'power2.inOut'},31.2);
+tl.to('#b1 .led:nth-of-type(2) b, #b2 .led:nth-of-type(2) b',{opacity:1,duration:0.3,stagger:0.15},30.9);
+tl.to('#coll',{opacity:1,duration:0.5},31.6);
+tl.to('#cfg span',{opacity:1,duration:0.3,stagger:0.1},32.0);
+pins('#col',29.0);
+flip(33.4,'#f5','Partner, ratio, hurdle and sweep — configured against the programme, not coded');
+
+// ===== 04 MONITORING 36.5–46.5 =====
+lead(36.5,'04','Monitoring','EWS watchlist, Rubix scoring, alerts and enforcement','#ews',4);
+{ const a={v:0},b={v:0},c={v:0}; tl.to(a,{v:13,duration:1.1,ease:'power2.out',onUpdate:()=>{$('#ew1').textContent=Math.round(a.v);}},37.1); tl.to(b,{v:56.10,duration:1.3,ease:'power2.out',onUpdate:()=>{$('#ew2').textContent=b.v.toFixed(2);}},37.1); tl.to(c,{v:2,duration:0.9,ease:'power2.out',onUpdate:()=>{$('#ew3').textContent=Math.round(c.v);}},37.1); }
+tl.fromTo('#ewrows .row',{opacity:0,x:-24},{opacity:1,x:0,duration:0.4,ease:'power3.out',stagger:0.13},37.5);
+tl.call(()=>{ const b=$('#band1'); b.className='pill a'; b.textContent='WATCH'; },null,39.6);
+tl.to('#ew1 td',{backgroundColor:'#FFF7F6',duration:0.4},39.6);
+tl.fromTo('#alertBadge',{opacity:0,y:-10},{opacity:1,y:0,duration:0.4,ease:'back.out(2)'},39.9);
+tl.to('#hold1',{scale:0.92,duration:0.12,yoyo:true,repeat:1},40.8);
+tl.call(()=>{ const s=$('#hold1'); s.textContent='Drawdown held ✓'; s.style.background='#C8362E'; s.style.color='#fff'; },null,41.05);
+pins('#ews',38.0);
+flip(42.2,'#f6','Every alert explained — score before and after, and enforced from the console');
+flip(44.35,'#f7','When an anchor weakens, every counterparty financed against it is exposed');
+
+// ===== 05 PORTFOLIO 46.5–54.5 =====
+lead(46.5,'05','Portfolio','360° view across products — DPD, ageing and trend','#port',5);
+tl.fromTo('#prows .row',{opacity:0,x:-24},{opacity:1,x:0,duration:0.4,ease:'power3.out',stagger:0.11},47.1);
+tl.to('#prows .ut i',{width:(i,el)=>el.dataset.w+'%',duration:0.8,ease:'power2.out',stagger:0.1},47.5);
+tl.to('#chart',{y:'0%',duration:0.7,ease:'power3.out'},48.4);
+tl.fromTo('#csvg rect',{scaleY:0},{scaleY:1,duration:0.5,ease:'power2.out',stagger:0.05},48.8);
+tl.fromTo('#csvg circle',{opacity:0},{opacity:1,duration:0.3,stagger:0.05},49.4);
+pins('#port',47.8);
+flip(51.5,'#f8','Overdue by bucket — share of overdue and share of book, reconciled to the total');
+tl.to('#ageBars i',{width:(i,el)=>(el.dataset.w*8.2)+'px',duration:0.7,ease:'power2.out',stagger:0.08},53.5);
+flip(53.0,'#f9','Ageing of live exposure — how much of the book sits outside the current bucket');
+
+// ===== CLOSE 54.5–60 =====
+tl.to(cur+', #sec',{opacity:0,y:-30,duration:0.45,ease:'power2.in'},54.6);
+tl.to('#flipLabel',{opacity:0,duration:0.25},54.6);
+tl.to('#stack',{left:1230,top:330,scale:0.62,duration:0.9,ease:'power3.inOut'},54.9);
+tl.to('.plate i',{opacity:1,duration:0.5,stagger:0.08},55.4);
+show('#close',55.3);
+reveal(tl,'#close .copy .rl>span',55.5);
+tl.to('#close .band',{opacity:1,y:0,duration:0.8,ease:'power3.out'},56.4);
+tl.to('#close, #stack, #hdr, #topline',{opacity:0,duration:0.7,ease:'power2.in'},59.2);
+tl.set({},{},60);
+
+// pipe + chart line draw prep
+$$('#fsvg path').forEach(p=>{ const L=p.getTotalLength(); p.style.strokeDasharray=L; p.style.strokeDashoffset=L; });
+(function(){ const l=$('#cline'); const L=l.getTotalLength(); l.style.strokeDasharray=L; l.style.strokeDashoffset=L; tl.to(l,{strokeDashoffset:0,duration:1.0,ease:'power2.inOut'},49.2); })();
+
+window.DURATION=60; window.seek=t=>{ tl.time(Math.min(t,60)); }; window.ready=true;
+// In-browser playback: open the file with ?play appended to the URL (e.g. video.html?play) to loop the film live.
+if(location.search.indexOf('play')>-1){ tl.repeat(-1); tl.play(0); }
+
+</script>
+</body>
+</html>

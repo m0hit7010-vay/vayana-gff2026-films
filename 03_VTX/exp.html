@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vayana TradeXchange — Exporter film</title>
+<style>
+  :root{ --navy:#29397A; --deep:#1B2557; --ink:#141A3A; --crimson:#B4303E; --sky:#3446A0; --orange:#B4303E; --muted:#6B7290; --line:#E3E6F2; --panel:#F5F6FB; --green:#1E8A5B; --greenBg:#E6F4EC; --red:#C8362E;
+    --grad:linear-gradient(135deg,#2E3F8C 0%,#B4303E 100%); --gradText:linear-gradient(90deg,#3446A0 0%,#C23A49 100%); }
+  html,body{margin:0;background:#000;}
+  #stage{perspective:2400px;position:relative;width:1920px;height:1080px;overflow:hidden;background:#fff;font-family:'Poppins',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+  #stage *{box-sizing:border-box;}
+  h1,h2,h3,p{margin:0;font-weight:700;}
+  .rl{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em;} .rl>span{display:block;}
+  .grad{background:var(--gradText);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .scene{position:absolute;inset:0;visibility:hidden;opacity:0;}
+  #rule{position:absolute;left:0;top:0;width:1920px;height:8px;background:var(--grad);transform-origin:left;transform:scaleX(0);}
+  #brand{position:absolute;left:80px;top:44px;opacity:0;z-index:4;} #brand img{height:88px;display:block;}
+  .hdr{position:absolute;left:100px;top:162px;display:flex;align-items:flex-end;gap:22px;z-index:3;}
+  .hdr .k{font-size:20px;letter-spacing:.3em;text-transform:uppercase;color:var(--orange);font-weight:600;padding-bottom:10px;}
+  .hdr h2{font-size:50px;line-height:1;color:var(--navy);letter-spacing:-.01em;}
+  .pin{position:absolute;display:flex;align-items:center;gap:10px;opacity:0;z-index:5;}
+  .pin .d{width:38px;height:38px;border-radius:50%;background:var(--grad);color:#fff;font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 10px 26px rgba(180,48,62,.35);}
+  .pin .tx{background:#fff;color:var(--navy);font-size:16px;font-weight:600;padding:10px 16px;border-radius:10px;white-space:nowrap;box-shadow:0 12px 30px rgba(20,26,58,.14),0 0 0 1px rgba(20,26,58,.08);}
+
+  /* S1 ship */
+  #sea{position:absolute;left:0;top:640px;width:1920px;height:440px;}
+  #sea path{fill:none;stroke:#CFE3F3;stroke-width:2.5;}
+  #ship{position:absolute;left:-700px;top:330px;width:640px;height:340px;}
+  #ship *{fill:none;stroke:var(--navy);stroke-width:4;stroke-linejoin:round;stroke-linecap:round;}
+  #ship .box{fill:#fff;} #ship .o{stroke:var(--orange);} #ship .b{stroke:var(--sky);}
+  #inv1{position:absolute;left:1120px;top:300px;width:560px;background:#fff;border-radius:20px;box-shadow:0 30px 80px rgba(27,37,64,.14),0 0 0 1px rgba(27,37,64,.07);padding:28px 32px;opacity:0;}
+  #inv1 small{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  #inv1 .amt{font-size:44px;font-weight:700;color:var(--navy);margin:4px 0 14px;}
+  #inv1 .row{display:flex;justify-content:space-between;font-size:16px;padding:9px 0;border-top:1px solid var(--line);} #inv1 .row span{color:var(--muted);} #inv1 .row b{font-weight:600;}
+  #due{position:absolute;right:-20px;top:-26px;padding:10px 22px;border:4px solid var(--red);border-radius:12px;color:var(--red);font-size:24px;font-weight:700;letter-spacing:.06em;transform:rotate(8deg);background:rgba(255,255,255,.94);opacity:0;white-space:nowrap;}
+  #day{position:absolute;left:100px;top:150px;}
+  #day .k{font-size:20px;letter-spacing:.3em;text-transform:uppercase;color:var(--orange);font-weight:600;}
+  #day h1{font-size:70px;line-height:1.1;letter-spacing:-.02em;color:var(--navy);margin-top:12px;}
+  #day h1 b{font-variant-numeric:tabular-nums;color:var(--red);}
+
+  /* S2 pains → answers */
+  .pcard{position:absolute;top:300px;width:400px;height:520px;perspective:1600px;}
+  .pcard .face{position:absolute;inset:0;border-radius:22px;padding:34px 32px;backface-visibility:hidden;display:flex;flex-direction:column;}
+  .pcard .front{background:#F2F4F8;color:#4B5568;}
+  .pcard .back{background:#fff;box-shadow:0 30px 70px rgba(27,37,64,.12),0 0 0 1px rgba(27,37,64,.06);transform:rotateY(180deg);}
+  .pcard .lab{font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#9AA3B8;margin-bottom:auto;} .pcard .back .lab{color:var(--sky);}
+  .pcard .t{font-size:26px;line-height:1.3;font-weight:600;} .pcard .back .t{color:var(--ink);}
+  .pcard .front .t{color:#5B6478;}
+  .pcard .ic{width:56px;height:56px;margin-bottom:22px;overflow:visible;} .pcard .ic path{fill:none;stroke:#7B8298;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;} .pcard .vlogo{height:64px;width:auto;align-self:flex-start;margin-bottom:18px;}
+
+  /* S3 three stages (illustrative — not a product screen) */
+  #clicks{position:absolute;left:100px;top:280px;width:1720px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:30px;align-items:stretch;}
+  .stg{background:#fff;border-radius:22px;box-shadow:0 30px 80px rgba(27,37,64,.12),0 0 0 1px rgba(27,37,64,.07);padding:30px 32px;position:relative;min-height:520px;opacity:0;}
+  .stg .sn{width:46px;height:46px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;margin-bottom:14px;}
+  .stg>b{display:block;font-size:24px;color:var(--navy);margin-bottom:18px;}
+  .dz{position:relative;height:270px;border:2px dashed #C9D2E3;border-radius:14px;background:var(--panel);}
+  .chk2{margin-top:16px;padding:12px 14px;border-radius:10px;background:var(--greenBg);color:var(--green);font-size:13px;font-weight:700;opacity:0;line-height:1.4;}
+  .stg .bid{opacity:0;padding:11px 14px;margin-bottom:6px;} .stg .bid .tg{width:74px;text-align:center;} .stg .bid.lead{border-color:var(--navy);background:#EEF0FA;} .stg #cash{margin-top:6px;}
+  .auct{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--line);} .auct small{display:block;font-size:10px;letter-spacing:.1em;color:var(--muted);font-weight:600;} .auct span{font-size:30px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.1;} .auct #bestR{color:var(--crimson);}
+  .save{margin-top:8px;padding:9px 12px;border-radius:8px;background:var(--greenBg);color:var(--green);font-size:13px;font-weight:600;opacity:0;} .save b{font-weight:700;}
+  .win{position:absolute;left:230px;top:236px;width:1460px;height:780px;border-radius:20px;background:#fff;box-shadow:0 30px 80px rgba(27,37,64,.14),0 0 0 1px rgba(27,37,64,.08);overflow:hidden;display:flex;flex-direction:column;}
+  .tb{height:64px;flex:none;display:flex;align-items:center;gap:16px;padding:0 28px;border-bottom:1px solid var(--line);}
+  .tb img{height:44px;} .tb .t{font-size:17px;font-weight:600;} .tb .r{margin-left:auto;font-size:13px;color:var(--muted);font-weight:500;}
+  .stepbar{display:flex;gap:0;padding:18px 28px 0;background:var(--panel);}
+  .stepbar div{flex:1;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#9AA3B8;padding:10px 0;border-bottom:3px solid var(--line);}
+  .stepbar div i{width:26px;height:26px;border-radius:50%;background:#E3E7F0;color:#fff;font-style:normal;display:flex;align-items:center;justify-content:center;font-size:13px;}
+  .stepbar div.on{color:var(--ink);border-color:var(--orange);} .stepbar div.on i{background:var(--orange);}
+  .stepbar div.done{color:var(--green);border-color:var(--green);} .stepbar div.done i{background:var(--green);}
+  .body{flex:1;position:relative;background:var(--panel);padding:22px 28px;}
+  .pane{position:absolute;inset:22px 28px;display:grid;grid-template-columns:1fr 1fr;gap:22px;opacity:0;visibility:hidden;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;}
+  .card h4{margin:0 0 12px;font-size:15px;font-weight:700;}
+  .drop{border:2px dashed #C9D2E3;border-radius:14px;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--muted);font-size:15px;font-weight:500;background:#fff;position:relative;}
+  .doc{position:absolute;width:210px;padding:12px 14px;border-radius:10px;background:#fff;border:1px solid var(--line);box-shadow:0 12px 30px rgba(27,37,64,.12);font-size:13px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:10px;opacity:0;}
+  .doc i{width:28px;height:34px;border-radius:4px;background:var(--panel);border:1px solid var(--line);flex:none;} .doc b{margin-left:auto;color:var(--green);font-size:12px;opacity:0;}
+  .kv{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;font-size:14px;} .kv small{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;} .kv b{font-weight:600;}
+  .pill{display:inline-block;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:.04em;} .pill.g{background:var(--greenBg);color:var(--green);} .pill.o{background:#FFF1F2;color:#B4303E;} .pill.b{background:#EEF0FA;color:#29397A;}
+  .bid{display:flex;align-items:center;gap:14px;padding:13px 16px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:15px;opacity:0;margin-bottom:8px;}
+  .bid .who{font-weight:600;flex:1;} .bid .rate{font-weight:700;font-size:22px;color:var(--navy);width:110px;text-align:right;} .bid.best{border-color:var(--orange);background:#FFF1F2;}
+  .btn{display:inline-block;padding:12px 22px;border-radius:10px;background:var(--grad);color:#fff;font-weight:700;font-size:15px;}
+  #cash{font-size:64px;font-weight:700;color:var(--navy);line-height:1;font-variant-numeric:tabular-nums;} #cash small{font-size:18px;color:var(--muted);font-weight:500;display:block;margin-top:6px;}
+  #paid{position:absolute;right:30px;top:24px;padding:10px 22px;border:4px solid var(--green);border-radius:12px;color:var(--green);font-size:26px;font-weight:700;letter-spacing:.08em;transform:rotate(-8deg);background:rgba(255,255,255,.94);opacity:0;}
+
+  /* S4 benefits */
+  .ben{position:absolute;top:330px;width:400px;height:380px;border-radius:22px;background:#fff;box-shadow:0 24px 60px rgba(27,37,64,.10),0 0 0 1px rgba(27,37,64,.06);padding:34px 32px;opacity:0;}
+  .ben svg{width:70px;height:70px;overflow:visible;margin-bottom:26px;} .ben svg *{fill:none;stroke:url(#gS);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;}
+  .ben b{display:block;font-size:28px;line-height:1.2;color:var(--navy);} .ben span{display:block;font-size:17px;color:var(--muted);font-weight:500;margin-top:14px;line-height:1.5;}
+
+  /* S5 case */
+  .node{position:absolute;width:440px;background:#fff;border-radius:20px;box-shadow:0 24px 60px rgba(27,37,64,.10),0 0 0 1px rgba(27,37,64,.06);padding:26px 28px;opacity:0;}
+  .node small{display:block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--sky);font-weight:700;} .node b{display:block;font-size:36px;color:var(--navy);margin:6px 0 4px;} .node span{display:block;font-size:16px;color:var(--muted);font-weight:500;line-height:1.45;}
+  .node .loc{display:inline-block;margin-top:12px;font-size:13px;font-weight:600;color:var(--ink);background:var(--panel);border:1px solid var(--line);padding:5px 10px;border-radius:6px;}
+  #csvg{position:absolute;left:0;top:0;width:1920px;height:1080px;} #csvg path{fill:none;stroke:url(#gC);stroke-width:5;stroke-linecap:round;} #csvg text{font-family:'Poppins';font-size:15px;font-weight:600;fill:var(--muted);opacity:0;}
+  #deal{position:absolute;left:100px;top:790px;display:flex;gap:14px;} #deal span{padding:12px 20px;border-radius:999px;background:var(--panel);border:1px solid var(--line);font-size:19px;font-weight:600;color:var(--ink);opacity:0;} #deal span b{color:var(--orange);}
+  #outs{position:absolute;left:100px;top:880px;display:flex;gap:14px;} #outs span{padding:12px 20px;border-radius:12px;background:#fff;border:1px solid var(--line);box-shadow:0 12px 30px rgba(27,37,64,.08);font-size:18px;font-weight:600;color:var(--navy);opacity:0;} #outs span:before{content:"✓ ";color:var(--green);}
+
+  /* S6 marketplace */
+  #mapw{position:absolute;inset:0;transform:translateY(110px) scale(0.9);transform-origin:50% 60%;} #wmap{position:absolute;left:0;top:0;width:1920px;height:1080px;z-index:0;} #wmap .land{fill:#F3F6FB;stroke:#D5DEEC;stroke-width:1;} #wmap .india{fill:#2E3F8C;stroke:#29397A;stroke-width:1.5;opacity:.85;}
+  #wmap .dot{fill:var(--orange);} #wmap .dl{font-family:'Poppins';font-size:15px;font-weight:600;fill:var(--ink);opacity:0;} #wmap .in{fill:none;stroke:url(#gW);stroke-width:2.5;stroke-linecap:round;opacity:.9;}
+  .reg{position:absolute;z-index:2;padding:10px 16px;border-radius:12px;background:#fff;box-shadow:0 14px 34px rgba(27,37,64,.12),0 0 0 1px rgba(27,37,64,.06);font-size:16px;font-weight:600;color:var(--ink);opacity:0;white-space:nowrap;} .reg b{color:var(--sky);margin-right:6px;font-size:20px;}
+  #s6 .stats{position:absolute;left:100px;top:790px;display:flex;gap:18px;z-index:2;} #s6 .stats div{background:#fff;border-radius:16px;box-shadow:0 14px 40px rgba(27,37,64,.10),0 0 0 1px rgba(27,37,64,.06);padding:18px 26px;min-width:230px;opacity:0;} #s6 .stats b{display:block;font-size:40px;line-height:1;} #s6 .stats span{font-size:15px;color:var(--muted);font-weight:500;display:block;margin-top:6px;}
+  #quote{position:absolute;left:100px;top:360px;width:1200px;opacity:0;} #quote p{font-size:34px;line-height:1.35;font-weight:500;color:var(--ink);} #quote p:before{content:"“";color:var(--orange);font-size:60px;line-height:0;margin-right:6px;font-weight:700;} #quote small{display:block;margin-top:16px;font-size:18px;color:var(--muted);font-weight:500;}
+
+  /* S7 close */
+  #s7 .copy{position:absolute;left:100px;top:300px;width:1100px;}
+  #s7 h1{font-size:76px;line-height:1.1;letter-spacing:-.02em;color:var(--navy);} #s7 h1 b{color:var(--orange);}
+  #s7 .band{position:absolute;left:100px;right:100px;top:700px;display:flex;align-items:center;gap:34px;padding:34px 44px;border-radius:22px;background:linear-gradient(100deg,#B4303E 0%,#5A3472 55%,#2E3F8C 100%);color:#fff;opacity:0;transform:translateY(30px);}
+  #s7 .band .l{flex:1;} #s7 .band h2{font-size:36px;} #s7 .band p{font-size:24px;color:#fff;font-weight:400;margin-top:8px;}
+  #s7 .booth{display:inline-block;padding:6px 16px;border-radius:999px;background:#fff;color:var(--crimson);font-weight:700;font-size:22px;margin-right:12px;}
+  #s7 .qr{width:190px;height:212px;border-radius:16px;background:#fff;color:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:14px;font-weight:600;padding:10px;} #s7 .qr img{width:156px;height:156px;}
+  #s7 .contact{position:absolute;right:100px;top:300px;text-align:right;color:var(--muted);font-size:20px;font-weight:400;line-height:1.6;opacity:0;} #s7 .contact b{display:block;color:var(--ink);font-size:24px;}
+</style>
+</head>
+<body>
+<div id="stage">
+  <svg style="position:absolute;width:0;height:0"><defs><linearGradient id="gS" x1="0" x2="1"><stop offset="0" stop-color="#B4303E"/><stop offset="1" stop-color="#293979"/></linearGradient><linearGradient id="gC" gradientUnits="userSpaceOnUse" x1="500" y1="0" x2="1400" y2="0"><stop offset="0" stop-color="#B4303E"/><stop offset="1" stop-color="#2E3F8C"/></linearGradient><linearGradient id="gW" gradientUnits="userSpaceOnUse" x1="500" y1="0" x2="1400" y2="0"><stop offset="0" stop-color="#2E3F8C"/><stop offset="1" stop-color="#B4303E"/></linearGradient></defs></svg>
+  <div id="rule"></div>
+  <div id="brand"><img src="" alt=""></div>
+
+  <section id="s1" class="scene">
+    <svg id="sea" viewBox="0 0 1920 440" preserveAspectRatio="none"><path id="w1" d="M0,120 C240,80 360,160 600,120 S960,80 1200,120 S1560,160 1920,120"/><path id="w2" d="M0,200 C240,160 360,240 600,200 S960,160 1200,200 S1560,240 1920,200"/><path id="w3" d="M0,280 C240,240 360,320 600,280 S960,240 1200,280 S1560,320 1920,280"/></svg>
+    <div id="ship"><svg viewBox="0 0 640 340">
+      <path d="M40,220 L80,300 L560,300 L620,220 Z"/><path d="M40,220 L620,220"/>
+      <path d="M430,220 L430,120 L520,120 L520,220"/><path d="M450,120 L450,80 L500,80 L500,120"/><path d="M462,80 L462,50 L488,50"/>
+      <rect class="box o" x="110" y="176" width="90" height="44"/><rect class="box b" x="206" y="176" width="90" height="44"/><rect class="box" x="302" y="176" width="90" height="44"/>
+      <rect class="box b" x="110" y="132" width="90" height="44"/><rect class="box o" x="206" y="132" width="90" height="44"/><rect class="box" x="302" y="132" width="90" height="44"/>
+      <rect class="box" x="158" y="88" width="90" height="44"/><rect class="box o" x="254" y="88" width="90" height="44"/>
+      <circle cx="560" cy="150" r="6"/><path d="M40,220 L20,180"/>
+    </svg></div>
+    <div id="day"><div class="k rl"><span>For exporters</span></div><h1><span class="rl"><span>Goods shipped today.</span></span><span class="rl"><span>Money in <b id="dayN">1</b> days?</span></span></h1></div>
+    <div id="inv1"><small>Commercial invoice · Export</small><div class="amt">USD 1,200,000</div><div class="row"><span>Buyer</span><b>Large importer · United States</b></div><div class="row"><span>Terms</span><b>90 days from shipment</b></div><div class="row"><span>Shipped</span><b>Today</b></div><div id="due">DUE IN 90 DAYS</div></div>
+  </section>
+
+  <section id="s2" class="scene">
+    <div class="hdr"><div class="k">Why exporters wait</div><h2 id="s2h">Four things that hold your cash back.</h2></div>
+    <div class="pcard" style="left:100px"><div class="face front"><svg class="ic" viewBox="0 0 70 70"><path d="M35,10 a25,25 0 1,1 -0.1,0"/><path d="M35,20 v16 l11,7"/></svg><div class="lab">Today</div><div class="t">60–120 day credit cycles — payments delayed, no advisory on your overseas buyers</div></div><div class="face back"><img class="vlogo" src="" alt=""><div class="lab">With Vayana TradeXchange</div><div class="t">Immediate liquidity through factoring, and bespoke credit advisory on your overseas buyers</div></div></div>
+    <div class="pcard" style="left:540px"><div class="face front"><svg class="ic" viewBox="0 0 70 70"><path d="M16,32 h38 v28 h-38 z"/><path d="M24,32 v-9 a11,11 0 0,1 22,0 v9"/><path d="M35,44 v7"/></svg><div class="lab">Today</div><div class="t">Limited access to transparent, non-recourse, off-balance-sheet, affordable financing</div></div><div class="face back"><img class="vlogo" src="" alt=""><div class="lab">With Vayana TradeXchange</div><div class="t">Competitive, non-recourse, off-balance-sheet financing through a transparent multi-lender bidding platform</div></div></div>
+    <div class="pcard" style="left:980px"><div class="face front"><svg class="ic" viewBox="0 0 70 70"><path d="M14,18 h30 v40 h-30 z"/><path d="M22,18 v-6 h30 v40 h-6"/><path d="M21,30 h16"/><path d="M21,39 h16"/><path d="M21,48 h10"/></svg><div class="lab">Today</div><div class="t">Traditional financing — slow, geographically constrained, paper-heavy</div></div><div class="face back"><img class="vlogo" src="" alt=""><div class="lab">With Vayana TradeXchange</div><div class="t">Digital onboarding with minimal paperwork, faster processing and wide geographical comfort</div></div></div>
+    <div class="pcard" style="left:1420px"><div class="face front"><svg class="ic" viewBox="0 0 70 70"><path d="M12,18 h46 v42 h-46 z"/><path d="M12,30 h46"/><path d="M24,12 v10"/><path d="M46,12 v10"/><path d="M22,50 l8,-8 l8,6 l10,-12"/></svg><div class="lab">Today</div><div class="t">Financing judged on last year’s balance sheet</div></div><div class="face back"><img class="vlogo" src="" alt=""><div class="lab">With Vayana TradeXchange</div><div class="t">Forward-looking financing on projected export sales — in the currency of your invoice</div></div></div>
+  </section>
+
+  <section id="s3" class="scene">
+    <div class="hdr"><div class="k">Three clicks</div><h2>Upload. Bid. Finance.</h2></div>
+    <div id="clicks">
+      <div class="stg" id="g1"><div class="sn">1</div><b>Upload invoice &amp; documents</b>
+        <div class="dz" id="drop"><div class="doc" style="left:22px;top:22px"><i></i>Commercial invoice<b>✓</b></div><div class="doc" style="left:22px;top:80px"><i></i>Packing list<b>✓</b></div><div class="doc" style="left:22px;top:138px"><i></i>Bill of lading<b>✓</b></div><div class="doc" style="left:22px;top:196px"><i></i>Shipping bill<b>✓</b></div></div>
+        <div class="chk2" id="vchip">VERIFIED BY VTX · KYC, AML/TBML, sanctions · shipping bill on ICEGATE</div></div>
+      <div class="stg" id="g2"><div class="sn">2</div><b>Live auction — financiers bid</b>
+        <div class="auct"><div><small>AUCTION CLOSES IN</small><span id="tmr">00:04:59</span></div><div style="text-align:right"><small>BEST RATE FOR YOU</small><span id="bestR">—</span></div></div>
+        <div class="bid" id="q1"><span class="who">Financier · Singapore</span><span class="rate">8.10%</span><span class="pill b tg">BID</span></div><div class="bid" id="q2"><span class="who">Financier · GIFT City</span><span class="rate">7.85%</span><span class="pill b tg">BID</span></div><div class="bid" id="q3"><span class="who">Financier · Hong Kong</span><span class="rate">7.60%</span><span class="pill b tg">BID</span></div><div class="bid" id="q4"><span class="who">Financier · United States</span><span class="rate">7.25%</span><span class="pill b tg">BID</span></div>
+        <div class="save" id="save">Rate down <b>0.85%</b> from the first bid — competition works for you</div>
+        <div style="margin-top:12px"><span class="btn" id="accept">Accept best bid → AoA</span></div></div>
+      <div class="stg" id="g3"><div class="sn">3</div><b>Finance received</b>
+        <div id="cash">USD <span id="cashN">—</span><small>90% advance credited · in the currency of the invoice · balance on buyer payment</small></div><div id="paid">FUNDED</div>
+        <div class="kv" style="margin-top:22px"><div><small>Rate</small><b>7.25% p.a.</b></div><div><small>Tenor</small><b>87 days</b></div><div><small>Recourse</small><b>Non-recourse</b></div><div><small>Buyer repays</small><b>Financier on due date · residue to you</b></div></div></div>
+    </div>
+    <div class="pin" style="left:120px;top:236px"><div class="d">1</div><div class="tx">Minimal paperwork — onboard and upload digitally</div></div>
+    <div class="pin" style="left:120px;top:840px"><div class="d">2</div><div class="tx">Competitive rates from multiple financiers, worldwide</div></div>
+    <div class="pin" style="left:1000px;top:840px"><div class="d">3</div><div class="tx">Funded in the currency of the invoice — no FX friction</div></div>
+  </section>
+
+  <section id="s4" class="scene">
+    <div class="hdr"><div class="k">What changes</div><h2>Finance that doesn’t sit on your balance sheet.</h2></div>
+    <div class="ben" style="left:100px"><svg viewBox="0 0 70 70"><path d="M8,50 L28,30 L42,44 L62,20"/><path d="M48,20 L62,20 L62,34"/></svg><b>Immediate liquidity</b><span>Convert export receivables into cash within days, not 60–120 days.</span></div>
+    <div class="ben" style="left:540px"><svg viewBox="0 0 70 70"><path d="M35,6 L60,16 L60,34 C60,50 48,60 35,64 C22,60 10,50 10,34 L10,16 Z"/><path d="M24,35 L32,43 L48,27"/></svg><b>Non-recourse</b><span>The buyer’s credit risk is assumed by the financier — not by you.</span></div>
+    <div class="ben" style="left:980px"><svg viewBox="0 0 70 70"><rect x="8" y="14" width="54" height="42" rx="6"/><path d="M8,28 L62,28"/><path d="M18,44 L30,44"/></svg><b>Off-balance-sheet, collateral-free</b><span>Cash without increasing debt, and nothing to pledge.</span></div>
+    <div class="ben" style="left:1420px"><svg viewBox="0 0 70 70"><circle cx="35" cy="35" r="27"/><path d="M8,35 L62,35"/><path d="M35,8 C22,20 22,50 35,62 C48,50 48,20 35,8"/></svg><b>Global financiers</b><span>Bids from financiers across the world, not just local banks — in USD, EUR or GBP.</span></div>
+  </section>
+
+  <section id="s6" class="scene">
+    <div class="hdr"><div class="k">A truly global marketplace</div><h2>Exporters across India. Financiers across the world.</h2></div>
+    <div id="mapw"><svg id="wmap" viewBox="0 0 1920 1080"><g id="wland"></g><g id="win"></g><g id="wdots"></g></svg>
+    <div class="reg" style="left:520px;top:300px">Buyers · Americas</div>
+    <div class="reg" style="left:930px;top:240px">Buyers · UK &amp; Europe</div>
+    <div class="reg" style="left:1230px;top:470px">Buyers · Middle East</div>
+    <div class="reg" style="left:1560px;top:430px">Financiers · Singapore &amp; Hong Kong</div>
+    <div class="reg" style="left:1100px;top:590px">Exporters across India · financiers in GIFT City</div></div>
+    <div class="stats"><div><b class="grad" style="font-size:26px;padding-top:6px">India – USA · UK · Europe · Middle East</b><span>active corridors</span></div><div><b class="grad" style="font-size:26px;padding-top:6px">IFSCA-regulated · GIFT City</b><span>ITFS platform</span></div></div>
+
+  </section>
+
+  <section id="s65" class="scene">
+    <div class="hdr"><div class="k">The right way to finance your trade</div><h2>From anywhere in the world.</h2></div>
+    <div class="ben" style="left:100px"><svg viewBox="0 0 70 70"><path d="M10,35 L60,35"/><path d="M42,18 L60,35 L42,52"/></svg><b>Speed &amp; simplicity</b><span>Upload invoices → bid → avail finance in just a few clicks.</span></div>
+    <div class="ben" style="left:540px"><svg viewBox="0 0 70 70"><circle cx="35" cy="35" r="27"/><path d="M8,35 L62,35"/><path d="M35,8 C22,20 22,50 35,62 C48,50 48,20 35,8"/></svg><b>Borderless reach</b><span>A single regulated platform for exporters, importers and financiers.</span></div>
+    <div class="ben" style="left:980px"><svg viewBox="0 0 70 70"><path d="M14,22 L56,22 M14,48 L56,48"/><path d="M26,10 L14,22 L26,34 M44,36 L56,48 L44,60"/></svg><b>Multi-currency financing</b><span>Finance in the same currency as your invoice, to reduce FX friction.</span></div>
+    <div class="ben" style="left:1420px"><svg viewBox="0 0 70 70"><path d="M12,54 L26,38 L38,46 L58,20"/><path d="M46,20 L58,20 L58,32"/></svg><b>Live auction model</b><span>Competitive interest rates from multiple financiers — lower financing cost.</span></div>
+  </section>
+
+  <section id="s7" class="scene">
+    <div class="copy"><h1><span class="rl"><span>Think Factoring.</span></span><span class="rl"><span>Think <b>Vayana TradeXchange.</b></span></span></h1></div>
+    <div class="contact"><b>Vayana TradeXchange</b>vayanatradexchange.com</div>
+    <div class="band"><div class="l"><h2>See us at Global Fintech Fest 2026</h2><p><span class="booth">Booth K16–17</span>Jio World Centre, Mumbai · 9–11 September</p></div><div class="qr"><img src="" alt=""><span>Scan to connect</span></div></div>
+  </section>
+</div>
+
+<script src="gsap.min.js"></script>
+<script src="../kit.js"></script>
+<script src="data.js"></script>
+<script>
+mountKit();
+$$('#brand img, .tb img, .vlogo').forEach(i=>i.src=LOGO_SRC); $('#s7 .qr img').src=QR_SRC;
+// world map for S6
+(function(){ const g=$('#wland'); WORLD.forEach(d=>{ const p=document.createElementNS(SVGNS,'path'); p.setAttribute('d',d); p.setAttribute('class','land'); g.appendChild(p); });
+  INDIA_W.forEach(d=>{ const p=document.createElementNS(SVGNS,'path'); p.setAttribute('d',d); p.setAttribute('class','india'); g.appendChild(p); });
+  const G=CITY['GIFT City']; const W=$('#win'), D=$('#wdots');
+  ['New York','London','Frankfurt','Dubai','Singapore','Hong Kong'].forEach(n=>{ const c=CITY[n]; const mx=(G[0]+c[0])/2, my=Math.min(G[1],c[1])-Math.abs(G[0]-c[0])*0.25-30;
+    const p=document.createElementNS(SVGNS,'path'); p.setAttribute('d',`M${c[0]},${c[1]} Q${mx},${my} ${G[0]},${G[1]}`); p.setAttribute('class','in'); W.appendChild(p);
+    const d=document.createElementNS(SVGNS,'circle'); d.setAttribute('cx',c[0]); d.setAttribute('cy',c[1]); d.setAttribute('r',0); d.setAttribute('class','dot'); D.appendChild(d); });
+  $$('#win path').forEach(p=>{ const L=p.getTotalLength(); p.style.strokeDasharray=L; p.style.strokeDashoffset=L; });
+  $$('#csvg path').forEach(p=>{ const L=p.getTotalLength(); p.style.strokeDasharray=L; p.style.strokeDashoffset=L; });
+  $$('#sea path').forEach(p=>{ const L=p.getTotalLength(); p.style.strokeDasharray=L; p.style.strokeDashoffset=L; }); prepDraw('.ben svg *');
+})();
+
+gsap.defaults({overwrite:'auto'});
+const tl=gsap.timeline({paused:true});
+const show=(s,at)=>tl.set(s,{autoAlpha:1},at), hide=(s,at)=>tl.set(s,{autoAlpha:0},at);
+function pins(scr, at, gap=1.6){ tl.fromTo(scr+' .pin',{opacity:0,scale:0.6,y:10},{opacity:1,scale:1,y:0,duration:0.45,ease:'back.out(2)',stagger:gap},at); }
+function enter(sel, at){ show(sel,at); tl.fromTo(sel+' .hdr',{opacity:0,y:24},{opacity:1,y:0,duration:0.7,ease:'power3.out'},at+0.1); }
+function leave(sel, at){ tl.to(sel,{opacity:0,y:-30,duration:0.45,ease:'power2.in'},at); hide(sel,at+0.5); }
+
+// ===== S1 0–8 =====
+show('#s1',0);
+tl.fromTo('#wave',{x:0},{x:-600,duration:60,ease:'none'},0); tl.fromTo('#wave',{opacity:0},{opacity:1,duration:0.8},0);
+tl.to('#rule',{scaleX:1,duration:1.0,ease:'power2.inOut'},0.1); tl.to('#brand',{opacity:1,duration:0.6},0.5);
+tl.to('#sea path',{strokeDashoffset:0,duration:1.6,ease:'power2.inOut',stagger:0.15},0.2);
+tl.to('#ship',{left:180,duration:2.6,ease:'power2.out'},0.4);
+tl.to('#ship',{y:-8,duration:1.4,yoyo:true,repeat:4,ease:'sine.inOut'},3.0);
+reveal(tl,'#day .rl>span',0.8,0.14);
+count(tl,$('#dayN'),90,0.95,2.4,v=>Math.round(v),1);
+pop(tl,'#inv1',1.6,{y:60,scale:0.9,rot:-2});
+float(tl,'#inv1',2.6,4.4,6);
+stamp(tl,'#due',4.4,'#inv1');
+out(tl,'#s1',7.5); hide('#s1',8.0);
+
+// ===== S2 8–16 flip cards =====
+enter('#s2',8.0);
+pop(tl,'.pcard',8.3,{y:80,scale:0.9,rot:-2,s:0.14});
+tl.call(()=>{ $('#s2h').textContent='Four things that hold your cash back.'; },null,8.0);
+tl.call(()=>{ $('#s2h').textContent='How VTX turns each one around.'; },null,11.58);
+tl.fromTo('#s2 .hdr h2',{opacity:0,y:14},{opacity:1,y:0,duration:0.5,ease:'power2.out'},8.2); tl.to('#s2 .hdr h2',{opacity:0,y:-10,duration:0.25},11.3); tl.fromTo('#s2 .hdr h2',{opacity:0,y:14},{opacity:1,y:0,duration:0.5,ease:'power2.out',immediateRender:false},11.6); prepDraw('.pcard .ic path'); draw(tl,'.pcard .ic path',8.7,0.8,0.05);
+tl.to('.pcard .front',{rotateY:-180,duration:0.8,ease:'power3.inOut',stagger:0.16},11.8);
+tl.to('.pcard .back',{rotateY:0,duration:0.8,ease:'power3.inOut',stagger:0.16},11.8);
+float(tl,'.pcard',13.0,2.4,5);
+out(tl,'#s2',15.5); hide('#s2',16.0);
+
+// ===== S3 16–33 three stages (live auction) =====
+enter('#s3',16.0);
+pop(tl,'.stg',16.2,{y:90,scale:0.9,rot:-1.5,s:0.15});
+tl.fromTo('.doc',{opacity:0,y:-70,scale:0.85,rotation:-4},{opacity:1,y:0,scale:1,rotation:0,duration:0.55,ease:'back.out(1.6)',stagger:0.22},17.0);
+tl.to('.doc b',{opacity:1,duration:0.3,stagger:0.22},17.9);
+pop(tl,'#vchip',19.6,{y:14,scale:0.9,rot:0,d:0.5});
+{ const s={v:299}; tl.to(s,{v:0,duration:6.0,ease:'none',onUpdate:()=>{ const m=Math.floor(s.v/60), q=Math.floor(s.v%60); $('#tmr').textContent='00:0'+m+':'+String(q).padStart(2,'0'); }},20.4); }
+[['#q1','8.10%',21.0],['#q2','7.85%',22.0],['#q3','7.60%',23.0],['#q4','7.25%',24.0]].forEach(([id,r,t])=>{ pop(tl,id,t,{y:-16,scale:0.94,rot:0,d:0.45,ease:'back.out(2)'});
+  tl.call(()=>{ $$('.stg .bid').forEach(b=>{ b.classList.remove('lead'); const g=b.querySelector('.tg'); g.textContent='BID'; g.className='pill b tg'; }); const b=$(id); b.classList.add('lead'); const g=b.querySelector('.tg'); g.textContent='BEST'; g.className='pill o tg'; $('#bestR').textContent=r; },null,t+0.1);
+  tl.fromTo('#bestR',{scale:1.35,color:'#B4303E'},{scale:1,duration:0.35,ease:'back.out(2)'},t+0.1); });
+pop(tl,'#save',25.0,{y:10,scale:0.95,rot:0,d:0.45});
+tl.to('#accept',{scale:0.94,duration:0.12,yoyo:true,repeat:1},26.2);
+tl.call(()=>{ $('#tmr').textContent='00:00:00'; },null,26.4);
+count(tl,$('#cashN'),1080000,27.3,1.4,v=>Math.round(v).toLocaleString('en-US'));
+stamp(tl,'#paid',28.8,'#g3');
+float(tl,'.stg',20.2,12,4);
+[['#s3 .pin:nth-of-type(1)',17.6],['#s3 .pin:nth-of-type(2)',22.5],['#s3 .pin:nth-of-type(3)',29.4]].forEach(([sel,t])=>tl.fromTo(sel,{opacity:0,scale:0.6,y:10},{opacity:1,scale:1,y:0,duration:0.45,ease:'back.out(2)'},t));
+out(tl,'#s3',32.5); hide('#s3',33.0);
+
+// ===== S4 33–40.5 benefits =====
+enter('#s4',33.0);
+pop(tl,'#s4 .ben',33.3,{y:80,scale:0.9,rot:-2,s:0.14});
+draw(tl,'#s4 .ben svg *',33.8,0.9,0.06);
+float(tl,'#s4 .ben',35.0,4.4,5);
+out(tl,'#s4',40.2); hide('#s4',40.7);
+
+// ===== S5 40.7–48 marketplace (no figures) =====
+enter('#s6',40.7);
+tl.fromTo('#wmap .land',{opacity:0},{opacity:1,duration:1.0,stagger:{each:0.0015,from:'random'}},40.8);
+tl.fromTo('#wmap .india',{opacity:0},{opacity:.85,duration:0.6},41.4);
+tl.to('#wmap .dot',{attr:{r:7},duration:0.4,ease:'back.out(3)',stagger:0.1},41.8);
+tl.to('#win path',{strokeDashoffset:0,duration:1.1,ease:'power2.inOut',stagger:0.1},42.0);
+pop(tl,'#s6 .reg',42.8,{y:16,scale:0.85,rot:0,s:0.14,d:0.5,ease:'back.out(2)'});
+pop(tl,'#s6 .stats div',43.8,{y:40,scale:0.9,rot:0,s:0.12});
+out(tl,'#s6',47.6); hide('#s6',48.1);
+
+// ===== S6.5 48.2–54 the right way =====
+enter('#s65',48.2);
+pop(tl,'#s65 .ben',48.5,{y:80,scale:0.9,rot:-2,s:0.14});
+draw(tl,'#s65 .ben svg *',49.0,0.9,0.06);
+float(tl,'#s65 .ben',50.2,3,5);
+out(tl,'#s65',53.7); hide('#s65',54.2);
+
+// ===== S7 54.4–60 close =====
+show('#s7',54.4);
+reveal(tl,'#s7 .copy .rl>span',54.6);
+tl.to('#s7 .contact',{opacity:1,duration:0.6},55.3);
+tl.to('#s7 .band',{opacity:1,y:0,duration:0.6,ease:'power3.out'},55.8);
+tl.to('#s7, #brand, #rule',{opacity:0,duration:0.7,ease:'power2.in'},59.2);
+tl.to('#wave',{opacity:0,duration:0.5},59.4);
+tl.set({},{},60);
+
+window.DURATION=60; window.seek=t=>{ tl.time(Math.min(t,60)); }; window.ready=true;
+// In-browser playback: open the file with ?play appended to the URL (e.g. video.html?play) to loop the film live.
+if(location.search.indexOf('play')>-1){ tl.repeat(-1); tl.play(0); }
+
+</script>
+</body>
+</html>

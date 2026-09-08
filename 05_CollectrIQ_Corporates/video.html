@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vayana CollectrIQ — Enterprises film</title>
+<style>
+  :root{ --navy:#29397A; --ink:#141A3A; --crimson:#B4303E; --muted:#6B7290; --line:#E3E6F2; --panel:#F5F6FB; --green:#1E8A5B; --greenBg:#E6F4EC; --red:#C8362E; --amber:#B7791F; --amberBg:#FFF4DD;
+    --grad:linear-gradient(135deg,#2E3F8C 0%,#B4303E 100%); --gradText:linear-gradient(90deg,#3446A0 0%,#C23A49 100%); --gradH:linear-gradient(90deg,#2E3F8C 0%,#B4303E 100%); }
+  html,body{margin:0;background:#000;}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:#fff;font-family:'Poppins','Noto Sans Devanagari','Noto Sans Tamil',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+  #stage *{box-sizing:border-box;}
+  h1,h2,h3,p{margin:0;font-weight:700;}
+  .rl{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em;} .rl>span{display:block;}
+  .grad{background:var(--gradText);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .scene{position:absolute;inset:0;visibility:hidden;opacity:0;}
+  #brand{position:absolute;left:80px;top:48px;display:flex;align-items:center;gap:16px;opacity:0;}
+  #brand img{width:170px;display:block;} #brand .sep{width:1px;height:34px;background:var(--line);} #brand .p{font-size:26px;font-weight:700;color:var(--navy);letter-spacing:-.01em;} #brand .p b{color:var(--crimson);}
+  #brand .tag{margin-left:10px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;border:1px solid var(--line);border-radius:999px;padding:6px 12px;}
+  .hdr{position:absolute;left:100px;top:150px;width:1720px;}
+  .hdr .k{font-size:18px;letter-spacing:.32em;text-transform:uppercase;color:var(--crimson);font-weight:600;}
+  .hdr h2{font-size:52px;line-height:1.1;color:var(--navy);letter-spacing:-.015em;margin-top:10px;}
+  .hdr h2 b{color:var(--crimson);}
+  .pin{position:absolute;display:flex;align-items:center;gap:10px;opacity:0;z-index:5;}
+  .pin .d{width:38px;height:38px;border-radius:50%;background:var(--grad);color:#fff;font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 10px 26px rgba(180,48,62,.35);}
+  .pin .tx{background:#fff;color:var(--navy);font-size:16px;font-weight:600;padding:10px 16px;border-radius:10px;white-space:nowrap;box-shadow:0 12px 30px rgba(20,26,58,.14),0 0 0 1px rgba(20,26,58,.08);}
+
+  /* S0 title */
+  #s0 .lock{position:absolute;left:100px;top:300px;display:flex;align-items:center;gap:28px;}
+  #s0 .lock img{width:300px;display:block;} #s0 .lock .sep{width:2px;height:80px;background:var(--line);} #s0 .lock .p{font-size:84px;font-weight:700;color:var(--navy);letter-spacing:-.02em;line-height:1;} #s0 .lock .p b{color:var(--crimson);}
+  #s0 .for{position:absolute;left:100px;top:430px;font-size:30px;font-weight:500;color:var(--muted);}
+  #s0 .tag{position:absolute;left:100px;top:520px;width:1500px;font-size:44px;line-height:1.3;font-weight:600;color:var(--ink);letter-spacing:-.01em;}
+  #s0 .tag b{color:var(--crimson);font-weight:700;}
+  #s0 .chips{position:absolute;left:100px;top:700px;display:flex;gap:16px;} #s0 .chips span{padding:14px 26px;border-radius:999px;background:var(--grad);color:#fff;font-weight:600;font-size:22px;opacity:0;}
+  #s0 .rule{position:absolute;left:100px;top:270px;width:0;height:6px;border-radius:3px;background:var(--grad);}
+
+  /* S1 buckets */
+  #s1 .copy{position:absolute;left:100px;top:170px;width:1500px;}
+  #s1 .k{font-size:18px;letter-spacing:.32em;text-transform:uppercase;color:var(--crimson);font-weight:600;}
+  #s1 h1{font-size:64px;line-height:1.12;letter-spacing:-.02em;color:var(--navy);margin-top:12px;}
+  #s1 h1 .l2{color:var(--crimson);}
+  #bar{position:absolute;left:100px;top:520px;width:1720px;height:120px;display:flex;gap:10px;}
+  .bk{flex:1;position:relative;border-radius:16px;background:#F1F2F8;border:1.5px solid var(--line);overflow:hidden;}
+  .bk.w2{flex:1.2;} .bk.w3{flex:1.6;}
+  .bk .fill{position:absolute;inset:0;background:var(--navy);transform-origin:left;transform:scaleX(0);}
+  .bk .lab{position:absolute;left:18px;bottom:14px;font-size:15px;font-weight:700;color:var(--ink);z-index:2;} .bk .lab small{display:block;font-size:12px;color:var(--muted);font-weight:500;letter-spacing:.06em;}
+  .bk.dark .lab, .bk.dark .lab small{color:#fff;}
+  .bk svg{position:absolute;inset:0;width:100%;height:100%;} .bk circle{fill:var(--crimson);opacity:0;}
+  #under{position:absolute;left:100px;top:660px;width:1720px;display:flex;}
+  #under div{position:absolute;top:0;font-size:22px;font-weight:600;color:var(--ink);opacity:0;display:flex;align-items:center;gap:12px;}
+  #under div i{width:14px;height:14px;border-radius:50%;flex:none;} #under div span{font-weight:500;color:var(--muted);}
+  #tailChips{position:absolute;left:100px;top:740px;display:flex;gap:12px;} #tailChips span{padding:10px 18px;border-radius:999px;background:#FFF1F2;color:var(--crimson);font-weight:600;font-size:18px;border:1px solid rgba(180,48,62,.2);opacity:0;}
+  #muscleChips{position:absolute;right:100px;top:740px;display:flex;gap:12px;} #muscleChips span{padding:10px 18px;border-radius:999px;background:#EEF0FA;color:var(--navy);font-weight:600;font-size:18px;border:1px solid rgba(41,57,122,.2);opacity:0;}
+
+  /* S2 cost */
+  .gap{position:absolute;top:330px;width:400px;height:330px;border-radius:24px;background:#fff;box-shadow:0 24px 60px rgba(20,26,58,.10),0 0 0 1px rgba(20,26,58,.06);padding:34px 32px;opacity:0;}
+  .gap .n{font-size:14px;letter-spacing:.2em;color:var(--crimson);font-weight:700;} .gap b{display:block;font-size:26px;line-height:1.25;color:var(--navy);margin-top:12px;} .gap span{display:block;font-size:17px;color:var(--muted);font-weight:500;margin-top:16px;line-height:1.5;}
+  #roll{position:absolute;left:100px;top:780px;width:1720px;height:70px;}
+  #roll .track{position:absolute;left:0;right:0;top:32px;height:6px;border-radius:3px;background:var(--line);}
+  #roll .stop{position:absolute;top:22px;width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid #C9CEE3;transform:translateX(-50%);} #roll .stop small{position:absolute;top:34px;left:50%;transform:translateX(-50%);font-size:13px;color:var(--muted);font-weight:600;white-space:nowrap;}
+  #rollDot{position:absolute;top:19px;width:32px;height:32px;border-radius:50%;background:var(--crimson);box-shadow:0 0 0 8px rgba(180,48,62,.16);transform:translateX(-50%);left:0;opacity:0;} #rollDot small{position:absolute;top:-30px;left:50%;font-size:13px;font-weight:700;color:var(--crimson);white-space:nowrap;}
+
+  /* S3 conversations */
+  .ph{position:absolute;top:290px;width:520px;height:720px;border-radius:30px;background:#fff;box-shadow:0 30px 80px rgba(20,26,58,.16),0 0 0 1px rgba(20,26,58,.08);overflow:hidden;display:flex;flex-direction:column;opacity:0;}
+  .ph .top{height:74px;display:flex;align-items:center;gap:12px;padding:0 22px;color:#fff;flex:none;}
+  .ph .top .av{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-weight:700;}
+  .ph .top b{font-size:16px;display:block;} .ph .top small{font-size:12px;opacity:.85;display:block;}
+  .ph .top .ch{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.08em;padding:5px 9px;border-radius:6px;background:rgba(255,255,255,.18);}
+  .ph.wa .top{background:#1E8A5B;} .ph.vc .top{background:var(--navy);} .ph.sm .top{background:#3B4256;}
+  .ph .msgs{flex:1;padding:22px 20px;display:flex;flex-direction:column;gap:12px;background:var(--panel);}
+  .m{max-width:86%;padding:12px 16px;border-radius:16px;font-size:16px;line-height:1.5;opacity:0;} .m.ai{background:#fff;border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px;} .m.br{background:#DDF3E6;align-self:flex-end;border-bottom-right-radius:4px;}
+  .ph.vc .m.ai{background:#EEF0FA;border-color:#DDE1F2;}
+  .m small{display:block;font-size:11px;color:var(--muted);margin-top:6px;font-weight:500;}
+  .wave{display:flex;align-items:center;gap:4px;height:40px;padding:0 4px;} .wave i{width:5px;border-radius:3px;background:var(--navy);height:8px;}
+  .out{margin:0 20px 20px;padding:12px 16px;border-radius:12px;background:#fff;border:1.5px solid var(--green);color:var(--green);font-weight:700;font-size:15px;opacity:0;display:flex;align-items:center;gap:10px;} .out i{width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;font-style:normal;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none;}
+  .out.warn{border-color:var(--amber);color:var(--amber);} .out.warn i{background:var(--amber);}
+  #rbi{position:absolute;left:100px;top:236px;display:flex;gap:10px;} #rbi span{padding:8px 14px;border-radius:999px;background:#fff;border:1.5px solid var(--navy);color:var(--navy);font-weight:600;font-size:15px;opacity:0;}
+  .bvs{top:306px;height:710px;} .bvs .trx{height:0;} .trx .bub.ai{background:#F3EFE4;border-color:#E6E0CF;}
+
+  /* S4 screens */
+  #stage{perspective:2400px;} .scr{transform-origin:center center;position:absolute;left:230px;top:306px;width:1460px;height:728px;border-radius:20px;background:#fff;box-shadow:0 30px 80px rgba(20,26,58,.14),0 0 0 1px rgba(20,26,58,.08);overflow:hidden;display:flex;opacity:0;visibility:hidden;}
+  .sb{width:200px;flex:none;background:var(--navy);color:#fff;padding:18px 0;} .sb .g{font-size:10px;letter-spacing:.14em;padding:12px 18px 6px;opacity:.7;font-weight:600;} .sb .it{padding:9px 18px;font-size:13px;font-weight:500;opacity:.85;display:flex;align-items:center;gap:8px;} .sb .it:before{content:"";width:12px;height:12px;border-radius:3px;border:1.5px solid rgba(255,255,255,.7);} .sb .it.on{background:rgba(255,255,255,.14);opacity:1;font-weight:600;} .sb .it .bd{margin-left:auto;background:var(--red);border-radius:999px;font-size:10px;padding:1px 6px;}
+  .mn{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .tb{height:52px;flex:none;display:flex;align-items:center;gap:12px;padding:0 22px;border-bottom:1px solid var(--line);font-size:14px;} .tb img{width:90px;} .tb .p{font-weight:700;color:var(--ink);} .tb .r{margin-left:auto;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:5px 10px;}
+  .bd{padding:18px 22px;flex:1;position:relative;background:#fff;}
+  .h3{font-size:18px;font-weight:700;line-height:1.25;margin-bottom:4px;} .sub{font-size:12px;color:var(--muted);font-weight:500;margin-bottom:12px;line-height:1.4;}
+  .kpis{display:flex;gap:12px;margin-bottom:12px;} .kpi{flex:1;border:1px solid var(--line);border-radius:10px;padding:12px 16px;} .kpi small{font-size:11px;color:var(--muted);font-weight:600;display:block;} .kpi b{font-size:22px;font-weight:700;display:block;margin-top:4px;color:var(--ink);}
+  .ask{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:12px;background:#fff;} .ask small{font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:6px;} .ask .in{border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:13px;color:var(--ink);min-height:36px;display:flex;align-items:center;} .ask .in i{display:inline-block;width:2px;height:16px;background:var(--navy);margin-left:2px;}
+  .ans{margin-top:8px;font-size:12px;color:var(--ink);background:var(--panel);border-radius:8px;padding:8px 12px;opacity:0;} .ans b{color:var(--navy);}
+  .two{display:grid;grid-template-columns:1.1fr 1fr;gap:12px;}
+  .card{border:1px solid var(--line);border-radius:10px;padding:12px 16px;} .card h4{margin:0 0 8px;font-size:14px;font-weight:700;}
+  .chart{display:flex;align-items:flex-end;gap:26px;height:150px;padding:0 10px;border-bottom:1px solid var(--line);} .chart div{flex:1;display:flex;gap:6px;align-items:flex-end;height:100%;} .chart i{flex:1;border-radius:3px 3px 0 0;transform-origin:bottom;transform:scaleY(0);} .chart .a{background:#7B6CD9;} .chart .b{background:#7CC59B;}
+  .xl{display:flex;padding:6px 10px 0;font-size:11px;color:var(--muted);font-weight:600;} .xl span{flex:1;text-align:center;}
+  .task{border-radius:8px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px;font-size:12px;opacity:0;} .task.r{background:#FDE8EC;border:1px solid #F5B7C2;} .task.y{background:#FFF7DC;border:1px solid #F3D98A;} .task b{display:block;font-size:13px;} .task .btn{margin-left:auto;background:var(--red);color:#fff;font-weight:700;padding:5px 10px;border-radius:6px;font-size:11px;} .task.y .btn{background:#E9C34A;color:#5A4200;}
+  /* borrower view */
+  .bv .hd{display:flex;align-items:flex-start;gap:16px;} .bv .hd b{font-size:22px;} .bv .hd .amt{font-size:16px;font-weight:700;margin-top:4px;} .bv .hd .pill{margin-left:8px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;background:#FFF4DD;color:#B7791F;letter-spacing:.06em;}
+  .bv .risk{margin-left:auto;text-align:right;} .bv .risk small{font-size:11px;color:var(--muted);font-weight:600;display:block;} .bv .risk b{font-size:26px;color:#B7791F;} .bv .risk .tr{width:120px;height:5px;background:var(--line);border-radius:3px;margin-top:4px;overflow:hidden;} .bv .risk .tr i{display:block;height:100%;width:0;background:#B7791F;}
+  .bv .facts{display:flex;gap:26px;margin:12px 0;font-size:12px;} .bv .facts div small{display:block;color:var(--muted);font-weight:600;} .bv .facts div b{font-weight:600;}
+  .bv .ins{background:var(--panel);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.5;} .bv .ins b{color:var(--navy);}
+  .tl{margin-top:12px;} .ev{border-radius:10px;padding:10px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;opacity:0;} .ev .ic{width:30px;height:30px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;} .ev b{font-size:14px;display:block;} .ev .tg{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:4px;margin-left:8px;color:#fff;} .ev span{display:block;font-size:12px;color:var(--muted);margin-top:3px;}
+  .ev.g{background:#EAF7EF;} .ev.g .ic,.ev.g .tg{background:var(--green);} .ev.b{background:#EEF1FB;} .ev.b .ic,.ev.b .tg{background:var(--navy);}
+  /* dunning */
+  .dn table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;} .dn th{text-align:left;font-size:11px;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line);} .dn td{padding:12px 10px;border-bottom:1px solid #EEF0F4;font-weight:600;}
+  .tg2{display:inline-block;width:40px;height:22px;border-radius:11px;background:#C9CEE3;position:relative;} .tg2:after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:none;} .tg2.on{background:var(--navy);} .tg2.on:after{left:21px;}
+  .tm{display:inline-block;padding:5px 9px;border:1px solid var(--line);border-radius:6px;background:var(--panel);font-size:12px;font-weight:600;}
+  .dn .sum{margin-top:14px;background:var(--panel);border-radius:8px;padding:12px 14px;font-size:12px;line-height:1.7;color:var(--ink);} .dn .sum b{display:block;font-size:13px;}
+  .trx{overflow:hidden;height:0;opacity:0;margin-top:8px;} .trx .typing{opacity:0;margin:2px 0 8px 6px;} .trx .bub{opacity:0;max-width:80%;padding:9px 12px;border-radius:12px;font-size:12px;line-height:1.45;margin-bottom:6px;} .trx .bub.ai{background:#fff;border:1px solid var(--line);} .trx .bub.br{background:#DDF3E6;margin-left:auto;} .trx .meta{font-size:11px;color:var(--muted);font-weight:600;} .trx .meta b{display:inline;color:var(--green);margin-right:12px;font-size:11px;}
+  .dt table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px;} .dt th{text-align:left;font-size:11px;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line);} .dt td{padding:9px 8px;border-bottom:1px solid #EEF0F4;font-weight:500;white-space:nowrap;font-size:11.5px;} .dt tr.row{opacity:0;}
+  .st2{display:inline-block;padding:3px 8px;border-radius:999px;font-size:9px;white-space:nowrap;font-weight:700;letter-spacing:.04em;color:#fff;} .st2.g{background:#22B57A;} .st2.r{background:#E5394F;}
+  .bc{display:flex;align-items:flex-end;gap:40px;height:120px;padding:0 20px;border-bottom:1px solid var(--line);margin-top:8px;} .bc i{flex:1;border-radius:3px 3px 0 0;transform-origin:bottom;transform:scaleY(0);} .bc .y{background:#F0C24B;} .bc .r{background:#F08A8A;} .bc .n{background:#E9EBF1;}
+  .sl{margin-top:10px;} .sl .row{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:6px;} .sl .row b{color:var(--ink);} .sl .tr{height:8px;border-radius:4px;background:#E9EBF1;position:relative;margin-bottom:14px;} .sl .tr i{position:absolute;left:0;top:0;height:100%;width:0;border-radius:4px;background:var(--navy);} .sl .tr em{position:absolute;top:-5px;width:18px;height:18px;border-radius:50%;background:var(--navy);border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2);left:0;margin-left:-9px;}
+  .sl .tot{display:flex;justify-content:space-between;font-size:14px;font-weight:700;padding-top:8px;border-top:1px solid var(--line);} .sl .tot b{color:var(--green);} .sl .tb2{height:6px;border-radius:3px;background:#E9EBF1;margin-top:8px;overflow:hidden;} .sl .tb2 i{display:block;height:100%;width:0;background:var(--green);}
+  .steps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;} .steps div{border:1px solid var(--line);border-radius:8px;padding:10px 12px 10px 44px;position:relative;font-size:13px;font-weight:600;} .steps div small{display:block;font-size:11px;color:var(--muted);font-weight:500;} .steps div:before{content:attr(data-n);position:absolute;left:12px;top:12px;width:22px;height:22px;border-radius:50%;background:#EEF0FA;color:var(--navy);font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700;} .steps div.on{border-color:var(--navy);} .steps div.on:before{background:var(--navy);color:#fff;} .steps div.done:before{content:"✓";background:var(--navy);color:#fff;}
+  #flipLabel{position:absolute;left:230px;top:254px;display:flex;align-items:center;gap:10px;background:#fff;color:var(--navy);font-size:17px;font-weight:600;padding:8px 16px 8px 12px;border-radius:10px;box-shadow:0 8px 22px rgba(20,26,58,.12),0 0 0 1px rgba(20,26,58,.08);opacity:0;z-index:6;white-space:nowrap;} #flipLabel i{width:14px;height:14px;border-radius:50%;background:var(--grad);flex:none;}
+
+  /* S5 orchestration */
+  #sorter{position:absolute;left:0;top:0;width:1920px;height:1080px;}
+  #sorter .lane{fill:none;stroke-width:4;stroke-linecap:round;} #sorter .l1{stroke:#7CC59B;} #sorter .l2{stroke:var(--crimson);}
+  #sorter .dot{fill:var(--navy);opacity:0;}
+  .lanebox{position:absolute;width:520px;border-radius:20px;background:#fff;box-shadow:0 24px 60px rgba(20,26,58,.10),0 0 0 1px rgba(20,26,58,.06);padding:26px 30px;opacity:0;}
+  .lanebox small{font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;display:block;} .lanebox b{display:block;font-size:28px;color:var(--navy);margin-top:6px;line-height:1.2;padding-right:90px;} .lanebox span{display:block;font-size:16px;color:var(--muted);font-weight:500;margin-top:10px;line-height:1.5;}
+  .lanebox .cnt{position:absolute;right:28px;top:24px;font-size:40px;font-weight:700;}
+  #tail{position:absolute;left:100px;top:470px;width:360px;} #tail b{display:block;font-size:30px;color:var(--navy);line-height:1.2;} #tail span{display:block;font-size:16px;color:var(--muted);font-weight:500;margin-top:8px;line-height:1.5;}
+
+  /* S6 how */
+  .how{position:absolute;top:340px;width:520px;border-radius:24px;background:#fff;box-shadow:0 24px 60px rgba(20,26,58,.10),0 0 0 1px rgba(20,26,58,.06);padding:34px 34px;opacity:0;}
+  .how .n{width:52px;height:52px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px;margin-bottom:18px;} .how b{display:block;font-size:28px;color:var(--navy);} .how span{display:block;font-size:17px;color:var(--muted);font-weight:500;margin-top:12px;line-height:1.5;}
+  #howfoot{position:absolute;left:100px;top:790px;padding:18px 30px;border-radius:14px;background:var(--grad);color:#fff;font-size:26px;font-weight:600;opacity:0;}
+
+  /* S7 impact */
+  .imp{position:absolute;top:320px;width:520px;height:380px;border-radius:24px;background:#fff;box-shadow:0 24px 60px rgba(20,26,58,.10),0 0 0 1px rgba(20,26,58,.06);padding:40px 38px;display:flex;flex-direction:column;justify-content:center;opacity:0;}
+  .imp .big{font-size:110px;line-height:1;letter-spacing:-.04em;font-weight:700;} .imp .lbl{font-size:15px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--crimson);margin-top:14px;} .imp .tx{font-size:17px;color:var(--muted);font-weight:500;margin-top:12px;line-height:1.5;}
+  .imp.why{justify-content:flex-start;padding-top:56px;} #foot{position:absolute;left:100px;top:730px;width:1720px;font-size:14px;color:var(--muted);font-weight:500;line-height:1.5;opacity:0;}
+  #who{position:absolute;left:100px;top:820px;display:flex;gap:14px;} #who span{padding:12px 22px;border-radius:999px;border:1.5px solid var(--navy);background:#fff;color:var(--navy);font-size:18px;white-space:nowrap;font-weight:600;opacity:0;} #who span b{color:var(--crimson);font-weight:700;margin-right:8px;}
+
+  /* S8 close */
+  #s8 .copy{position:absolute;left:100px;top:230px;width:1200px;}
+  #s8 h1{font-size:72px;line-height:1.1;letter-spacing:-.02em;color:var(--navy);} #s8 p{font-size:28px;font-weight:500;color:var(--muted);margin-top:22px;line-height:1.45;width:1100px;}
+  #s8 .contacts{position:absolute;left:100px;top:600px;display:flex;gap:16px;} #s8 .contacts div{padding:16px 22px;border-radius:14px;background:var(--panel);border:1px solid var(--line);font-size:18px;color:var(--muted);font-weight:500;opacity:0;} #s8 .contacts b{display:block;color:var(--ink);font-size:20px;}
+  #band{position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(100deg,#B4303E 0%,#5A3472 55%,#2E3F8C 100%);color:#fff;padding:50px 100px;display:flex;align-items:center;transform:translateY(100%);}
+  #band .l{flex:1;} #band h2{font-size:40px;} #band p{font-size:26px;font-weight:400;margin-top:14px;} #band .booth{display:inline-block;padding:7px 16px;border-radius:999px;background:#fff;color:var(--crimson);font-weight:700;font-size:24px;margin-right:12px;}
+  #band .qr{width:200px;height:222px;border-radius:16px;background:#fff;color:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:15px;font-weight:600;padding:10px;} #band .qr img{width:160px;height:160px;}
+</style>
+<style>
+  #s1 .split{position:absolute;left:100px;top:500px;width:1720px;height:176px;display:flex;gap:12px;}
+  #s1 .seg{position:relative;border-radius:18px;background:#F1F2F8;border:1.5px solid var(--line);overflow:hidden;}
+  #s1 .seg.top{flex:1;} #s1 .seg.tail{flex:4;}
+  #s1 .seg .fill{position:absolute;inset:0;background:var(--navy);transform-origin:left;transform:scaleX(0);}
+  #s1 .seg .lab{position:absolute;left:22px;top:18px;z-index:2;} #s1 .seg .lab b{display:block;font-size:44px;line-height:1;font-weight:700;} #s1 .seg .lab small{display:block;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-top:6px;} #s1 .seg .lab span{display:block;font-size:15px;font-weight:500;margin-top:8px;max-width:330px;line-height:1.4;}
+  #s1 .seg.top .lab b,#s1 .seg.top .lab small,#s1 .seg.top .lab span{color:#fff;} #s1 .seg.tail .lab b{color:var(--crimson);} #s1 .seg.tail .lab small{color:var(--crimson);} #s1 .seg.tail .lab span{color:var(--ink);}
+  #s1 .seg svg{position:absolute;inset:0;width:100%;height:100%;} #s1 .seg circle{fill:var(--crimson);opacity:0;}
+  #s1 .who{position:absolute;left:100px;top:730px;display:flex;gap:14px;} #s1 .who span{padding:12px 20px;border-radius:14px;background:#fff;box-shadow:0 12px 30px rgba(20,26,58,.10),0 0 0 1px rgba(20,26,58,.06);font-size:18px;font-weight:600;color:var(--ink);opacity:0;} #s1 .who span b{display:block;font-size:22px;color:var(--navy);}
+  .cv{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;} .cvc{border:1px solid var(--line);border-radius:10px;padding:14px 16px;opacity:0;} .cvc .nm{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;} .cvc .nm .pl{font-size:9px;font-weight:700;padding:3px 7px;border-radius:999px;color:#fff;} .pl.hi{background:#E5394F;} .pl.med{background:#F08A1E;} .cvc .btns{display:flex;gap:8px;margin-top:12px;} .cvc .btns span{flex:1;text-align:center;font-size:11px;font-weight:700;padding:7px 0;border-radius:6px;} .cvc .btns .b1{background:var(--navy);color:#fff;} .cvc .btns .b2{border:1px solid var(--navy);color:var(--navy);} .cvc .od{font-size:12px;color:#E5394F;font-weight:600;margin-top:4px;} .cvc .amt{font-size:15px;font-weight:700;margin-top:6px;} .cvc .ai{margin-top:10px;background:var(--panel);border-radius:8px;padding:9px 11px;font-size:11px;line-height:1.5;color:var(--ink);} .cvc .ai b{display:block;font-size:11px;color:var(--navy);margin-bottom:3px;} .cvc .lv{margin-top:10px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between;} .cvc .bar{height:4px;background:#E9EBF1;border-radius:2px;margin-top:5px;overflow:hidden;} .cvc .bar i{display:block;height:100%;width:0;background:var(--navy);}
+  .ch{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;} .chc{border:1px solid var(--line);border-radius:10px;padding:12px 14px;} .chc .t{display:flex;justify-content:space-between;font-size:13px;font-weight:700;} .chc .t b{font-size:20px;} .chc .r{display:flex;justify-content:space-between;font-size:11px;margin-top:8px;font-weight:600;} .chc .r.s{color:#22B57A;} .chc .r.p{color:var(--muted);} .chc .r.f{color:#E5394F;} .chc .ln{height:3px;background:#E9EBF1;margin-top:3px;} .chc .ln i{display:block;height:100%;width:0;background:#22B57A;}
+  .donut{width:120px;height:120px;border-radius:50%;background:conic-gradient(#22B57A 0 62%,#7CD79A 62% 84%,#A8E6BB 84% 100%);position:relative;} .donut:after{content:"";position:absolute;inset:26px;border-radius:50%;background:#fff;}
+  .trend{height:120px;position:relative;} .trend svg{width:100%;height:100%;overflow:visible;} .trend path{fill:none;stroke-width:2.5;}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="brand"><img src="" alt=""><div class="sep"></div><div class="p">Collectr<b>IQ</b></div><div class="tag">For enterprises</div></div>
+
+  <section id="s0" class="scene">
+    <div class="rule"></div>
+    <div class="lock"><img src="" alt=""><div class="sep"></div><div class="p rl"><span>Collectr<b>IQ</b></span></div></div>
+    <div class="for rl"><span>AI Collection Agents for Indian Enterprises</span></div>
+    <div class="tag"><span class="rl"><span>Extend your collections reach to <b>every customer,</b></span></span><span class="rl"><span>in every language, on every channel.</span></span></div>
+    <div class="chips"><span>Reduce risk</span><span>Protect relationships</span><span>Go live in 2 weeks</span></div>
+  </section>
+
+  <section id="s1" class="scene">
+    <div class="copy"><div class="k rl"><span>The blind spot</span></div><h1><span class="rl"><span>You’ve built a great collections process.</span></span><span class="rl"><span class="l2">For your top accounts.</span></span></h1></div>
+    <div class="split">
+      <div class="seg top"><div class="fill"></div><div class="lab"><b>~20%</b><small>Your top accounts</small><span>Relationship-driven, consistent, well-covered.</span></div></div>
+      <div class="seg tail"><svg viewBox="0 0 1300 150" preserveAspectRatio="none"></svg><div class="lab"><b>~80%</b><small>The long tail</small><span>Sporadic follow-up, or none. This is where your cash quietly gets stuck.</span></div></div>
+    </div>
+    <div class="who"><span><b>1,000+</b>B2B customers on credit</span><span><b>Multi-state</b>customers, many languages</span><span><b>Thin margins</b>efficiency is existential</span><span><b>Slow to pay</b>structural collection gaps</span></div>
+  </section>
+
+  <section id="s2" class="scene">
+    <div class="hdr"><div class="k">The cost of the gap</div><h2>What the long tail is quietly costing you.</h2></div>
+    <div class="gap" style="left:100px"><div class="n">01</div><b>Cash you’ve already earned</b><span>Working capital sits idle in accounts no one has the bandwidth to chase consistently.</span></div>
+    <div class="gap" style="left:540px"><div class="n">02</div><b>Promises that vanish</b><span>Verbal commitments live in inboxes and call notes — never tracked, never followed through.</span></div>
+    <div class="gap" style="left:980px"><div class="n">03</div><b>Disputes that age into write-offs</b><span>Issues surface only after they’re too old, and too costly, to recover.</span></div>
+    <div class="gap" style="left:1420px"><div class="n">04</div><b>Risk you never see coming</b><span>Unresponsive accounts drift toward write-off with no early warning to act on.</span></div>
+    <div id="roll"><div class="track"></div>
+      <div class="stop" style="left:0%"><small>Invoice due</small></div><div class="stop" style="left:25%"><small>30 days</small></div><div class="stop" style="left:50%"><small>60 days</small></div><div class="stop" style="left:75%"><small>90 days</small></div><div class="stop" style="left:100%"><small>Write-off</small></div>
+      <div id="rollDot"><small>₹48,000 · long-tail customer · no follow-up</small></div></div>
+  </section>
+
+  <section id="s3" class="scene">
+    <div class="hdr"><div class="k">Multi-lingual AI agents</div><h2 style="font-size:46px">Two-way conversations, <b>in the language your customer replies in.</b></h2></div>
+    <div class="scr bvs" id="b1">
+      <div class="sb"><div class="g">OPERATIONS</div><div class="it">Dashboard</div><div class="it on">Customer View<span class="bd">26</span></div><div class="it">Task Center</div><div class="it">Open Commitments</div><div class="it">Distressed Collections</div><div class="it">File Uploads</div><div class="g">ADMIN</div><div class="it">User Access</div><div class="it">Outreach Summary</div></div>
+      <div class="mn"><div class="tb"><img src="" alt=""><span class="p">CollectrIQ</span><span style="font-size:12px;color:var(--muted)">Customer View / Sharma Distributors</span><span class="r">Record action</span></div>
+        <div class="bd bv"><div class="hd"><div><b>Sharma Distributors</b><div class="amt">₹48,000 due <span class="pill">31–60 DAYS</span> <span style="font-weight:500;color:var(--muted);font-size:13px;margin-left:8px">INV-2041 · due 15 Sep</span></div></div><div class="risk"><small>Risk score</small><b style="color:#1E8A5B">72 <span style="font-size:13px;color:var(--muted)">/100</span></b><div class="tr"><i style="width:72%;background:#1E8A5B"></i></div></div></div>
+          <div class="facts"><div><small>Relationship</small><b>3 years</b></div><div><small>Sanctioned credit limit</small><b>₹5,00,000</b></div><div><small>Payment terms</small><b>Net 45</b></div><div><small>Repayment history</small><b>Good</b></div><div><small>Overdue invoices</small><b>1 · ₹48,000</b></div></div>
+          <div class="ins"><b>AI insight</b> — Regular dealer with one late invoice in 24 months. Reminder sent in Hindi over chat; a promise to pay for 14 September was captured and is being tracked.</div>
+          <div class="tl">
+            <div class="ev b"><div class="ic">↗</div><div><b>Outbound chat<span class="tg">OUTBOUND CHAT</span></b><span>07/09/2026 · CHAT · Payment reminder sent in Hindi · Related invoice: INV-2041</span></div></div>
+            <div class="ev g"><div class="ic">✓</div><div style="flex:1"><b>Promise to pay<span class="tg">INBOUND CHAT · हिंदी</span></b><span>07/09/2026 · CHAT · Promised date 14/09/2026 · Customer commits to pay ₹48,000 on Monday.</span>
+              <div class="trx"><div class="meta" style="margin-bottom:6px;color:var(--ink)">Conversation transcript</div><div class="typing"><i></i><i></i><i></i></div><div class="bub ai">नमस्ते शर्मा जी, Rubix Data Sciences की ओर से। आपका इनवॉइस INV-2041, ₹48,000 का, 15 सितंबर को देय है। क्या भुगतान समय पर हो पाएगा?<div class="meta" style="margin-top:4px">2026-09-07 10:14:02</div></div><div class="bub br">इस हफ़्ते मुश्किल है, सोमवार को कर दूँगा।<div class="meta" style="margin-top:4px">2026-09-07 10:16:30</div></div><div class="typing"><i></i><i></i><i></i></div><div class="bub ai">धन्यवाद। सोमवार, 14 सितंबर का आपका वादा दर्ज कर लिया गया है। भुगतान विवरण यहाँ है।<div class="meta" style="margin-top:4px">2026-09-07 10:16:41</div></div><div class="meta"><b>Sent 2</b><b>Delivered 2</b><b>Read 2</b></div></div></div></div>
+          </div></div></div>
+    </div>
+    <div class="scr bvs" id="b2">
+      <div class="sb"><div class="g">OPERATIONS</div><div class="it">Dashboard</div><div class="it on">Customer View<span class="bd">26</span></div><div class="it">Task Center</div><div class="it">Open Commitments</div><div class="it">Distressed Collections</div><div class="it">File Uploads</div><div class="g">ADMIN</div><div class="it">User Access</div><div class="it">Outreach Summary</div></div>
+      <div class="mn"><div class="tb"><img src="" alt=""><span class="p">CollectrIQ</span><span style="font-size:12px;color:var(--muted)">Customer View / Kavitha Traders</span><span class="r">Record action</span></div>
+        <div class="bd bv"><div class="hd"><div><b>Kavitha Traders</b><div class="amt">₹1,12,000 overdue <span class="pill">61–90 DAYS</span> <span style="font-weight:500;color:var(--muted);font-size:13px;margin-left:8px">INV-1877 · 64 days overdue</span></div></div><div class="risk"><small>Risk score</small><b style="color:#B7791F">58 <span style="font-size:13px;color:var(--muted)">/100</span></b><div class="tr"><i style="width:58%;background:#B7791F"></i></div></div></div>
+          <div class="facts"><div><small>Relationship</small><b>2 years</b></div><div><small>Sanctioned credit limit</small><b>₹8,00,000</b></div><div><small>Payment terms</small><b>Net 30</b></div><div><small>Repayment history</small><b>Fair</b></div><div><small>Overdue invoices</small><b>1 · ₹1,12,000</b></div></div>
+          <div class="ins"><b>AI insight</b> — One invoice overdue; the customer states the goods were short-shipped. Dispute captured from the chat and routed to the sales team with the claimed details.</div>
+          <div class="tl">
+            <div class="ev b"><div class="ic">↗</div><div><b>Outbound chat<span class="tg">OUTBOUND CHAT</span></b><span>07/09/2026 · CHAT · Overdue reminder sent in Tamil · Related invoice: INV-1877</span></div></div>
+            <div class="ev g"><div class="ic">✓</div><div style="flex:1"><b>Dispute raised<span class="tg">INBOUND CHAT · தமிழ்</span></b><span>07/09/2026 · CHAT · Short shipment claimed by customer · routed to sales for verification.</span>
+              <div class="trx"><div class="meta" style="margin-bottom:6px;color:var(--ink)">Conversation transcript</div><div class="typing"><i></i><i></i><i></i></div><div class="bub ai">வணக்கம் கவிதா அவர்களே, Rubix Data Sciences-ல் இருந்து. உங்கள் இன்வாய்ஸ் INV-1877, ₹1,12,000 நிலுவையில் உள்ளது. இன்று செலுத்த முடியுமா?<div class="meta" style="margin-top:4px">2026-09-07 10:14:02</div></div><div class="bub br">சரக்கு குறைவாக வந்தது, அதை சரிசெய்யாமல் செலுத்த முடியாது.<div class="meta" style="margin-top:4px">2026-09-07 10:16:30</div></div><div class="typing"><i></i><i></i><i></i></div><div class="bub ai">நன்றி. உங்கள் தகராறு பதிவு செய்யப்பட்டது. எங்கள் விற்பனைக் குழு விரைவில் தொடர்பு கொள்ளும்.<div class="meta" style="margin-top:4px">2026-09-07 10:16:41</div></div><div class="meta"><b>Sent 2</b><b>Delivered 2</b><b>Read 2</b></div></div></div></div>
+          </div></div></div>
+    </div>
+    <div class="pin" style="left:230px;top:1026px"><div class="d">1</div><div class="tx">Every conversation on the customer’s timeline — sent, delivered, read</div></div>
+    <div class="pin" style="left:1000px;top:1026px"><div class="d">2</div><div class="tx">Promise-to-pay or dispute captured as a record, not a call note</div></div>
+  </section>
+
+  <section id="s4" class="scene">
+    <div class="hdr"><div class="k">The platform</div><h2>Every customer, every promise, every dispute — one view.</h2></div>
+    <div class="scr" id="d1">
+      <div class="sb"><div class="g">OPERATIONS</div><div class="it on">Dashboard</div><div class="it">Customer View<span class="bd">26</span></div><div class="it">Task Center</div><div class="it">Open Commitments</div><div class="it">Distressed Collections</div><div class="it">File Uploads</div><div class="g">ADMIN</div><div class="it">User Access</div><div class="it">Outreach Summary</div></div>
+      <div class="mn"><div class="tb"><img src="" alt=""><span class="p">CollectrIQ</span><span class="r">Rubix Data Sciences · Enterprise plan</span></div>
+        <div class="bd"><div class="h3">Collections Overview</div><div class="sub">Comprehensive view of collection effectiveness</div>
+          <div class="kpis"><div class="kpi"><small>Total receivables</small><b>₹<span id="k1">0</span></b></div><div class="kpi"><small>Collection Efficiency Index</small><b><span id="k2">0</span>%</b></div><div class="kpi"><small>Overdue invoices</small><b><span id="k3">0</span></b></div><div class="kpi"><small>Disputed amount</small><b>₹<span id="k4">0</span></b></div></div>
+          <div class="ask"><small>Ask Collections AI</small><div class="in"><span id="askT"></span><i></i></div><div class="ans" id="ans"><b>11 customers</b> in the 31–60 day bucket have a promise-to-pay due this week — ₹9.4 L across 9 accounts. 2 have broken a prior promise; both are flagged for your team.</div></div>
+          <div class="two"><div class="card"><h4>AR ageing breakdown</h4><div class="chart"><div><i class="a" style="height:34%"></i><i class="b" style="height:40%"></i></div><div><i class="a" style="height:88%"></i><i class="b" style="height:100%"></i></div><div><i class="a" style="height:34%"></i><i class="b" style="height:40%"></i></div><div><i class="a" style="height:66%"></i><i class="b" style="height:76%"></i></div></div><div class="xl"><span>0–30 days</span><span>31–60 days</span><span>61–90 days</span><span>90+ days</span></div></div>
+            <div class="card"><h4>Task summary <span style="background:var(--red);color:#fff;font-size:10px;padding:3px 8px;border-radius:999px;margin-left:8px">36 CRITICAL TASKS</span></h4>
+              <div class="task r"><div><b>High priority reminder</b>25 accounts overdue by 30+ days</div><span class="btn">Take action</span></div>
+              <div class="task y"><div><b>Info requests</b>2 information requests require review</div><span class="btn">Review</span></div>
+              <div class="task y" style="background:#EEF3FF;border-color:#C9D6F5"><div><b>Disputed invoice</b>9 new disputes require review</div><span class="btn" style="background:#DCE6FB;color:var(--navy)">Review</span></div></div></div>
+        </div></div>
+    </div>
+    <div class="scr" id="d2">
+      <div class="sb"><div class="g">OPERATIONS</div><div class="it">Dashboard</div><div class="it on">Customer View<span class="bd">26</span></div><div class="it">Task Center</div><div class="it">Open Commitments</div><div class="it">Distressed Collections</div><div class="it">File Uploads</div><div class="g">ADMIN</div><div class="it">User Access</div><div class="it">Outreach Summary</div></div>
+      <div class="mn"><div class="tb"><img src="" alt=""><span class="p">CollectrIQ</span><span class="r">Rubix Data Sciences · Enterprise plan</span></div>
+        <div class="bd"><div class="h3">Customer View</div><div class="sub">Prioritised view of customers needing your attention: outreach, review, escalation</div>
+          <div class="cv">
+            <div class="cvc"><div class="nm">Everest Industries Limited <span class="pl hi">HIGH</span></div><div class="od">⏱ 451 days overdue</div><div class="amt">₹39,176 <span style="font-weight:500;color:var(--muted);font-size:11px;margin-left:8px">Last contact: Tue Sep 08 2026</span></div><div class="ai"><b>⚠ AI Insight</b>A one-year-old client with a pattern of delayed payments and a low payment-history score of 2.5. All three invoices from June 2025 remain over 425 days overdue despite acknowledging a discount offer; the customer now claims payment has been released — verification needed.</div><div class="lv"><span>Current reminder level</span><span>📞 Call</span></div><div class="bar"><i data-w="80"></i></div><div class="lv" style="margin-top:8px"><span>Next escalation</span><span>Personal visit</span></div><div class="btns"><span class="b1">View Invoices</span><span class="b2">Details</span></div></div>
+            <div class="cvc"><div class="nm">Colliers International… <span class="pl med">MEDIUM</span></div><div class="od">⏱ 175 days overdue</div><div class="amt">₹7,46,296 <span style="font-weight:500;color:var(--muted);font-size:11px;margin-left:8px">Last contact: Tue Sep 08 2026</span></div><div class="ai"><b>⚠ AI Insight</b>A newly established client with minimal strategic value. Medium dynamic risk score (5.5) and a solid payment-history score (6.5) indicate a moderate risk profile; a balance of ₹2,96,296 remains after a recent partial payment.</div><div class="lv"><span>Current reminder level</span><span>📞 Call</span></div><div class="bar"><i data-w="55"></i></div><div class="lv" style="margin-top:8px"><span>Next escalation</span><span>Personal visit</span></div><div class="btns"><span class="b1">View Invoices</span><span class="b2">Details</span></div></div>
+            <div class="cvc"><div class="nm">Chalet Hotels Limited <span class="pl med">MEDIUM</span></div><div class="od">⏱ 451 days overdue</div><div class="amt">₹0 <span style="font-weight:500;color:var(--muted);font-size:11px;margin-left:8px">Last contact: Tue Sep 08 2026</span></div><div class="ai"><b>⚠ AI Insight</b>A client for about one year with a poor payment history (score 2.5) and a low computed risk score of 28.25, indicating high risk. A large overdue invoice was cleared by partial payment and credit note, but the account remains non-responsive.</div><div class="lv"><span>Current reminder level</span><span>📞 Call</span></div><div class="bar"><i data-w="80"></i></div><div class="lv" style="margin-top:8px"><span>Next escalation</span><span>Personal visit</span></div><div class="btns"><span class="b1">View Invoices</span><span class="b2">Details</span></div></div>
+            <div class="cvc"><div class="nm">Cogoport Private Limited <span class="pl hi">HIGH</span></div><div class="od">⏱ 998 days overdue</div><div class="amt">₹6,65,815 <span style="font-weight:500;color:var(--muted);font-size:11px;margin-left:8px">Last contact: Tue Sep 08 2026</span></div><div class="ai"><b>⚠ AI Insight</b>A newly established client with a very low payment-history score and no strategic weighting. The sole invoice has been overdue for over two years, showing a deteriorating payment pattern and high collection risk.</div></div>
+            <div class="cvc"><div class="nm">Advanta Enterprises Li… <span class="pl hi">HIGH</span></div><div class="od">⏱ 451 days overdue</div><div class="amt">₹5,24,628 <span style="font-weight:500;color:var(--muted);font-size:11px;margin-left:8px">Last contact: Tue Sep 08 2026</span></div><div class="ai"><b>⚠ AI Insight</b>A newly established client with a pattern of delayed payments, with a single invoice now 328 days overdue. Low payment-history score and a computed risk score of 26.75 indicate high financial risk.</div></div>
+            <div class="cvc"><div class="nm">VG Enterprises <span class="pl med">MEDIUM</span></div><div class="od">⏱ 115 days overdue</div><div class="amt">₹2,00,000 <span style="font-weight:500;color:var(--muted);font-size:11px;margin-left:8px">Last contact: Tue Sep 08 2026</span></div><div class="ai"><b>⚠ AI Insight</b>A one-year client with a low payment-history score and a medium dynamic risk score. Recent activity shows emerging payment delays and a high outstanding balance relative to typical invoices, so close monitoring is required.</div></div>
+          </div></div></div>
+    </div>
+    <div class="scr" id="d4">
+      <div class="sb"><div class="g">OPERATIONS</div><div class="it">Dashboard</div><div class="it">Customer View<span class="bd">26</span></div><div class="it">Task Center</div><div class="it">Open Commitments</div><div class="it on">Distressed Collections</div><div class="it">File Uploads</div><div class="g">ADMIN</div><div class="it">User Access</div><div class="it">Outreach Summary</div></div>
+      <div class="mn"><div class="tb"><img src="" alt=""><span class="p">CollectrIQ</span><span class="r">Rubix Data Sciences · Enterprise plan</span></div>
+        <div class="bd dt"><div class="h3">Distressed Collections Management</div><div class="sub">Monitoring and managing disputed invoices and defaulted accounts</div>
+          <div class="kpis"><div class="kpi"><small>Overdue invoices</small><b><span id="ov">0</span></b><small style="color:var(--muted);font-weight:500;margin-top:2px">34 overdue invoices</small></div><div class="kpi"><small>Total defaulted amount</small><b>₹0</b><small style="color:var(--muted);font-weight:500;margin-top:2px">0 confirmed defaults</small></div></div>
+          <div class="two" style="grid-template-columns:1.5fr 1fr">
+            <div class="card"><h4>Overdue invoices <span style="float:right;font-size:11px;color:var(--muted);font-weight:500">Invoices · Default trends</span></h4>
+              <table><thead><tr><th>Counterparty</th><th>Invoice #</th><th>Amount</th><th>Due date</th><th>Invoice date</th><th>Status</th><th>Payment</th></tr></thead><tbody>
+              <tr class="row"><td>VG Enterprises</td><td>VG-INV-VG05</td><td>₹1,50,000</td><td>2026-05-26</td><td>2026-04-26</td><td><span class="st2 g">ACTIVE</span></td><td><span class="st2 r">UNPAID</span></td></tr>
+              <tr class="row"><td>VG Enterprises</td><td>VG-INV-VG01</td><td>₹50,000</td><td>2026-05-16</td><td>2026-04-16</td><td><span class="st2 g">ACTIVE</span></td><td><span class="st2 r">UNPAID</span></td></tr>
+              <tr class="row"><td>VM Enterprises</td><td>VM-INV-004</td><td>₹20,000</td><td>2026-02-15</td><td>2026-01-15</td><td><span class="st2 g">ACTIVE</span></td><td><span class="st2" style="background:#F2C21B;color:#fff">PARTIALLY PAID</span></td></tr>
+              <tr class="row"><td>VM Enterprises</td><td>VM-INV-003</td><td>₹70,000</td><td>2026-02-15</td><td>2026-01-15</td><td><span class="st2 g">ACTIVE</span></td><td><span class="st2" style="background:#F2C21B;color:#fff">PARTIALLY PAID</span></td></tr>
+              <tr class="row"><td>VM Enterprises</td><td>VM-INV-002</td><td>₹30,000</td><td>2026-02-15</td><td>2026-01-15</td><td><span class="st2 g">ACTIVE</span></td><td><span class="st2" style="background:#F2C21B;color:#fff">PARTIALLY PAID</span></td></tr>
+              <tr class="row"><td>VM Enterprises</td><td>VM-INV-001</td><td>₹50,000</td><td>2026-02-15</td><td>2026-01-15</td><td><span class="st2 g">ACTIVE</span></td><td><span class="st2" style="background:#F2C21B;color:#fff">PARTIALLY PAID</span></td></tr></tbody></table></div>
+            <div class="card"><h4>Invoice ageing analysis</h4><div class="bc"><i style="height:40%;background:#5B9BFF"></i><i class="y" style="height:100%"></i><i style="height:38%;background:#F08A8A"></i><i class="r" style="height:62%"></i></div><div class="xl"><span>0–30</span><span>31–60</span><span>61–90</span><span>90+</span></div>
+              <div style="margin-top:14px;font-size:12px;color:var(--muted);line-height:1.6">Stress concentrates in 31–60 days — where a structured follow-up still recovers the invoice. Accounts that go quiet route to your team.</div></div>
+          </div></div></div>
+    </div>
+    <div class="scr" id="d5">
+      <div class="sb"><div class="g">OPERATIONS</div><div class="it">Dashboard</div><div class="it">Customer View<span class="bd">26</span></div><div class="it">Task Center</div><div class="it">Open Commitments</div><div class="it">Distressed Collections</div><div class="it">File Uploads</div><div class="g">ADMIN</div><div class="it">User Access</div><div class="it on">Outreach Summary</div></div>
+      <div class="mn"><div class="tb"><img src="" alt=""><span class="p">CollectrIQ</span><span class="r">Past 30 days</span></div>
+        <div class="bd"><div class="h3">Channel Statistics</div><div class="sub">Outreach by channel, outcomes and trend</div>
+          <div class="ch">
+            <div class="chc"><div class="t">EMAIL <b id="ce">0</b></div><div class="r s"><span>Successful</span><span>100%</span></div><div class="ln"><i data-w="100"></i></div><div class="r p"><span>Pending</span><span>0%</span></div><div class="ln"></div><div class="r f"><span>Failed</span><span>0%</span></div><div class="ln"></div></div>
+            <div class="chc"><div class="t">WHATSAPP <b id="cw">0</b></div><div class="r s"><span>Successful</span><span>94%</span></div><div class="ln"><i data-w="94"></i></div><div class="r p"><span>Pending</span><span>6%</span></div><div class="ln"></div><div class="r f"><span>Failed</span><span>0%</span></div><div class="ln"></div></div>
+            <div class="chc"><div class="t">CALL <b id="cc">0</b></div><div class="r s"><span>Successful</span><span>81%</span></div><div class="ln"><i data-w="81"></i></div><div class="r p"><span>Pending</span><span>11%</span></div><div class="ln"></div><div class="r f"><span>Failed</span><span>8%</span></div><div class="ln"></div></div>
+          </div>
+          <div class="two" style="margin-top:12px"><div class="card"><h4>Outcome mix <span style="font-size:11px;color:var(--muted);font-weight:500;margin-left:8px">All disposition types, this window</span></h4><div style="display:flex;align-items:center;gap:24px"><div class="donut" id="donut"></div><div style="font-size:12px;font-weight:600;line-height:2"><span style="color:#22B57A">■</span> Promise to pay<br><span style="color:#7CD79A">■</span> Payment intimation<br><span style="color:#A8E6BB">■</span> Acknowledgement</div></div></div>
+            <div class="card"><h4>Outcome trend <span style="font-size:11px;color:var(--muted);font-weight:500;margin-left:8px">positive / needs action / stalled, per period</span></h4><div class="trend"><svg viewBox="0 0 600 120" preserveAspectRatio="none"><path id="tr1" d="M0,100 C60,60 120,20 180,30 S300,90 360,80 S480,40 600,60" stroke="#22B57A"/><path id="tr2" d="M0,110 C80,108 160,96 240,100 S360,110 420,96 S520,70 600,88" stroke="#F0B84B"/></svg></div></div></div>
+        </div></div>
+    </div>
+    <div class="scr" id="d3">
+      <div class="sb"><div class="g">OPERATIONS</div><div class="it">Dashboard</div><div class="it">Customer View<span class="bd">26</span></div><div class="it">Task Center</div><div class="it">Open Commitments</div><div class="it">Distressed Collections</div><div class="g">ADMIN</div><div class="it">User Access</div><div class="it on">Outreach Summary</div></div>
+      <div class="mn"><div class="tb"><img src="" alt=""><span class="p">CollectrIQ</span><span style="font-size:12px;color:var(--muted)">Risk Sensitivity Configuration</span><span class="r">Back to dashboard</span></div>
+        <div class="bd"><div class="h3">Risk Sensitivity Configuration</div><div class="sub">Configure how the system evaluates customer risk and determines escalation levels</div>
+          <div class="two" style="grid-template-columns:1fr 1.6fr"><div class="card"><h4>Payment history threshold</h4><div style="font-size:12px;color:var(--muted);margin-bottom:10px">Number of days to look back when analysing payment history for risk assessment.</div><div style="font-size:12px;font-weight:600">Days to analyse</div><div class="tm" style="margin-top:6px;font-size:16px;padding:8px 14px">180</div></div>
+            <div class="card"><h4>Risk sensitivity factors <span style="float:right;font-size:11px;color:var(--muted);font-weight:500">Total must equal 100%</span></h4>
+              <div class="sl">
+                <div class="row"><span>₹ Payment history weight</span><b id="w1">0%</b></div><div class="tr"><i data-w="35"></i><em data-w="35"></em></div>
+                <div class="row"><span>◷ Relationship vintage weight</span><b id="w2">0%</b></div><div class="tr"><i data-w="15"></i><em data-w="15"></em></div>
+                <div class="row"><span>◆ Strategic value weight</span><b id="w3">0%</b></div><div class="tr"><i data-w="20"></i><em data-w="20"></em></div>
+                <div class="row"><span>◎ Dynamic risk rating weight</span><b id="w4">0%</b></div><div class="tr"><i data-w="30"></i><em data-w="30"></em></div>
+                <div class="tot"><span>Total weight</span><b><span id="wt">0</span>%</b></div><div class="tb2"><i id="wtb"></i></div></div></div></div>
+        </div></div>
+    </div>
+    <div id="flipLabel"><i></i><span id="flipText"></span></div>
+  </section>
+
+  <section id="s5" class="scene">
+    <div class="hdr"><div class="k">Autonomous by design</div><h2>Agents handle the follow-up. Your team gets the accounts that matter.</h2></div>
+    <svg id="sorter" viewBox="0 0 1920 1080"><path class="lane l1" id="ln1" d="M480,560 C700,560 760,430 980,430 L1300,430"/><path class="lane l2" id="ln2" d="M480,560 C700,560 760,760 980,760 L1300,760"/><g id="dots"></g></svg>
+    <div id="tail"><b>The long tail</b><span>Hundreds of smaller customers, across states and languages, that no team can chase by hand every cycle.</span></div>
+    <div class="lanebox" style="left:1300px;top:330px"><small style="color:var(--green)">AI agents</small><b>Routine follow-up, handled</b><span>Reminders, promises-to-pay and disputes captured two-way, in the customer’s language, with context carried across conversations.</span><div class="cnt" style="color:var(--green)"><span id="c1">0</span></div></div>
+    <div class="lanebox" style="left:1300px;top:660px"><small style="color:var(--crimson)">Your team</small><b>At-risk accounts, with context</b><span>Customers going quiet across channels are flagged for human review — fewer surprise write-offs.</span><div class="cnt" style="color:var(--crimson)"><span id="c2">0</span></div></div>
+  </section>
+
+  <section id="s6" class="scene">
+    <div class="hdr"><div class="k">How it works</div><h2>Connected to your ERP. Live in two weeks.</h2></div>
+    <div class="how" style="left:100px"><div class="n">1</div><b>Connect</b><span>CollectrIQ connects to your ERP in 1–2 weeks and ingests your customer, invoice and payment data. No re-engineering.</span></div>
+    <div class="how" style="left:700px"><div class="n">2</div><b>Deploy AI agents</b><span>Multi-lingual agents engage your long-tail customers over WhatsApp, voice and email, in their preferred language.</span></div>
+    <div class="how" style="left:1300px"><div class="n">3</div><b>Track &amp; optimise</b><span>Agents capture promises-to-pay, log disputes and flag high-risk accounts in real time, on one prioritised dashboard.</span></div>
+    <div id="howfoot">No lengthy implementation. No headcount to add. Go live in 2 weeks.</div>
+  </section>
+
+  <section id="s7" class="scene">
+    <div class="hdr"><div class="k">Why CollectrIQ</div><h2>The teams that reach <b>every</b> customer will out-collect the ones that don’t.</h2></div>
+    <div class="imp why" style="left:100px;height:330px"><div class="big grad" style="font-size:44px;line-height:1.15">Risk-led,<br>not ageing-led</div><div class="tx">Prioritisation uses real-time signals about each customer and its sector, not just how old the invoice is.</div></div>
+    <div class="imp why" style="left:700px;height:330px"><div class="big grad" style="font-size:44px;line-height:1.15">Voice, WhatsApp<br>&amp; email</div><div class="tx">One agent reaches customers on the channel they actually respond to, in their own language.</div></div>
+    <div class="imp why" style="left:1300px;height:330px"><div class="big grad" style="font-size:44px;line-height:1.15">Autonomous<br>by design</div><div class="tx">Agents carry context across conversations, track commitments, and escalate to your team only when it matters.</div></div>
+    <div id="who" style="top:700px"><span><b>CFO</b>DSO · bad-debt · forecast accuracy</span><span><b>Collections Manager</b>CEI · PTP honour rate · coverage %</span><span><b>Sales Head</b>retention · relationship health · revenue at risk</span></div>
+  </section>
+
+  <section id="s8" class="scene">
+    <div class="copy"><h1><span class="rl"><span>Let’s get you collecting</span></span><span class="rl"><span>from <span class="grad">every customer.</span></span></span></h1><p>See CollectrIQ run on your own portfolio. Book a 30-minute demo and go live in two weeks.</p></div>
+    <div class="contacts"><div><b>Enquiries</b>collectriq-enquiries@vayana.com</div><div><b>Web</b>vayana.com</div></div>
+    <div id="band"><div class="l"><h2>Meet us at Global Fintech Fest 2026</h2><p><span class="booth">Booth K16–17</span>Jio World Centre, Mumbai &nbsp;·&nbsp; 9–11 September</p></div><div class="qr"><img src="" alt=""><span>Scan to connect</span></div></div>
+  </section>
+</div>
+<script src="gsap.min.js"></script>
+<script src="../kit.js"></script>
+<script src="data.js"></script>
+<script>
+mountKit();
+$$('#brand img, .tb img, #s0 .lock img').forEach(i=>i.src=VAYANA_SRC); $('#band .qr img').src=QR_SRC;
+let seed=11; const rnd=()=>{ seed=(seed*9301+49297)%233280; return seed/233280; };
+// tail dots in early buckets
+$$('#s1 .seg svg').forEach(svg=>{ for(let i=0;i<160;i++){ const c=document.createElementNS(SVGNS,'circle'); c.setAttribute('cx',430+rnd()*840); c.setAttribute('cy',14+rnd()*122); c.setAttribute('r',2.4+rnd()*3); svg.appendChild(c); } });
+// sorter dots
+(function(){ const g=$('#dots'); for(let i=0;i<40;i++){ const c=document.createElementNS(SVGNS,'circle'); c.setAttribute('r',7); c.setAttribute('class','dot'); c.dataset.lane=(i%5===0)?'2':'1'; g.appendChild(c); } })();
+const LN1=$('#ln1'), LN2=$('#ln2'); [LN1,LN2].forEach(p=>{ const L=p.getTotalLength(); p.style.strokeDasharray=L; p.style.strokeDashoffset=L; }); prepDraw('.trend path');
+
+gsap.defaults({overwrite:'auto'});
+const tl=gsap.timeline({paused:true});
+const show=(s,at)=>tl.set(s,{autoAlpha:1},at), hide=(s,at)=>tl.set(s,{autoAlpha:0},at);
+function enter(sel, at){ show(sel,at); tl.fromTo(sel+' .hdr',{opacity:0,y:24},{opacity:1,y:0,duration:0.7,ease:'power3.out'},at+0.1); }
+function leave(sel, at){ tl.to(sel,{opacity:0,y:-30,duration:0.45,ease:'power2.in'},at); hide(sel,at+0.5); }
+
+// ===== S0 0–5 title =====
+show('#s0',0);
+tl.fromTo('#wave',{x:0},{x:-600,duration:60,ease:'none'},0); tl.fromTo('#wave',{opacity:0},{opacity:1,duration:0.8},0);
+tl.to('#s0 .rule',{width:220,duration:0.8,ease:'power3.out'},0.2);
+pop(tl,'#s0 .lock img',0.3,{y:30,scale:0.8,rot:0});
+tl.fromTo('#s0 .lock .sep',{opacity:0,scaleY:0},{opacity:1,scaleY:1,duration:0.4},0.8);
+reveal(tl,'#s0 .lock .p>span',0.7,0); reveal(tl,'#s0 .for>span',1.1,0); reveal(tl,'#s0 .tag .rl>span',1.5,0.14);
+pop(tl,'#s0 .chips span',2.4,{y:30,scale:0.7,rot:0,s:0.14,ease:'back.out(2)'});
+float(tl,'#s0 .chips',3.3,1.4,4);
+out(tl,'#s0',4.6); hide('#s0',5.1);
+
+// ===== S1 5–11.5 blind spot =====
+show('#s1',5.0); tl.to('#brand',{opacity:1,duration:0.6},5.2);
+reveal(tl,'#s1 .copy .rl>span',5.3,0.16);
+pop(tl,'#s1 .seg',6.0,{y:50,scale:0.9,rot:0,s:0.12,ease:'back.out(1.8)'});
+tl.to('#s1 .seg.top .fill',{scaleX:1,duration:0.8,ease:'power3.out'},6.8); tl.set('#s1 .seg.top .lab',{opacity:0},5.0); tl.to('#s1 .seg.top .lab',{opacity:1,duration:0.35},7.3);
+tl.fromTo('#s1 .seg circle',{opacity:0,scale:0,transformOrigin:'center'},{opacity:0.85,scale:1,duration:0.35,ease:'back.out(3)',stagger:{each:0.006,from:'random'}},7.6);
+tl.to('#s1 .seg circle',{opacity:0.4,duration:0.6,yoyo:true,repeat:3,ease:'sine.inOut',stagger:{each:0.003,from:'random'}},9.0);
+pop(tl,'#s1 .who span',8.8,{y:30,scale:0.85,rot:0,s:0.12,ease:'back.out(2)'});
+float(tl,'#s1 .split',8.6,2.4,5);
+out(tl,'#s1',11.1); hide('#s1',11.6);
+
+// ===== S2 11.5–16.5 cost =====
+enter('#s2',11.6);
+pop(tl,'.gap',11.9,{y:80,scale:0.9,rot:-2,s:0.12});
+float(tl,'.gap',13.2,3,5);
+tl.to('#rollDot',{opacity:1,scale:1,duration:0.3},12.7);
+tl.fromTo('#rollDot',{scale:0.4},{scale:1,duration:0.4,ease:'back.out(2)'},12.7);
+tl.to('#rollDot',{left:'100%',duration:3.0,ease:'power1.inOut'},12.9); tl.fromTo('#rollDot small',{xPercent:-15},{xPercent:-85,duration:3.0,ease:'power1.inOut'},12.9);
+tl.to('#roll .stop',{borderColor:'#B4303E',duration:0.2,stagger:0.7},13.4);
+tl.to('#rollDot',{backgroundColor:'#7A1F28',scale:1.3,duration:0.4,ease:'back.out(2)'},15.7);
+out(tl,'#s2',16.1); hide('#s2',16.6);
+
+// ===== S3 16.5–28 conversations (real Borrower View) =====
+enter('#s3',16.6);
+
+tl.fromTo('#b1',{autoAlpha:0,y:80,rotationX:8},{autoAlpha:1,y:0,rotationX:0,duration:0.9,ease:'power3.out'},17.0);
+pop(tl,'#b1 .ev',17.7,{y:24,scale:0.97,rot:0,s:0.25});
+tl.to('#b1 .trx',{height:270,opacity:1,duration:0.5,ease:'power3.out'},18.3);
+typing(tl,'#b1 .trx .typing:nth-child(2)',18.5,0.7);
+pop(tl,'#b1 .trx .bub:nth-child(3)',19.2,{y:14,scale:0.92,rot:0,ease:'back.out(2)',d:0.5});
+pop(tl,'#b1 .trx .bub:nth-child(4)',20.1,{y:14,scale:0.92,rot:0,ease:'back.out(2)',d:0.5});
+typing(tl,'#b1 .trx .typing:nth-child(5)',20.7,0.7);
+pop(tl,'#b1 .trx .bub:nth-child(6)',21.4,{y:14,scale:0.92,rot:0,ease:'back.out(2)',d:0.5});
+tl.fromTo('#s3 .pin:nth-of-type(1)',{opacity:0,scale:0.6,y:10},{opacity:1,scale:1,y:0,duration:0.45,ease:'back.out(2)'},21.6);
+tl.to('#b1',{autoAlpha:0,x:-140,rotationY:-12,duration:0.45,ease:'power2.in'},22.4);
+tl.fromTo('#b2',{autoAlpha:0,x:160,rotationY:14},{autoAlpha:1,x:0,rotationY:0,duration:0.7,ease:'power3.out'},22.6);
+pop(tl,'#b2 .ev',23.1,{y:24,scale:0.97,rot:0,s:0.25});
+tl.to('#b2 .trx',{height:270,opacity:1,duration:0.5,ease:'power3.out'},23.7);
+typing(tl,'#b2 .trx .typing:nth-child(2)',23.9,0.6);
+pop(tl,'#b2 .trx .bub:nth-child(3)',24.5,{y:14,scale:0.92,rot:0,ease:'back.out(2)',d:0.5});
+pop(tl,'#b2 .trx .bub:nth-child(4)',25.3,{y:14,scale:0.92,rot:0,ease:'back.out(2)',d:0.5});
+typing(tl,'#b2 .trx .typing:nth-child(5)',25.8,0.6);
+pop(tl,'#b2 .trx .bub:nth-child(6)',26.4,{y:14,scale:0.92,rot:0,ease:'back.out(2)',d:0.5});
+tl.fromTo('#s3 .pin:nth-of-type(2)',{opacity:0,scale:0.6,y:10},{opacity:1,scale:1,y:0,duration:0.45,ease:'back.out(2)'},26.6);
+out(tl,'#s3',27.5); hide('#s3',28.0);
+
+// ===== S4 28–44.5 screens =====
+enter('#s4',28.0);
+let cur=null;
+function screen(at, id, label){ if(cur){ tl.to(cur,{autoAlpha:0,x:-140,rotationY:-12,duration:0.45,ease:'power2.in'},at); tl.to('#flipLabel',{opacity:0,y:-10,duration:0.25},at); }
+  tl.fromTo(id,{autoAlpha:0,x:cur?160:0,y:cur?0:80,rotationY:cur?14:0,rotationX:cur?0:8},{autoAlpha:1,x:0,y:0,rotationY:0,rotationX:0,duration:0.8,ease:'power3.out'},at+(cur?0.2:0.15));
+  tl.call(()=>{ $('#flipText').textContent=label; },null,at+0.3); tl.fromTo('#flipLabel',{opacity:0,y:14,scale:0.9},{opacity:1,y:0,scale:1,duration:0.5,ease:'back.out(2)'},at+0.6); cur=id; }
+screen(28.2,'#d1','Collections overview — receivables, efficiency index, ageing, tasks, and an AI you can ask');
+count(tl,$('#k1'),7936925,28.8,1.2); count(tl,$('#k2'),9.27,28.8,1.2,v=>v.toFixed(2)); count(tl,$('#k3'),34,28.8,1.0); count(tl,$('#k4'),79736,28.8,1.2);
+tl.fromTo('#d1 .chart i',{scaleY:0},{scaleY:1,duration:0.8,ease:'back.out(1.6)',stagger:0.06},29.0);
+pop(tl,'#d1 .task',29.3,{y:20,scale:0.94,rot:0,s:0.14,ease:'back.out(2)',d:0.5});
+typeIn(tl,$('#askT'),'Which customers have a promise-to-pay due this week?',29.6,1.3);
+pop(tl,'#ans',31.1,{y:12,scale:0.97,rot:0,d:0.45});
+screen(32.4,'#d2','Customer view — prioritised by risk, with an AI insight and the next escalation for every account');
+pop(tl,'#d2 .cvc',33.0,{y:30,scale:0.94,rot:0,s:0.22,d:0.6});
+tl.to('#d2 .cvc .bar i',{width:(i,el)=>el.dataset.w+'%',duration:0.8,ease:'power2.out',stagger:0.2},33.8);
+screen(35.8,'#d4','Distressed collections — overdue invoices by counterparty, and the book by ageing bucket');
+count(tl,$('#ov'),34,36.5,0.8);
+tl.fromTo('#d4 tr.row',{opacity:0,x:-30},{opacity:1,x:0,duration:0.4,ease:'power3.out',stagger:0.09},36.6);
+tl.fromTo('#d4 .bc i',{scaleY:0},{scaleY:1,duration:0.7,ease:'back.out(1.6)',stagger:0.08},37.1);
+screen(39.0,'#d5','Outreach summary — channel statistics, outcome mix and outcome trend');
+count(tl,$('#ce'),248,39.7,0.9); count(tl,$('#cw'),1120,39.7,1.0); count(tl,$('#cc'),316,39.7,0.9);
+tl.to('#d5 .chc .ln i',{width:(i,el)=>el.dataset.w+'%',duration:0.8,ease:'power2.out',stagger:0.15},39.9);
+tl.fromTo('#donut',{scale:0,rotation:-90},{scale:1,rotation:0,duration:0.8,ease:'back.out(1.6)'},40.2);
+tl.to('#tr1, #tr2',{strokeDashoffset:0,duration:1.0,ease:'power2.inOut',stagger:0.2},40.4);
+screen(42.0,'#d3','Risk sensitivity — weights set by your finance team, not code');
+tl.to('#d3 .sl .tr i',{width:(i,el)=>el.dataset.w+'%',duration:0.7,ease:'back.out(1.4)',stagger:0.12},42.7);
+tl.to('#d3 .sl .tr em',{left:(i,el)=>el.dataset.w+'%',duration:0.7,ease:'back.out(1.4)',stagger:0.12},42.7);
+{ const w={a:0,b:0,c:0,d:0}; tl.to(w,{a:35,b:15,c:20,d:30,duration:0.9,ease:'power2.out',onUpdate:()=>{ $('#w1').textContent=Math.round(w.a)+'%'; $('#w2').textContent=Math.round(w.b)+'%'; $('#w3').textContent=Math.round(w.c)+'%'; $('#w4').textContent=Math.round(w.d)+'%'; $('#wt').textContent=Math.round(w.a+w.b+w.c+w.d); }},42.8); tl.to('#wtb',{width:'100%',duration:0.9,ease:'power2.out'},42.8); }
+out(tl,'#s4',44.6); hide('#s4',45.1);
+
+// ===== S5 45–49.3 orchestration =====
+enter('#s5',45.1);
+pop(tl,'#tail',45.3,{y:30,scale:0.95,rot:0});
+tl.to('#ln1, #ln2',{strokeDashoffset:0,duration:0.7,ease:'power2.inOut'},45.5);
+pop(tl,'.lanebox',45.7,{y:40,scale:0.92,rot:0,s:0.15});
+{ const dots=$$('#sorter .dot'); const c={a:0,b:0}; dots.forEach((d,i)=>{ const lane=d.dataset.lane==='2'?LN2:LN1; const t0=45.9+i*0.065; const o={p:0};
+    tl.set(d,{opacity:1},t0); tl.to(o,{p:1,duration:1.1,ease:'power1.inOut',onUpdate:()=>{ const P=lane.getPointAtLength(o.p*lane.getTotalLength()); d.setAttribute('cx',P.x); d.setAttribute('cy',P.y); }},t0); tl.to(d,{opacity:0,duration:0.18},t0+0.92);
+    const cntSel = d.dataset.lane==='2' ? '#c2' : '#c1';
+    tl.call(()=>{ if(d.dataset.lane==='2'){ c.b++; $('#c2').textContent=c.b; } else { c.a++; $('#c1').textContent=c.a; } },null,t0+1.1);
+    tl.fromTo(cntSel,{scale:1.3},{scale:1,duration:0.25,ease:'power2.out'},t0+1.1); }); }
+out(tl,'#s5',49.0); hide('#s5',49.5);
+
+// ===== S6 49.5–52.5 how =====
+enter('#s6',49.5);
+pop(tl,'.how',49.8,{y:70,scale:0.9,rot:-2,s:0.12});
+tl.fromTo('#howfoot',{opacity:0,x:-40},{opacity:1,x:0,duration:0.5,ease:'power3.out'},50.7);
+float(tl,'.how',50.8,1.6,5);
+out(tl,'#s6',52.2); hide('#s6',52.7);
+
+// ===== S7 52.7–56 impact =====
+enter('#s7',52.7);
+pop(tl,'.imp',53.0,{y:80,scale:0.88,rot:-2,s:0.12,ease:'back.out(1.6)'});
+pop(tl,'#who span',54.1,{y:20,scale:0.85,rot:0,s:0.12,ease:'back.out(2)',d:0.5});
+out(tl,'#s7',56.0); hide('#s7',56.5);
+
+// ===== S8 56.5–60 close =====
+show('#s8',56.4);
+reveal(tl,'#s8 .copy .rl>span',56.6,0.12);
+tl.fromTo('#s8 p',{opacity:0,y:14},{opacity:1,y:0,duration:0.5},57.1);
+pop(tl,'#s8 .contacts div',57.3,{y:24,scale:0.9,rot:0,s:0.1,d:0.5});
+tl.to('#band',{y:'0%',duration:0.8,ease:'power3.out'},57.0);
+tl.to('#s8, #brand',{opacity:0,duration:0.6,ease:'power2.in'},59.15);
+tl.to('#wave',{opacity:0,duration:0.5},59.4);
+tl.set({},{},60);
+
+window.DURATION=60; window.seek=t=>{ tl.time(Math.min(t,60)); }; window.ready=true;
+// In-browser playback: open the file with ?play appended to the URL (e.g. video.html?play) to loop the film live.
+if(location.search.indexOf('play')>-1){ tl.repeat(-1); tl.play(0); }
+
+</script>
+</body>
+</html>

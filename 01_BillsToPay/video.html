@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vayana BillsToPay — GFF 2026</title>
+<style>
+  :root{
+    --navy:#29397A; --navy2:#1B2557; --ink:#141A3A; --crimson:#B4303E; --crimson2:#D63A4B;
+    --bg:#0E1331; --paper:#FAFAFE; --muted:#6B7290; --line:#E3E6F2; --amber:#F2A93B; --green:#2BB673;
+    --grad:linear-gradient(135deg,#2E3F8C 0%,#B4303E 100%);
+    --gradText:linear-gradient(90deg,#3446A0 0%,#C23A49 100%);
+    --gradDark:linear-gradient(90deg,#3446A0 0%,#C23A49 100%); --paper:#FFFFFF;
+  }
+  html,body{margin:0;padding:0;background:#000;}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;font-family:'Poppins',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+  #stage *{box-sizing:border-box;}
+  .layer{position:absolute;inset:0;}
+  #bgDark{background:#FFFFFF;}
+  
+  #bgLight{display:none;}
+  #wave{position:absolute;left:0;bottom:-40px;width:2400px;height:420px;opacity:1;}
+  .scene{position:absolute;inset:0;visibility:hidden;opacity:0;}
+  #brand{position:absolute;right:80px;top:54px;width:190px;opacity:0;z-index:5;}
+  #brand img{width:100%;display:block;}
+  .rl{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em;}
+  .rl>span{display:block;will-change:transform;}
+  .grad{background:var(--gradText);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .gradD{background:var(--gradDark);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  h1,h2,h3,p{margin:0;font-weight:700;}
+  .eyebrow{font-size:26px;letter-spacing:.32em;text-transform:uppercase;font-weight:500;color:var(--crimson);}
+  .eyebrow.light{color:var(--crimson);}
+
+  /* ---------- Scene 1 ---------- */
+  #mapWrap{position:absolute;left:150px;top:110px;width:760px;height:850px;}
+  #map{width:100%;height:100%;overflow:visible;}
+  #map .outline{fill:rgba(46,63,140,.035);stroke:url(#gMap);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round;}
+  #map .dot{fill:#B4303E;}
+  #map .ring{fill:none;stroke:#B4303E;stroke-width:1.5;}
+  #s1 .copy{position:absolute;left:1010px;top:350px;width:820px;color:var(--navy);}
+  #s1 .num{font-size:190px;line-height:1;letter-spacing:-.03em;font-weight:700;}
+  #s1 .sub{font-size:54px;line-height:1.15;margin-top:18px;font-weight:500;}
+  #s1 .sub b{font-weight:700;}
+  #s1 .sub2{position:absolute;left:0;top:240px;width:820px;font-size:54px;line-height:1.15;font-weight:500;}
+  #s1 .kicker{position:absolute;left:1010px;top:270px;}
+
+  /* ---------- Scene 2 ---------- */
+  .card{position:absolute;width:206px;height:118px;border-radius:12px;background:#fff;box-shadow:0 18px 40px rgba(20,26,58,.16),0 0 0 1px rgba(20,26,58,.06);padding:14px 18px;color:var(--ink);transform-origin:center;}
+  .card small{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+  .card .cst{font-size:18px;font-weight:700;margin-top:3px;color:var(--navy);white-space:nowrap;}
+  .card .due{display:flex;justify-content:space-between;margin-top:9px;font-size:14px;font-weight:500;}
+  .card .due i{font-style:normal;color:var(--crimson);font-weight:700;}
+  .card .bar{position:absolute;left:20px;right:20px;bottom:14px;height:5px;border-radius:3px;background:linear-gradient(90deg,#E3E6F2 0 30%,#B4303E 30% 46%,#E3E6F2 46% 70%,#29397A 70% 82%,#E3E6F2 82%);}
+  #s2 .copy{position:absolute;left:1030px;top:270px;width:820px;color:var(--navy);}
+  #s2 h1{font-size:70px;line-height:1.08;letter-spacing:-.02em;}
+  #s2 .copy2{position:absolute;left:990px;top:250px;width:900px;color:var(--navy);}
+  #s2 .copy2 h1{font-size:68px;line-height:1.08;letter-spacing:-.02em;}
+  #s2 .copy2 p{font-size:32px;line-height:1.35;font-weight:400;color:#3B4266;margin-top:26px;}
+  #s2 .flow{display:flex;align-items:center;gap:10px;margin-top:44px;}
+  #s2 .chip{padding:13px 22px;border-radius:999px;border:2px solid rgba(41,57,122,.35);font-size:22px;font-weight:500;color:var(--navy);white-space:nowrap;}
+  #s2 .arr{width:34px;flex:none;height:2px;background:rgba(41,57,122,.45);position:relative;}
+  #s2 .arr:after{content:"";position:absolute;right:-1px;top:-6px;border:7px solid transparent;border-left:10px solid rgba(41,57,122,.55);}
+  #s2 .day{margin-left:14px;padding:13px 22px;border-radius:999px;background:var(--crimson);font-size:22px;white-space:nowrap;font-weight:700;color:#fff;box-shadow:0 12px 30px rgba(180,48,62,.45);}
+
+  /* ---------- Scene 3 ---------- */
+  #storeWrap{position:absolute;left:120px;top:220px;width:840px;height:640px;}
+  #glow{position:absolute;left:-150px;top:-160px;width:960px;height:960px;border-radius:50%;background:radial-gradient(circle,rgba(255,196,90,.42) 0%,rgba(255,170,80,.12) 38%,transparent 65%);opacity:0;}
+  #store{width:100%;height:100%;overflow:visible;}
+  #store path,#store rect,#store circle,#store line{fill:none;stroke:url(#gStore);stroke-width:3;stroke-linejoin:round;stroke-linecap:round;}
+  #store .swin{fill:rgba(255,205,90,.55);}
+  #s3 .copy{position:absolute;left:1000px;top:220px;width:900px;color:var(--navy);}
+  #s3 h1{font-size:56px;line-height:1.1;letter-spacing:-.02em;}
+  #s3 h1+h1{margin-top:30px;}
+  .tag{position:absolute;padding:16px 28px;border-radius:14px;background:#FFF1F2;color:var(--crimson);font-size:26px;font-weight:700;box-shadow:0 14px 34px rgba(180,48,62,.14),0 0 0 1px rgba(180,48,62,.18);display:flex;align-items:center;gap:14px;white-space:nowrap;}
+  .tag .ic{width:34px;height:34px;border-radius:50%;background:var(--crimson);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;}
+  #s3 .tags{position:absolute;left:1000px;top:540px;}
+
+  /* ---------- Scene 4 ---------- */
+  #bulbWrap{position:absolute;left:760px;top:300px;width:400px;height:480px;}
+  #bulb path,#bulb line,#bulb circle{fill:none;stroke:url(#gBulb);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;}
+  #flash{position:absolute;left:460px;top:40px;width:1000px;height:1000px;border-radius:50%;background:radial-gradient(circle,rgba(255,214,120,.75) 0%,rgba(255,214,120,.35) 22%,rgba(46,63,140,0) 62%);opacity:0;}
+  #s4 .logo{position:absolute;left:660px;top:250px;width:600px;}
+  #s4 .copy{position:absolute;left:110px;top:440px;width:1700px;text-align:center;}
+  #s4 h1{font-size:68px;line-height:1.14;letter-spacing:-.02em;color:var(--navy);}
+
+  /* ---------- Portal mock (S5–S7) ---------- */
+  #mockLayer{perspective:2600px;}
+  .win{position:absolute;left:720px;top:170px;width:1150px;height:800px;border-radius:22px;background:#fff;box-shadow:0 50px 120px rgba(20,26,58,.28),0 0 0 1px rgba(20,26,58,.06);overflow:hidden;transform-origin:left center;transform:rotateY(-4deg);display:flex;}
+  .side{width:232px;height:100%;background:linear-gradient(170deg,#2E3F8C 0%,#5A3472 50%,#B4303E 100%);color:#fff;padding:26px 22px;flex:none;}
+  .side img{width:150px;display:block;filter:brightness(0) invert(1);opacity:.95;}
+  .side .nav{margin-top:44px;font-size:17px;font-weight:500;}
+  .side .nav div{padding:14px 14px;border-radius:10px;margin-bottom:6px;opacity:.8;}
+  .side .nav div.on{background:rgba(255,255,255,.14);opacity:1;font-weight:700;}
+  .main{flex:1;background:#F5F6FB;display:flex;flex-direction:column;min-width:0;}
+  .top{height:70px;flex:none;background:#fff;display:flex;align-items:center;padding:0 30px;font-size:19px;font-weight:700;color:var(--ink);border-bottom:1px solid var(--line);}
+  .top .who{margin-left:auto;font-size:15px;font-weight:500;color:var(--muted);}
+  .body{padding:26px 30px;position:relative;flex:1;overflow:hidden;}
+  .ttl{display:flex;align-items:center;gap:18px;}
+  .ttl h2{font-size:28px;color:var(--ink);}
+  .tabs{display:flex;gap:6px;margin-left:auto;}
+  .tabs div{padding:9px 14px;border-radius:8px;font-size:13px;white-space:nowrap;font-weight:600;color:var(--muted);background:#fff;border:1px solid var(--line);}
+  .tabs div.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .progress{margin-top:18px;height:44px;border-radius:12px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;padding:0 16px;font-size:15px;font-weight:500;color:var(--navy);gap:14px;}
+  .progress .pb{flex:1;height:8px;border-radius:4px;background:#EEF0F7;overflow:hidden;}
+  .progress .pb i{display:block;height:100%;width:0;background:var(--grad);border-radius:4px;}
+  .progress b{width:56px;text-align:right;font-weight:700;}
+  table{width:100%;border-collapse:separate;border-spacing:0 6px;margin-top:14px;font-size:15px;}
+  th{text-align:left;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:6px 12px;}
+  td{background:#fff;padding:0 12px;height:46px;white-space:nowrap;color:var(--ink);font-weight:500;vertical-align:top;line-height:46px;}
+  tr.row td:first-child{border-radius:10px 0 0 10px;}
+  tr.row td:last-child{border-radius:0 10px 10px 0;}
+  td.amt{font-weight:700;text-align:right;}
+  .cb{width:22px;height:22px;border-radius:6px;border:2px solid #C8CCE0;display:inline-block;position:relative;vertical-align:middle;}
+  .cb i{position:absolute;inset:-2px;border-radius:6px;background:var(--grad);opacity:0;transform:scale(.6);}
+  .cb i:after{content:"";position:absolute;left:7px;top:3px;width:6px;height:11px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg);}
+  .st{display:inline-block;padding:5px 11px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.04em;background:#E9F8F0;color:#1E8F58;opacity:0;transform:scale(.7);}
+  .flag{position:absolute;padding:8px 14px;border-radius:999px;background:#FFF3DC;color:#A05E00;font-size:13px;font-weight:700;box-shadow:0 10px 24px rgba(160,94,0,.18);opacity:0;white-space:nowrap;}
+  .flag:before{content:"⚑ ";}
+  .insights{position:absolute;right:0;top:0;bottom:0;width:420px;background:#fff;box-shadow:-30px 0 60px rgba(20,26,58,.10);padding:28px 30px;transform:translateX(110%);}
+  .insights h3{font-size:22px;color:var(--ink);display:flex;align-items:center;gap:12px;}
+  .insights h3 span{margin-left:auto;font-size:12px;padding:5px 10px;border-radius:999px;background:#E9F8F0;color:#1E8F58;font-weight:700;}
+  .insights .pdf{margin-top:14px;height:96px;border-radius:12px;background:linear-gradient(180deg,#F1F2F8,#E6E8F3);position:relative;overflow:hidden;}
+  .insights .pdf i{position:absolute;left:18px;right:18px;height:7px;border-radius:4px;background:#C9CDE3;}
+  .insights .pdf i:nth-child(1){top:18px;width:50%;background:#A9B0D6;}
+  .insights .pdf i:nth-child(2){top:38px;}
+  .insights .pdf i:nth-child(3){top:56px;width:70%;}
+  .insights .pdf i:nth-child(4){top:74px;width:40%;}
+  .insights .pdf i:nth-child(5){top:92px;width:60%;}
+  .kv{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:15px;}
+  .kv span{color:var(--muted);font-weight:500;}
+  .kv b{font-weight:700;color:var(--ink);opacity:0;}
+  .kv.warn b{color:#B4303E;}
+  .kv.warn b:after{content:" ⚠";}
+  .kvs{margin-top:14px;}
+  .batch{position:absolute;left:50%;top:52%;width:640px;margin-left:-320px;margin-top:-190px;border-radius:22px;background:#fff;box-shadow:0 40px 100px rgba(20,26,58,.22),0 0 0 1px rgba(20,26,58,.06);padding:36px 40px;opacity:0;}
+  .batch small{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .batch .id{font-size:26px;font-weight:700;color:var(--ink);margin-top:6px;}
+  .batch .row2{display:flex;gap:34px;margin-top:22px;}
+  .batch .row2 div{font-size:16px;color:var(--muted);font-weight:500;}
+  .batch .row2 b{display:block;font-size:34px;color:var(--navy);font-weight:700;letter-spacing:-.01em;}
+  .batch .row2 b.grad{font-size:38px;}
+  .batch .btn{margin-top:26px;display:inline-block;padding:14px 30px;border-radius:12px;background:var(--grad);color:#fff;font-weight:700;font-size:17px;}
+  .stamp{position:absolute;right:-26px;top:-36px;padding:12px 28px;border:5px solid var(--green);border-radius:14px;color:var(--green);font-size:40px;font-weight:700;letter-spacing:.12em;transform:rotate(-12deg);opacity:0;background:rgba(255,255,255,.9);}
+  .states{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .states span{padding:9px 15px;border-radius:999px;background:#EEF0F7;color:var(--muted);font-size:14px;font-weight:700;}
+  .cap{position:absolute;left:120px;top:250px;width:560px;}
+  .cap .step{display:flex;align-items:center;gap:22px;}
+  .cap .n{width:76px;height:76px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:700;box-shadow:0 18px 40px rgba(180,48,62,.28);}
+  .cap h1{font-size:80px;line-height:1;letter-spacing:.02em;color:var(--navy);}
+  .cap p{font-size:30px;line-height:1.45;font-weight:400;color:#3B4266;margin-top:30px;}
+  .cap p b{font-weight:700;color:var(--ink);}
+  .dots{position:absolute;left:120px;top:900px;display:flex;gap:14px;}
+  .dots i{display:block;width:52px;height:6px;border-radius:3px;background:#DADDEB;}
+  .dots i.on{background:var(--grad);}
+
+  /* ---------- Digitise overlay ---------- */
+  .digi{position:absolute;inset:0;background:#F5F6FB;padding:26px 30px;opacity:0;visibility:hidden;}
+  .digi .hd{display:flex;align-items:center;gap:18px;}
+  .digi .hd h2{font-size:28px;color:var(--ink);}
+  .digi .hd .chip{margin-left:auto;padding:9px 16px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:600;color:var(--muted);}
+  .docs{position:absolute;left:30px;top:96px;width:300px;}
+  .doc{position:absolute;left:0;width:250px;height:150px;border-radius:12px;background:#fff;box-shadow:0 16px 40px rgba(20,26,58,.12),0 0 0 1px rgba(20,26,58,.07);overflow:hidden;opacity:0;}
+  .doc .h{height:26px;display:flex;align-items:center;padding:0 12px;font-size:11px;font-weight:700;color:#fff;letter-spacing:.06em;}
+  .doc i{position:absolute;height:6px;border-radius:3px;background:#DCDFEC;}
+  .doc .sc{position:absolute;left:0;right:0;top:-8px;height:8px;background:linear-gradient(90deg,#2E3F8C,#B4303E);box-shadow:0 0 18px rgba(180,48,62,.6);opacity:0;}
+  .doc .ok{position:absolute;right:10px;bottom:8px;width:22px;height:22px;border-radius:50%;background:#2BB673;color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;font-weight:700;opacity:0;transform:scale(.5);}
+  .doc.a .h{background:#3C5FD0;} .doc.b .h{background:#C2412F;} .doc.c .h{background:#2C8F6B;}
+  .std{position:absolute;left:330px;top:96px;right:0;bottom:0;}
+  .std table{margin-top:0;border-spacing:0 4px;font-size:13px;}
+  .std th{padding:4px 12px;}
+  .std td{height:35px;line-height:35px;}
+  .std td.f{color:var(--muted);font-weight:600;width:200px;}
+  .std td.v{font-weight:700;color:var(--ink);}
+  .std td.v span{opacity:0;display:inline-block;transform:translateY(6px);}
+  .std th.b1,.std th.b2,.std th.b3{color:var(--ink);}
+  .badge{position:absolute;left:330px;bottom:14px;padding:12px 20px;border-radius:12px;background:var(--grad);color:#fff;font-size:16px;font-weight:700;box-shadow:0 14px 34px rgba(180,48,62,.25);opacity:0;}
+  .badge small{font-weight:500;opacity:.9;margin-left:10px;}
+  td.site{position:relative;}
+  td.site .flag{left:12px;bottom:9px;position:absolute;line-height:1.2;}
+
+  /* ---------- Scene 8 ---------- */
+  #s8 .eyebrow{position:absolute;left:0;right:0;top:170px;text-align:center;}
+  #s8 .tiles{position:absolute;left:100px;top:300px;display:flex;gap:30px;}
+  .tile{width:412px;height:480px;border-radius:28px;background:#fff;box-shadow:0 30px 80px rgba(20,26,58,.10),0 0 0 1px rgba(20,26,58,.05);padding:44px 40px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;}
+  .tile:before{content:"";position:absolute;left:0;top:0;right:0;height:8px;background:var(--grad);}
+  .tile .was{position:absolute;left:40px;top:44px;display:inline-block;padding:8px 16px;border-radius:999px;background:#F3F4F9;color:var(--muted);font-size:20px;font-weight:600;text-decoration:line-through;}
+  .tile .big{font-size:140px;line-height:1;letter-spacing:-.04em;font-weight:700;}
+  .tile .big small{font-size:44px;letter-spacing:0;margin-left:6px;}
+  .tile .lbl{font-size:26px;line-height:1.3;color:#3B4266;font-weight:500;margin-top:28px;}
+  .tile .pre{font-size:30px;font-weight:600;color:var(--muted);margin-bottom:4px;}
+  .tile.t4 .big{font-size:104px;}
+  .tile.t3 .big{font-size:120px;}
+
+  /* ---------- Scene 9 ---------- */
+  #s9 h1{position:absolute;left:0;right:0;top:170px;text-align:center;font-size:68px;letter-spacing:-.02em;color:var(--navy);}
+  #line9{position:absolute;left:120px;top:585px;width:1680px;height:6px;}
+  .sectors{position:absolute;left:120px;top:400px;width:1680px;display:flex;justify-content:space-between;}
+  .sector{width:250px;text-align:center;}
+  .sector svg{width:180px;height:180px;overflow:visible;}
+  .sector svg *{fill:none;stroke:url(#gStroke);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;}
+  .sector .lb{font-size:20px;letter-spacing:.12em;font-weight:700;color:var(--ink);margin-top:80px;}
+  #s9 .who{position:absolute;left:0;right:0;top:800px;text-align:center;}
+  #s9 .who p{font-size:34px;font-weight:500;color:#3B4266;}
+  #s9 .who .chips{display:flex;justify-content:center;gap:16px;margin-top:26px;}
+  #s9 .who .chips span{padding:14px 26px;border-radius:999px;border:2px solid var(--navy);color:var(--navy);font-size:24px;font-weight:600;}
+
+  /* ---------- Scene 10 ---------- */
+  #s10 .logo{position:absolute;left:660px;top:150px;width:600px;}
+  #s10 .copy{position:absolute;left:0;right:0;top:340px;text-align:center;}
+  #s10 h1{font-size:80px;line-height:1.1;letter-spacing:-.02em;color:var(--navy);}
+  #band{position:absolute;left:0;right:0;bottom:0;height:340px;background:linear-gradient(100deg,#B4303E 0%,#5A3472 55%,#2E3F8C 100%);color:#fff;padding:60px 120px;display:flex;align-items:center;transform:translateY(100%);}
+  #band .l{flex:1;}
+  #band .l h2{font-size:42px;letter-spacing:-.01em;}
+  #band .l p{font-size:27px;font-weight:400;margin-top:14px;opacity:.95;}
+  #band .l p.venue{font-size:30px;font-weight:500;display:flex;align-items:center;gap:16px;margin-top:18px;}
+  #band .booth{display:inline-block;padding:8px 18px;border-radius:999px;background:#fff;color:var(--crimson);font-weight:700;font-size:28px;letter-spacing:.02em;}
+  #band .l p b{font-weight:700;}
+  #band .qr{width:214px;height:236px;border-radius:18px;background:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:16px;font-weight:600;gap:6px;color:var(--navy);padding:12px;}
+  #band .qr img{width:172px;height:172px;display:block;}
+  
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bgDark" class="layer"></div>
+  <div id="mapLayer" class="layer">
+    <div id="mapWrap"><svg id="map" viewBox="0 0 894 1000"><defs><linearGradient id="gMap" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="894" y2="1000"><stop offset="0" stop-color="#2E3F8C"/><stop offset="1" stop-color="#B4303E"/></linearGradient></defs></svg></div>
+  </div>
+  <div id="bgLight" class="layer"></div>
+  <svg id="wave" viewBox="0 0 2400 420">
+    <defs><linearGradient id="gWave" x1="0" x2="1"><stop offset="0" stop-color="#2E3F8C"/><stop offset="1" stop-color="#B4303E"/></linearGradient></defs>
+    <path d="M0,300 C300,120 500,420 800,260 S1300,80 1600,260 S2100,420 2400,240" fill="none" stroke="url(#gWave)" stroke-width="2.5" opacity=".55"/>
+    <path d="M0,340 C320,180 520,440 820,300 S1320,120 1620,300 S2120,440 2400,280" fill="none" stroke="url(#gWave)" stroke-width="1.5" opacity=".3"/>
+  </svg>
+
+  <div id="brand"><img src="" alt=""></div>
+
+  <!-- S1 -->
+  <section id="s1" class="scene">
+    <div class="kicker eyebrow light rl"><span>Pan-India site networks</span></div>
+    <div class="copy">
+      <div class="num grad"><span id="counter">0</span></div>
+      <div class="sub"><span class="rl"><span>sites across India.</span></span></div>
+      <div class="sub2"><span class="rl"><span>electricity bills.</span></span><span class="rl"><span><b>Every month.</b></span></span></div>
+    </div>
+  </section>
+
+  <!-- S2 -->
+  <section id="s2" class="scene">
+    <div id="cards"></div>
+    <div class="copy">
+      <h1><span class="rl"><span>Different DISCOMs.</span></span><span class="rl"><span>Different due dates.</span></span><span class="rl"><span class="gradD">Different teams.</span></span></h1>
+    </div>
+    <div class="copy2">
+      <h1><span class="rl"><span><span class="gradD">10–15 days</span> from</span></span><span class="rl"><span>bill to payment.</span></span></h1>
+      <p><span class="rl"><span>Chased manually across ERPs and approval layers.</span></span></p>
+      <div class="flow"><div class="chip">Site</div><div class="arr"></div><div class="chip">ERP</div><div class="arr"></div><div class="chip">Approver</div><div class="arr"></div><div class="chip">Finance</div><div class="day">Day <span id="dayN">1</span></div></div>
+    </div>
+  </section>
+
+  <!-- S3 -->
+  <section id="s3" class="scene">
+    <div id="storeWrap">
+      <div id="glow"></div>
+      <svg id="store" viewBox="0 0 840 640"><defs><linearGradient id="gStore" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="840" y2="640"><stop offset="0" stop-color="#2E3F8C"/><stop offset="1" stop-color="#B4303E"/></linearGradient></defs>
+        <!-- awning -->
+        <path class="draw" d="M90,250 L550,250 L590,180 L50,180 Z"/>
+        <path class="draw" d="M50,180 Q68,150 90,180 Q112,150 134,180 Q156,150 178,180 Q200,150 222,180 Q244,150 266,180 Q288,150 310,180 Q332,150 354,180 Q376,150 398,180 Q420,150 442,180 Q464,150 486,180 Q508,150 530,180 Q552,150 590,180"/>
+        <!-- body -->
+        <path class="draw" d="M110,250 L110,560 L530,560 L530,250"/>
+        <path class="draw" d="M70,560 L570,560"/>
+        <!-- door -->
+        <path class="draw" d="M270,560 L270,380 Q320,340 370,380 L370,560"/>
+        <circle class="draw" cx="352" cy="470" r="5"/>
+        <!-- windows -->
+        <rect class="draw swin" x="140" y="300" width="100" height="120" rx="8"/>
+        <rect class="draw swin" x="400" y="300" width="100" height="120" rx="8"/>
+        <line class="draw" x1="190" y1="300" x2="190" y2="420"/><line class="draw" x1="140" y1="360" x2="240" y2="360"/>
+        <line class="draw" x1="450" y1="300" x2="450" y2="420"/><line class="draw" x1="400" y1="360" x2="500" y2="360"/>
+        <!-- sign -->
+        <rect class="draw" x="230" y="100" width="180" height="56" rx="10"/>
+        <line class="draw" x1="262" y1="128" x2="378" y2="128"/>
+        <!-- power pole + wire -->
+        <line class="draw" x1="760" y1="40" x2="760" y2="560"/>
+        <line class="draw" x1="712" y1="96" x2="808" y2="96"/>
+        <line class="draw" x1="722" y1="130" x2="798" y2="130"/>
+        <circle class="draw" cx="722" cy="96" r="5"/><circle class="draw" cx="798" cy="96" r="5"/>
+        <path class="draw" d="M808,96 C830,80 840,60 840,40"/>
+        <path class="draw" id="wire" d="M722,96 C660,150 600,160 560,178"/>
+      </svg>
+    </div>
+    <div class="copy">
+      <h1><span class="rl"><span>Every missed payment</span></span><span class="rl"><span>is <span class="gradD">cash leakage.</span></span></span></h1>
+      <h1 class="h2"><span class="rl"><span>Every disconnection is a</span></span><span class="rl"><span><span class="gradD">business continuity risk.</span></span></span></h1>
+    </div>
+    <div class="tags">
+      <div class="tag" style="top:0"><span class="ic">₹</span>Late-payment penalty</div>
+      <div class="tag" style="top:96px"><span class="ic">%</span>Missed early-payment discount</div>
+      <div class="tag" style="top:192px"><span class="ic">!</span>Disconnection notice</div>
+    </div>
+  </section>
+
+  <!-- S4 -->
+  <section id="s4" class="scene">
+    <div id="flash"></div>
+    <div id="bulbWrap">
+      <svg id="bulb" viewBox="0 0 400 480"><defs><linearGradient id="gBulb" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="400" y2="480"><stop offset="0" stop-color="#2E3F8C"/><stop offset="1" stop-color="#B4303E"/></linearGradient></defs>
+        <path class="draw" d="M200,30 C110,30 60,100 60,180 C60,240 95,270 120,305 C140,332 140,360 140,380 L260,380 C260,360 260,332 280,305 C305,270 340,240 340,180 C340,100 290,30 200,30 Z"/>
+        <path class="draw" d="M160,380 L160,300 L185,270 L215,300 L240,270 L240,380"/>
+        <line class="draw" x1="145" y1="410" x2="255" y2="410"/>
+        <line class="draw" x1="150" y1="436" x2="250" y2="436"/>
+        <path class="draw" d="M165,460 L235,460"/>
+      </svg>
+    </div>
+    <img class="logo" src="" alt="">
+    <div class="copy">
+      <h1><span class="rl"><span>Turn 1,000 sites’ worth of</span></span><span class="rl"><span>electricity bills into <span class="grad">one dashboard</span></span></span><span class="rl"><span>your finance team can control.</span></span></h1>
+    </div>
+  </section>
+
+  <!-- S5–S7 mock layer -->
+  <section id="s5" class="scene">
+    <div id="mockLayer" class="layer">
+      <div class="win">
+        <div class="side">
+          <img src="" alt="">
+          <div class="nav"><div>Dashboard</div><div>Consumer Management</div><div class="on">Bill Management</div><div>Reports</div></div>
+        </div>
+        <div class="main">
+          <div class="top">Northstar Retail Ltd<span class="who">Hello, Priya · Payables Head</span></div>
+          <div class="body">
+            <div class="ttl"><h2 id="mockTitle">Bill Verification</h2>
+              <div class="tabs" id="thr"><div class="on">Postpaid</div><div id="tabA">Amount limit</div><div id="tabC">Consumption limit</div><div id="tabM">Monthly increase</div></div></div>
+            <div class="progress"><span>Fetching bills from 14 DISCOMs</span><div class="pb"><i id="pbar"></i></div><b id="pct">0%</b></div>
+            <table id="tbl">
+              <thead><tr><th style="width:44px"></th><th>Consumer ID</th><th>Site</th><th>Biller (DISCOM)</th><th style="text-align:right">Amount</th><th>Status</th></tr></thead>
+              <tbody id="rows"></tbody>
+            </table>
+            <div class="digi" id="digi">
+              <div class="hd"><h2>Bill Digitisation</h2><div class="chip">86 DISCOM formats · 1 standard schema</div></div>
+              <div class="docs">
+                <div class="doc a" style="top:0"><div class="h">MSEDCL · MAHARASHTRA</div><i style="left:12px;top:40px;width:120px"></i><i style="left:12px;top:56px;width:180px"></i><i style="left:12px;top:72px;width:90px"></i><i style="left:140px;top:72px;width:80px"></i><i style="left:12px;top:96px;width:200px"></i><i style="left:12px;top:112px;width:150px"></i><i style="left:12px;top:128px;width:60px;background:#B4303E"></i><div class="sc"></div><div class="ok">✓</div></div>
+                <div class="doc b" style="top:170px"><div class="h">BESCOM · KARNATAKA</div><i style="left:12px;top:40px;width:70px"></i><i style="left:100px;top:40px;width:130px"></i><i style="left:12px;top:56px;width:70px"></i><i style="left:100px;top:56px;width:100px"></i><i style="left:12px;top:72px;width:70px"></i><i style="left:100px;top:72px;width:120px"></i><i style="left:12px;top:100px;width:220px;height:22px;background:#EEF0F7"></i><i style="left:12px;top:132px;width:80px;background:#B4303E"></i><div class="sc"></div><div class="ok">✓</div></div>
+                <div class="doc c" style="top:340px"><div class="h">TANGEDCO · TAMIL NADU</div><i style="left:12px;top:40px;width:200px"></i><i style="left:12px;top:60px;width:50px;height:50px;border-radius:6px"></i><i style="left:74px;top:60px;width:150px"></i><i style="left:74px;top:76px;width:110px"></i><i style="left:74px;top:92px;width:130px"></i><i style="left:12px;top:126px;width:120px"></i><i style="left:150px;top:126px;width:70px;background:#B4303E"></i><div class="sc"></div><div class="ok">✓</div></div>
+              </div>
+              <div class="std">
+                <table>
+                  <thead><tr><th>Standardised field</th><th class="b1">MSEDCL</th><th class="b2">BESCOM</th><th class="b3">TANGEDCO</th></tr></thead>
+                  <tbody id="stdRows"></tbody>
+                </table>
+              </div>
+              <div class="badge" id="badge">3 formats → 1 schema<small>ERP &amp; ESG ready</small></div>
+            </div>
+            <div class="insights" id="ins">
+              <h3>PDF Insights <span>Digitised · 0.8s</span></h3>
+              <div class="pdf"><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="kvs">
+                <div class="kv"><span>Consumer ID</span><b>11020345678</b></div>
+                <div class="kv"><span>Billing period</span><b>01 Aug – 31 Aug 2026</b></div>
+                <div class="kv"><span>Units consumed</span><b>12,480 kWh</b></div>
+                <div class="kv"><span>Sanctioned load</span><b>85 kVA</b></div>
+                <div class="kv warn"><span>Recorded demand</span><b>91 kVA</b></div>
+                <div class="kv warn"><span>Power factor</span><b>0.87</b></div>
+                <div class="kv warn"><span>Penalty charged</span><b>₹4,120</b></div>
+                <div class="kv"><span>Early-payment discount</span><b>₹1,366 · avail by 12 Sep</b></div>
+                <div class="kv"><span>Total payable</span><b>₹1,36,641</b></div>
+              </div>
+            </div>
+            <div class="batch" id="batch">
+              <small>Payment batch</small>
+              <div class="id">PAB2P-2609-0412</div>
+              <div class="row2"><div>Bills<b id="bBills">312</b></div><div>States<b>14</b></div><div>Total<b class="grad">₹1,86,42,310</b></div></div>
+              <div class="btn">Approve batch →</div>
+              <div class="stamp" id="stamp">APPROVED</div>
+              <div class="states" id="states"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cap" id="cap5"><div class="step"><div class="n">1</div><h1>FETCH</h1></div><p>Bills pulled <b>automatically from every DISCOM.</b> No manual punching, no chasing sites.</p></div>
+    <div class="cap" id="cap5b"><div class="step"><div class="n">2</div><h1>DIGITISE</h1></div><p>Every DISCOM has its own bill format. <b>Each one parsed accurately into one standard record</b> — ready for ERP and ESG reporting.</p></div>
+    <div class="cap" id="cap6"><div class="step"><div class="n">3</div><h1>VERIFY</h1></div><p>Every bill <b>digitised and checked.</b> Leakages in sanctioned load, power factor and penalties flagged before you pay.</p></div>
+    <div class="cap" id="cap7"><div class="step"><div class="n">4</div><h1>PAY</h1></div><p><b>One approval matrix.</b> Pay in bulk — every site, every state — in a few clicks.</p></div>
+    <div class="dots"><i id="d1"></i><i id="d1b"></i><i id="d2"></i><i id="d3"></i></div>
+  </section>
+
+  <!-- S8 -->
+  <section id="s8" class="scene">
+    <div class="eyebrow rl"><span>With BillsToPay</span></div>
+    <div class="tiles">
+      <div class="tile t1"><span class="was">10 days</span><div class="pre">under</div><div class="big grad" style="margin-top:0">3<small>days</small></div><div class="lbl">fetch-to-pay lead time</div></div>
+      <div class="tile t2"><div class="big grad" style="margin-top:0"><span id="pct100">0</span><small>%</small></div><div class="lbl">early-payment discounts earned</div></div>
+      <div class="tile t3"><div class="big grad" style="margin-top:0">Zero</div><div class="lbl">late payments or disconnections</div></div>
+      <div class="tile t4"><div class="big grad" style="margin-top:0">BRSR</div><div class="lbl">-ready ESG reporting data, straight from the DISCOM</div></div>
+    </div>
+  </section>
+
+  <!-- S9 -->
+  <section id="s9" class="scene">
+    <h1><span class="rl"><span>Built for corporates <span class="grad">across sectors.</span></span></span></h1>
+    <svg id="line9" viewBox="0 0 1680 6" preserveAspectRatio="none"><defs><linearGradient id="gStroke" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="200" y2="0"><stop offset="0" stop-color="#2E3F8C"/><stop offset="1" stop-color="#B4303E"/></linearGradient><linearGradient id="gLine" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1680" y2="0"><stop offset="0" stop-color="#2E3F8C"/><stop offset="1" stop-color="#B4303E"/></linearGradient></defs><line id="l9" x1="0" y1="3" x2="1680" y2="3" stroke="url(#gLine)" stroke-width="4" stroke-linecap="round"/></svg>
+    <div class="sectors">
+      <div class="sector"><svg viewBox="0 0 200 200"><path class="draw" d="M30,60 L50,60 L72,130 L150,130 L165,80 L60,80"/><circle class="draw" cx="85" cy="155" r="9"/><circle class="draw" cx="140" cy="155" r="9"/><path class="draw" d="M120,30 L100,62 L118,62 L104,92"/></svg><div class="lb">Q-COMMERCE</div></div>
+      <div class="sector"><svg viewBox="0 0 200 200"><path class="draw" d="M40,90 L40,160 L160,160 L160,90"/><path class="draw" d="M30,60 L170,60 L180,90 L20,90 Z"/><path class="draw" d="M20,90 Q30,78 40,90 Q50,78 60,90 Q70,78 80,90 Q90,78 100,90 Q110,78 120,90 Q130,78 140,90 Q150,78 160,90 Q170,78 180,90"/><path class="draw" d="M85,160 L85,120 Q100,110 115,120 L115,160"/></svg><div class="lb">RETAIL</div></div>
+      <div class="sector"><svg viewBox="0 0 200 200"><path class="draw" d="M100,30 L60,170 M100,30 L140,170 M78,110 L122,110 M68,140 L132,140 M88,80 L112,80"/><path class="draw" d="M70,45 Q100,20 130,45 M82,58 Q100,44 118,58"/></svg><div class="lb">TELECOM TOWERS</div></div>
+      <div class="sector"><svg viewBox="0 0 200 200"><rect class="draw" x="50" y="40" width="80" height="130" rx="10"/><rect class="draw" x="65" y="55" width="50" height="34" rx="5"/><path class="draw" d="M95,100 L82,126 L96,126 L88,150"/><path class="draw" d="M130,70 L150,70 L150,120 Q150,140 168,140 Q184,140 184,122 L184,90 L170,80"/></svg><div class="lb">EV CHARGING</div></div>
+      <div class="sector"><svg viewBox="0 0 200 200"><path class="draw" d="M40,140 Q40,80 100,80 Q160,80 160,140 Z"/><line class="draw" x1="25" y1="140" x2="175" y2="140"/><circle class="draw" cx="100" cy="72" r="6"/><path class="draw" d="M60,160 L140,160"/></svg><div class="lb">HOSPITALITY</div></div>
+      <div class="sector"><svg viewBox="0 0 200 200"><path class="draw" d="M30,80 L100,40 L170,80 Z"/><line class="draw" x1="40" y1="80" x2="160" y2="80"/><line class="draw" x1="55" y1="95" x2="55" y2="150"/><line class="draw" x1="85" y1="95" x2="85" y2="150"/><line class="draw" x1="115" y1="95" x2="115" y2="150"/><line class="draw" x1="145" y1="95" x2="145" y2="150"/><line class="draw" x1="30" y1="165" x2="170" y2="165"/><circle class="draw" cx="100" cy="62" r="8"/></svg><div class="lb">BFSI</div></div>
+    </div>
+    <div class="who">
+      <p class="rl"><span>One platform every team can trust.</span></p>
+      <div class="chips"><span>CFO / Finance Director</span><span>ESG Head</span><span>Admin / Facilities Head</span><span>Payables Head</span></div>
+    </div>
+  </section>
+
+  <!-- S10 -->
+  <section id="s10" class="scene">
+    <img class="logo" src="" alt="">
+    <div class="copy">
+      <h1><span class="rl"><span>Ready to take bill chaos</span></span><span class="rl"><span>off your team’s <span class="grad">plate?</span></span></span></h1>
+    </div>
+    <div id="band">
+      <div class="l"><h2>Meet us at Global Fintech Fest 2026</h2><p class="venue"><span class="booth">Booth K16–17</span> Jio World Centre, Mumbai &nbsp;·&nbsp; 9–11 September</p><p><b>b2bpayments-enquiries@vayana.com</b> &nbsp;·&nbsp; billstopay.in</p></div>
+      <div class="qr"><i>▦</i>Scan to connect</div>
+    </div>
+  </section>
+</div>
+
+<script src="gsap.min.js"></script>
+<script src="data.js"></script>
+<script>
+// ---------- helpers ----------
+const $ = s => document.querySelector(s), $$ = s => Array.from(document.querySelectorAll(s));
+const SVGNS = 'http://www.w3.org/2000/svg';
+let seed = 7; const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+const fmtIN = n => Math.round(n).toLocaleString('en-IN');
+function prepDraw(sel){ $$(sel).forEach(el=>{ const L=el.getTotalLength(); el.style.strokeDasharray=L; el.style.strokeDashoffset=L; el.dataset.len=L; }); }
+function drawIn(tl, sel, at, dur=1.2, stagger=0){ tl.to(sel,{strokeDashoffset:0,duration:dur,ease:'power2.inOut',stagger},at); }
+function reveal(tl, sel, at, opts={}){ tl.fromTo(sel,{yPercent:115,opacity:0},{yPercent:0,opacity:1,duration:opts.d||0.9,ease:'power3.out',stagger:opts.s??0.12},at); }
+function hide(tl, sel, at, dur=0.45){ tl.to(sel,{y:-40,opacity:0,duration:dur,ease:'power2.in',stagger:0.04},at); }
+
+// ---------- build map ----------
+(function(){
+  const svg=$('#map');
+  INDIA_PATHS.forEach(d=>{ const p=document.createElementNS(SVGNS,'path'); p.setAttribute('d',d); p.setAttribute('class','outline'); svg.appendChild(p); });
+  CITIES.forEach(([n,x,y])=>{ const r=document.createElementNS(SVGNS,'circle'); r.setAttribute('cx',x); r.setAttribute('cy',y); r.setAttribute('r',4); r.setAttribute('class','ring'); svg.appendChild(r);
+    const c=document.createElementNS(SVGNS,'circle'); c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('r',0); c.setAttribute('class','dot'); svg.appendChild(c); });
+})();
+// ---------- build cards ----------
+const STATES=['Maharashtra','Karnataka','Tamil Nadu','Delhi','Gujarat','Telangana','West Bengal','Uttar Pradesh','Rajasthan','Haryana','Punjab','Madhya Pradesh','Andhra Pradesh','Kerala','Odisha','Bihar','Assam','Jharkhand','Chhattisgarh','Uttarakhand','Goa','Himachal Pradesh','Chandigarh','Puducherry','Jammu & Kashmir','Tripura'];
+(function(){
+  const wrap=$('#cards');
+  for(let i=0;i<20;i++){
+    const d=document.createElement('div'); d.className='card';
+    const col=i%4, row=Math.floor(i/4);
+    const x=100+col*214+(rnd()*16-8), y=120+row*172+(rnd()*30-15), rot=(rnd()*18-9).toFixed(1);
+    d.style.left=x+'px'; d.style.top=y+'px'; d.dataset.rot=rot;
+    const due=['04 Sep','09 Sep','12 Sep','15 Sep','18 Sep','21 Sep','25 Sep','28 Sep'][i%8];
+    const amt=fmtIN(9000+rnd()*180000);
+    d.innerHTML=`<small>Electricity bill</small><div class="cst">${STATES[i%STATES.length]}</div><div class="due"><span>Due <i>${due}</i></span><span>₹${amt}</span></div><div class="bar"></div>`;
+    wrap.appendChild(d);
+  }
+})();
+// ---------- build table rows ----------
+const ROWS=[
+ ['11020345678','Andheri West · Store 042','MH-1042','Adani Electricity Mumbai','1,36,641','04 Sep'],
+ ['20518873310','Whitefield · Dark store 07','KA-2107','BESCOM','84,210','05 Sep'],
+ ['30991284455','Guindy · Warehouse','TN-3009','TANGEDCO','2,41,980','05 Sep'],
+ ['40112293847','Gurugram · Hub 12','HR-4012','DHBVN','62,455','06 Sep'],
+ ['50833721904','Salt Lake · Store 118','WB-5118','CESC','48,120','06 Sep'],
+ ['60218840012','Ahmedabad · Tower site','GJ-6021','Torrent Power','1,12,380','07 Sep'],
+ ['70455120931','Hitech City · Store 231','TS-7231','TSSPDCL','91,764','07 Sep'],
+ ['80339188220','Lucknow · Charging hub','UP-8033','UPPCL','37,905','08 Sep'],
+ ['90123344556','Jaipur · Hotel Aravalli','RJ-9012','JVVNL','1,58,230','08 Sep'],
+ ['10456778901','Kochi · Store 077','KL-1045','KSEB','29,640','09 Sep'],
+];
+(function(){
+  const tb=$('#rows');
+  ROWS.forEach((r,i)=>{ const tr=document.createElement('tr'); tr.className='row';
+    const fl = i===0 ? '<div class="flag" id="flag1">Power factor penalty · ₹4,120</div>' : i===4 ? '<div class="flag" id="flag2">Sanctioned load exceeded</div>' : '';
+    tr.innerHTML=`<td><span class="cb"><i></i></span></td><td>${r[0]}</td><td class="site">${r[1]}${fl}</td><td>${r[3]}</td><td class="amt">₹${r[4]}</td><td><span class="st">Fetched ✓</span></td>`;
+    tb.appendChild(tr); });
+  const st=$('#states'); ['MH','KA','TN','DL','GJ','TS','WB','UP','RJ','HR','PB','MP','AP','KL'].forEach(s=>{ const sp=document.createElement('span'); sp.textContent=s; st.appendChild(sp); });
+  $$('img.logo, .side img').forEach(i=>i.src=LOGO_SRC); $('#brand img').src=VAYANA_SRC;
+  const STD=[['Consumer number','11020345678','20518873310','30991284455'],['Billing period','01–31 Aug 2026','01–31 Aug 2026','01–31 Aug 2026'],['Units consumed','12,480 kWh','6,910 kWh','21,300 kWh'],['Sanctioned load','85 kVA','40 kVA','120 kVA'],['Recorded demand (MDI)','91 kVA','36 kVA','112 kVA'],['Power factor','0.87','0.96','0.94'],['Energy charges','₹1,09,811','₹74,610','₹2,13,180'],['Fixed charges','₹17,850','₹9,600','₹28,800'],['MDI penalty','₹4,860','Nil','Nil'],['PF penalty','₹4,120','Nil','Nil'],['Amount payable','₹1,36,641','₹84,210','₹2,41,980'],['Due date','12 Sep 2026','14 Sep 2026','11 Sep 2026']];
+  const sr=$('#stdRows'); STD.forEach(r=>{ const tr=document.createElement('tr'); tr.className='row'; tr.innerHTML=`<td class="f">${r[0]}</td><td class="v c1"><span>${r[1]}</span></td><td class="v c2"><span>${r[2]}</span></td><td class="v c3"><span>${r[3]}</span></td>`; sr.appendChild(tr); });
+  $('#band .qr').innerHTML=`<img src="${QR_SRC}" alt=""><span>Scan to connect</span>`;
+})();
+
+prepDraw('#map .outline'); prepDraw('#store .draw'); prepDraw('#bulb .draw'); prepDraw('.sector .draw'); prepDraw('#l9');
+
+// ---------- master timeline ----------
+gsap.defaults({overwrite:'auto'});
+const tl = gsap.timeline({paused:true});
+const show=(sel,at)=>tl.set(sel,{autoAlpha:1},at), unshow=(sel,at)=>tl.set(sel,{autoAlpha:0},at);
+
+// persistent corner brand
+tl.to('#brand',{opacity:1,duration:0.8,ease:'power2.out'},0.6);
+tl.to('#brand',{opacity:0,duration:0.4},17.6);
+tl.to('#brand',{opacity:1,duration:0.6},24.2);
+tl.to('#brand',{opacity:0,duration:0.4},53.4);
+
+// ===== S1 : 0–5 =====
+show('#s1',0);
+tl.to('#map .outline',{strokeDashoffset:0,duration:1.6,ease:'power2.inOut'},0.1);
+tl.fromTo('#map .outline',{fillOpacity:0},{fillOpacity:1,duration:1},0.9);
+tl.fromTo('#map .dot',{attr:{r:0}},{attr:{r:4.5},duration:0.5,ease:'back.out(3)',stagger:{each:0.028,from:'center'}},0.9);
+tl.fromTo('#map .ring',{attr:{r:4},opacity:0.9},{attr:{r:26},opacity:0,duration:0.9,ease:'power2.out',stagger:{each:0.028,from:'center'}},0.95);
+reveal(tl,'#s1 .kicker>span',0.3);
+{ const c={v:0}; tl.to(c,{v:1000,duration:2.4,ease:'power2.out',onUpdate:()=>{$('#counter').textContent=fmtIN(c.v);}},0.6); }
+tl.fromTo('#s1 .num',{opacity:0,y:30},{opacity:1,y:0,duration:0.8,ease:'power3.out'},0.5);
+reveal(tl,'#s1 .sub .rl>span',0.9);
+hide(tl,'#s1 .sub .rl>span',3.0,0.35);
+reveal(tl,'#s1 .sub2 .rl>span',3.4);
+// exit S1 copy at 5
+tl.to('#s1 .copy, #s1 .kicker',{opacity:0,y:-30,duration:0.5,ease:'power2.in'},4.7);
+unshow('#s1',5.2);
+
+// ===== S2 : 5–12 =====
+show('#s2',4.8);
+tl.to('#mapWrap',{x:-120,y:60,scale:0.9,opacity:0.32,duration:1.2,ease:'power3.inOut'},4.8);
+tl.to('#map .dot',{attr:{r:3},duration:0.8},4.8);
+tl.fromTo('.card',{x:i=>(560-parseFloat($$('.card')[i].style.left)),y:i=>(520-parseFloat($$('.card')[i].style.top)),scale:0.2,opacity:0,rotation:0},
+  {x:0,y:0,scale:1,opacity:1,rotation:i=>parseFloat($$('.card')[i].dataset.rot),duration:1.1,ease:'power3.out',stagger:0.06},5.0);
+reveal(tl,'#s2 .copy .rl>span',5.5);
+hide(tl,'#s2 .copy .rl>span',8.3,0.4);
+reveal(tl,'#s2 .copy2 h1 .rl>span',8.6);
+reveal(tl,'#s2 .copy2 p .rl>span',8.9);
+tl.fromTo('#s2 .flow > *',{opacity:0,y:20},{opacity:1,y:0,duration:0.5,ease:'power2.out',stagger:0.09},9.2);
+{ const d={v:1}; tl.to(d,{v:14,duration:2.2,ease:'power1.inOut',onUpdate:()=>{$('#dayN').textContent=Math.round(d.v);}},9.6); }
+tl.to('#s2 .day',{scale:1.12,duration:0.35,yoyo:true,repeat:5,ease:'sine.inOut'},9.6);
+tl.to('.card',{y:'+=26',duration:3.4,ease:'sine.inOut',stagger:0.02},8.4);
+// exit S2 → S3
+tl.to('.card',{scale:0.5,opacity:0,duration:0.55,ease:'power2.in',stagger:{each:0.012,from:'random'}},11.55);
+tl.to('#s2 .copy2',{opacity:0,y:-40,duration:0.45,ease:'power2.in'},11.6);
+tl.to('#mapWrap',{opacity:0,duration:0.6},11.5);
+unshow('#s2',12.2);
+
+// ===== S3 : 12–18 =====
+show('#s3',11.9);
+tl.to('#store .draw',{strokeDashoffset:0,duration:1.4,ease:'power2.inOut',stagger:0.03},12.0);
+tl.to('#glow',{opacity:1,duration:1.1,ease:'power2.out'},12.5);
+reveal(tl,'#s3 .copy h1:first-child .rl>span',12.5);
+tl.fromTo('#s3 .tag',{x:140,opacity:0},{x:0,opacity:1,duration:0.6,ease:'back.out(1.6)',stagger:0.75},13.3);
+tl.to('#glow',{keyframes:{opacity:[1,0.15,0.9,0.05,0.5,0]},duration:0.9,ease:'none'},15.25);
+tl.to('#store .draw',{stroke:'#C5C9DA',duration:0.6},15.7);
+tl.to('#store .swin',{fill:'rgba(197,201,218,.25)',duration:0.6},15.7);
+tl.fromTo('#store .swin',{fillOpacity:0},{fillOpacity:1,duration:0.8},12.9);
+tl.to('#wire',{strokeDashoffset:()=>parseFloat($('#wire').dataset.len)*0.62,duration:0.5,ease:'power2.in'},15.3);
+reveal(tl,'#s3 .copy h1.h2 .rl>span',15.7);
+// exit S3
+tl.to('#s3 .copy, #s3 .tags, #storeWrap',{opacity:0,duration:0.5,ease:'power2.in'},17.6);
+unshow('#s3',18.2);
+
+// ===== S4 : 18–24 =====
+show('#s4',18.0);
+tl.to('#bulb .draw',{strokeDashoffset:0,duration:1.3,ease:'power2.inOut',stagger:0.06},18.25);
+tl.fromTo('#flash',{opacity:0,scale:0.4},{opacity:1,scale:1,duration:0.45,ease:'power3.out'},19.75);
+
+tl.to('#bulbWrap',{opacity:0,scale:1.15,duration:0.5,ease:'power2.in'},20.05);
+tl.to('#flash',{opacity:0,scale:1.8,duration:0.8,ease:'power2.out'},20.15);
+
+tl.fromTo('#wave',{x:0},{x:-600,duration:60,ease:'none'},0);
+tl.fromTo('#s4 .logo',{opacity:0,scale:0.85,y:20},{opacity:1,scale:1,y:0,duration:0.9,ease:'power3.out'},20.4);
+reveal(tl,'#s4 .copy .rl>span',21.0,{s:0.14});
+tl.to('#s4 .logo, #s4 .copy',{opacity:0,y:-60,duration:0.55,ease:'power2.in'},23.45);
+unshow('#s4',24.05);
+
+// ===== S5 : 24–28.4  FETCH =====
+show('#s5',23.9);
+tl.fromTo('.win',{y:90,opacity:0,rotateY:-4},{y:0,opacity:1,rotateY:-4,duration:0.9,ease:'power3.out'},24.0);
+tl.fromTo('#cap5',{opacity:0,y:40},{opacity:1,y:0,duration:0.8,ease:'power3.out'},24.25);
+tl.set('#d1',{className:'on'},24.25);
+tl.set('#rows .row',{opacity:0,x:-30},0);
+tl.to('#pbar',{width:'100%',duration:2.6,ease:'power1.inOut'},24.5);
+{ const p={v:0}; tl.to(p,{v:100,duration:2.6,ease:'power1.inOut',onUpdate:()=>{$('#pct').textContent=Math.round(p.v)+'%';}},24.5); }
+tl.to('#rows .row',{opacity:1,x:0,duration:0.5,ease:'power3.out',stagger:0.22},24.6);
+tl.to('#rows .row .st',{opacity:1,scale:1,duration:0.35,ease:'back.out(2)',stagger:0.22},24.9);
+tl.to('#cap5',{opacity:0,y:-40,duration:0.4,ease:'power2.in'},28.0);
+
+// ===== S5b : 28.4–33.6  DIGITISE =====
+tl.fromTo('#cap5b',{opacity:0,y:40},{opacity:1,y:0,duration:0.8,ease:'power3.out'},28.4);
+tl.set('#d1b',{className:'on'},28.4);
+tl.to('#digi',{autoAlpha:1,duration:0.5},28.45);
+tl.fromTo('.doc',{opacity:0,x:-60},{opacity:1,x:0,duration:0.6,ease:'power3.out',stagger:0.15},28.6);
+[[29.2,'.doc.a','.c1'],[30.4,'.doc.b','.c2'],[31.6,'.doc.c','.c3']].forEach(([t,doc,col])=>{
+  tl.fromTo(doc+' .sc',{top:-8,opacity:1},{top:150,opacity:1,duration:0.7,ease:'power1.inOut'},t);
+  tl.to(doc+' .sc',{opacity:0,duration:0.15},t+0.7);
+  tl.to(doc+' .ok',{opacity:1,scale:1,duration:0.3,ease:'back.out(2.5)'},t+0.75);
+  tl.to('#stdRows td'+col+' span',{opacity:1,y:0,duration:0.3,ease:'power2.out',stagger:0.055},t+0.3);
+});
+tl.fromTo('#badge',{opacity:0,y:16},{opacity:1,y:0,duration:0.5,ease:'back.out(1.6)'},32.7);
+tl.to('#cap5b',{opacity:0,y:-40,duration:0.4,ease:'power2.in'},33.2);
+tl.to('#digi',{autoAlpha:0,duration:0.4},33.3);
+
+// ===== S6 : 33.6–37.6  VERIFY =====
+tl.fromTo('#cap6',{opacity:0,y:40},{opacity:1,y:0,duration:0.8,ease:'power3.out'},33.6);
+tl.set('#d2',{className:'on'},33.6);
+tl.to('.progress',{opacity:0.35,duration:0.4},33.6);
+tl.to('#tabA',{backgroundColor:'#FFF3DC',color:'#A05E00',borderColor:'#F2A93B',duration:0.35},33.8);
+tl.to('#tabC',{backgroundColor:'#FFF3DC',color:'#A05E00',borderColor:'#F2A93B',duration:0.35},34.05);
+tl.to('#tabM',{backgroundColor:'#FFF3DC',color:'#A05E00',borderColor:'#F2A93B',duration:0.35},34.3);
+tl.to('#rows .row:nth-child(1) td, #rows .row:nth-child(5) td',{backgroundColor:'#FFF7E6',duration:0.4},34.1);
+tl.to('#rows .row:nth-child(1) td, #rows .row:nth-child(5) td',{height:88,duration:0.5,ease:'power2.inOut'},34.2);
+tl.fromTo('#flag1',{opacity:0,y:8},{opacity:1,y:0,duration:0.4,ease:'back.out(2)'},34.5);
+tl.fromTo('#flag2',{opacity:0,y:8},{opacity:1,y:0,duration:0.4,ease:'back.out(2)'},34.75);
+tl.to('#ins',{x:'0%',duration:0.8,ease:'power3.out'},34.8);
+tl.to('#ins .kv b',{opacity:1,duration:0.3,stagger:0.13},35.3);
+tl.to('#cap6',{opacity:0,y:-40,duration:0.4,ease:'power2.in'},37.2);
+tl.to('#ins',{x:'110%',duration:0.55,ease:'power3.in'},37.25);
+tl.to('#flag1, #flag2',{opacity:0,duration:0.25},37.2);
+tl.to('#rows .row:nth-child(1) td, #rows .row:nth-child(5) td',{height:46,backgroundColor:'#ffffff',duration:0.4},37.3);
+
+// ===== S7 : 37.6–42.2  PAY =====
+tl.fromTo('#cap7',{opacity:0,y:40},{opacity:1,y:0,duration:0.8,ease:'power3.out'},37.6);
+tl.set('#d3',{className:'on'},37.6);
+tl.set('#mockTitle',{textContent:'Bill Clearance'},37.8);
+tl.to('#rows .row .cb i',{opacity:1,scale:1,duration:0.3,ease:'back.out(2.5)',stagger:0.07},37.9);
+tl.to('#rows .row',{opacity:0.15,scale:0.97,duration:0.5,ease:'power2.in',stagger:0.03},38.9);
+tl.to('.progress, #thr',{opacity:0.2,duration:0.4},38.9);
+tl.fromTo('#batch',{opacity:0,y:60,scale:0.92},{opacity:1,y:0,scale:1,duration:0.8,ease:'power3.out'},39.2);
+{ const b={v:0}; tl.to(b,{v:312,duration:0.9,ease:'power2.out',onUpdate:()=>{$('#bBills').textContent=Math.round(b.v);}},39.3); }
+tl.fromTo('#stamp',{opacity:0,scale:2.6,rotation:-12},{opacity:1,scale:1,rotation:-12,duration:0.45,ease:'power4.in'},40.1);
+tl.to('#batch',{x:6,duration:0.06,yoyo:true,repeat:5,ease:'none'},40.52);
+tl.to('#states span',{backgroundColor:'#E9F8F0',color:'#1E8F58',duration:0.3,stagger:0.06},40.7);
+tl.to('#cap7',{opacity:0,y:-40,duration:0.4,ease:'power2.in'},41.7);
+tl.to('.win',{y:80,opacity:0,duration:0.5,ease:'power2.in'},41.7);
+tl.to('.dots',{opacity:0,duration:0.3},41.7);
+unshow('#s5',42.3);
+
+// ===== S8 : 42.1–48.4  PROOF =====
+show('#s8',42.1);
+reveal(tl,'#s8 .eyebrow>span',42.3);
+tl.fromTo('.tile',{opacity:0,y:70,scale:0.94},{opacity:1,y:0,scale:1,duration:0.9,ease:'power3.out',stagger:0.15},42.6);
+tl.fromTo('.tile .big',{opacity:0,y:20},{opacity:1,y:0,duration:0.7,ease:'back.out(1.5)',stagger:0.15},43.1);
+{ const c={v:0}; tl.to(c,{v:100,duration:1.5,ease:'power2.out',onUpdate:()=>{$('#pct100').textContent=Math.round(c.v);}},43.3); }
+tl.to('#s8 .eyebrow, .tile',{opacity:0,y:-50,duration:0.45,ease:'power2.in',stagger:0.05},47.8);
+tl.to('#wave',{y:170,duration:1.0,ease:'power2.inOut'},47.6);
+unshow('#s8',48.5);
+
+// ===== S9 : 48.3–54  SECTORS =====
+show('#s9',48.3);
+reveal(tl,'#s9 h1 .rl>span',48.5);
+tl.to('#l9',{strokeDashoffset:0,duration:1.5,ease:'power2.inOut'},48.8);
+tl.to('.sector .draw',{strokeDashoffset:0,duration:1.1,ease:'power2.inOut',stagger:0.04},49.0);
+tl.fromTo('.sector .lb',{opacity:0,y:14},{opacity:1,y:0,duration:0.5,ease:'power2.out',stagger:0.12},49.7);
+reveal(tl,'#s9 .who p.rl>span',51.2);
+tl.fromTo('#s9 .chips span',{opacity:0,y:16},{opacity:1,y:0,duration:0.5,ease:'power2.out',stagger:0.1},51.6);
+tl.to('#s9 h1, .sectors, #line9, #s9 .who',{opacity:0,y:-50,duration:0.45,ease:'power2.in'},53.5);
+unshow('#s9',54.1);
+
+// ===== S10 : 53.9–60  CTA =====
+show('#s10',53.9);
+tl.fromTo('#s10 .logo',{opacity:0,scale:0.85,y:20},{opacity:1,scale:1,y:0,duration:0.9,ease:'power3.out'},54.1);
+reveal(tl,'#s10 .copy .rl>span',54.6);
+tl.to('#band',{y:'0%',duration:0.9,ease:'power3.out'},55.5);
+tl.fromTo('#band .l > *, #band .qr',{opacity:0,y:20},{opacity:1,y:0,duration:0.6,ease:'power2.out',stagger:0.12},55.9);
+tl.to('#s10',{opacity:0,duration:0.7,ease:'power2.in'},59.15);
+tl.to('#wave',{y:0,duration:0.7,ease:'power2.inOut'},59.2);
+tl.set({}, {}, 60);
+
+window.DURATION = 60;
+window.seek = t => { tl.time(Math.min(t, 60)); };
+
+// In-browser playback: open the file with ?play appended to the URL (e.g. video.html?play) to loop the film live.
+if(location.search.indexOf('play')>-1){ tl.repeat(-1); tl.play(0); }
+window.ready = true;
+</script>
+</body>
+</html>
